@@ -9,15 +9,17 @@ export default function Taskbar({
   onToggle,
   onCycleWallpaper,
 }) {
-  const [now, setNow] = useState(new Date());
+  const [now, setNow] = useState(null);
 
   useEffect(() => {
-    const t = setInterval(() => setNow(new Date()), 1000 * 30);
+    const tick = () => setNow(new Date());
+    tick();
+    const t = setInterval(tick, 1000 * 30);
     return () => clearInterval(t);
   }, []);
 
-  const time = now.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  const date = now.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' });
+  const time = now?.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' }) ?? '--:--';
+  const date = now?.toLocaleDateString([], { weekday: 'short', month: 'short', day: 'numeric' }) ?? '';
 
   return (
     <div className="taskbar">
