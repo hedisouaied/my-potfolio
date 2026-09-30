@@ -4,9 +4,9 @@ const TAU = Math.PI * 2;
 
 /* far -> near: nearer stars are bigger, brighter, drift faster and react more to the pointer */
 const LAYERS = [
-  { share: 0.44, depth: 0.16, r: [0.7, 1.25], a: [0.38, 0.62], drift: 0.0016 },
-  { share: 0.34, depth: 0.42, r: [1.0, 1.9], a: [0.55, 0.85], drift: 0.0032 },
-  { share: 0.22, depth: 0.8, r: [1.6, 2.9], a: [0.75, 1], drift: 0.006 },
+  { share: 0.44, depth: 0.16, r: [0.7, 1.25], a: [0.38, 0.62], drift: 0.0256 },
+  { share: 0.34, depth: 0.42, r: [1.0, 1.9], a: [0.55, 0.85], drift: 0.0512 },
+  { share: 0.22, depth: 0.8, r: [1.6, 2.9], a: [0.75, 1], drift: 0.096 },
 ];
 
 const TINTS = [
@@ -20,6 +20,23 @@ const PUSH = 44; /* px of max displacement */
 const PARALLAX = 96; /* px of layer shift at full deflection */
 const SPRITE = 48;
 const CORE = 8; /* sprite is drawn at radius * CORE, its solid core is a fraction of that */
+const METEOR_RATE = 0.15; /* expected spawns per second */
+const MAX_METEORS = 2;
+
+function spawnMeteor(w, h) {
+  const angle = Math.PI * (0.52 + Math.random() * 0.42); /* sweeps left, slightly down */
+  const speed = 560 + Math.random() * 340;
+  return {
+    x: w * (0.62 + Math.random() * 0.6),
+    y: h * Math.random() * 0.55,
+    vx: Math.cos(angle) * speed,
+    vy: Math.sin(angle) * speed,
+    size: 1.5 + Math.random() * 1.2,
+    life: 0,
+    span: 1 + Math.random() * 0.7,
+    depth: 0.45 + Math.random() * 0.55,
+  };
+}
 
 function makeSprite([r, g, b]) {
   const c = document.createElement('canvas');
@@ -60,6 +77,7 @@ export default function Starfield() {
     let ty = 0.5;
 
     const stars = [];
+    const meteors = [];
     const area = w * h;
     const total = Math.round(Math.min(140, Math.max(42, area / 9000)));
 
@@ -107,6 +125,10 @@ export default function Starfield() {
       const curX = mx * w;
       const curY = my * h;
 
+      if (!reduced && meteors.length < MAX_METEORS && Math.random() < dt * METEOR_RATE) {
+        meteors.push(spawnMeteor(w, h));
+      }
+
       for (let i = 0; i < stars.length; i++) {
         const s = stars[i];
 
@@ -139,11 +161,44 @@ export default function Starfield() {
           s.oy += (toy - s.oy) * 0.12;
         }
 
-        const twinkle = reduced ? 1 : 0.62 + 0.38 * Math.sin(time * s.rate + s.phase);
+        const twinkle = reduced ? 1 : 0.55 + 0.45 * Math.sin(time * s.rate + s.phase);
         const d = s.r * CORE;
 
         ctx.globalAlpha = Math.min(1, s.a * twinkle);
         ctx.drawImage(sprites[s.tint % sprites.length], px + s.ox - d / 2, py + s.oy - d / 2, d, d);
+      }
+
+      for (let i = meteors.length - 1; i >= 0; i--) {
+        const m = meteors[i];
+        m.life += dt;
+        m.x += m.vx * dt;
+        m.y += m.vy * dt;
+        if (m.life >= m.span || m.x < -400 || m.y > h + 400) {
+          meteors.splice(i, 1);
+          continue;
+        }
+        const px = m.x + parX * m.depth;
+        const py = m.y + parY * m.depth;
+        const len = Math.hypot(m.vx, m.vy);
+        const ux = m.vx / len;
+        const uy = m.vy / len;
+        const tail = 190 * m.depth;
+        const fade = (1 - m.life / m.span) * Math.min(1, m.life / 0.14);
+        const grad = ctx.createLinearGradient(px - ux * tail, py - uy * tail, px, py);
+        grad.addColorStop(0, `rgba(186,224,255,${0.04 * fade})`);
+        grad.addColorStop(0.45, `rgba(214,238,255,${0.34 * fade})`);
+        grad.addColorStop(1, `rgba(242,250,255,${0.92 * fade})`);
+        ctx.globalAlpha = 1;
+        ctx.strokeStyle = grad;
+        ctx.lineWidth = m.size;
+        ctx.lineCap = 'round';
+        ctx.beginPath();
+        ctx.moveTo(px - ux * tail, py - uy * tail);
+        ctx.lineTo(px, py);
+        ctx.stroke();
+        const hd = 9 * m.depth * (0.6 + 0.4 * fade);
+        ctx.globalAlpha = fade;
+        ctx.drawImage(sprites[0], px - hd / 2, py - hd / 2, hd, hd);
       }
 
       ctx.globalAlpha = 1;
