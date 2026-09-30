@@ -1,6 +1,6 @@
-// Highlight the sidebar link matching the section currently in view.
+// Highlight the nav link matching the section currently in view.
 (function () {
-  const links = document.querySelectorAll('.side-nav a');
+  const links = document.querySelectorAll('.navlinks a');
   const sections = Array.from(links)
     .map((link) => document.querySelector(link.getAttribute('href')))
     .filter(Boolean);
