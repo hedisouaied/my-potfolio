@@ -20,7 +20,7 @@ export default function WindowFrame({ win, title, icon, active, onFocus, onClose
       }
       className={`window ${active ? 'active' : ''}`}
     >
-      <div className="window-inner" onMouseDown={onFocus}>
+      <div className="window-inner" onMouseDownCapture={() => { if (!active) onFocus(); }}>
         <div className="win-titlebar">
           <span className="win-icon" aria-hidden="true">{icon}</span>
           <span className="win-title">{title}</span>

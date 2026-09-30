@@ -13,31 +13,30 @@ function winner(board) {
   return board.every(Boolean) ? 'draw' : null;
 }
 
+const initialState = { board: Array(9).fill(null), turn: 'X' };
+
 export default function TicTacToeApp() {
-  const [board, setBoard] = useState(Array(9).fill(null));
-  const [turn, setTurn] = useState('X');
-  const result = winner(board);
+  const [state, setState] = useState(initialState);
+  const result = winner(state.board);
 
   const play = (i) => {
-    if (board[i] || result) return;
-    const next = [...board];
-    next[i] = turn;
-    setBoard(next);
-    setTurn(turn === 'X' ? 'O' : 'X');
+    setState((prev) => {
+      if (prev.board[i] || winner(prev.board)) return prev;
+      const board = [...prev.board];
+      board[i] = prev.turn;
+      return { board, turn: prev.turn === 'X' ? 'O' : 'X' };
+    });
   };
 
-  const reset = () => {
-    setBoard(Array(9).fill(null));
-    setTurn('X');
-  };
+  const reset = () => setState(initialState);
 
   return (
     <div className="app-pad center">
       <p className="muted">
-        {result === 'draw' ? "It's a draw" : result ? `${result} wins!` : `${turn}'s turn`}
+        {result === 'draw' ? "It's a draw" : result ? `${result} wins!` : `${state.turn}'s turn`}
       </p>
       <div className="ttt-grid">
-        {board.map((v, i) => (
+        {state.board.map((v, i) => (
           <button key={i} className="ttt-cell" onClick={() => play(i)}>{v}</button>
         ))}
       </div>
