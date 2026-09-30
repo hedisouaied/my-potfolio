@@ -7,290 +7,198 @@
 <meta name="description" content="Hedi Souaied, full-stack web developer specializing in PHP, Laravel, Filament and Livewire.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@400;500;600;700&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="styles.css">
 </head>
 <body>
 
-<div class="blob blob-a" aria-hidden="true"></div>
-<div class="blob blob-b" aria-hidden="true"></div>
-<div class="blob blob-c" aria-hidden="true"></div>
+<div class="app">
 
-<header class="site-header">
-  <a class="mark" href="#top">HS</a>
-  <nav class="site-nav">
-    <a href="#about">profile</a>
-    <a href="#stack">stack</a>
-    <a href="#work">work</a>
-    <a href="#education">education</a>
-    <a href="#more">more</a>
-  </nav>
-  <a class="header-contact" href="mailto:hedisouaied2018@gmail.com">hedisouaied2018@gmail.com</a>
-</header>
-
-<main id="top">
-
-  <section class="hero">
-    <div class="hero-text">
-      <p class="kicker">full-stack web developer · sousse, tunisia</p>
-      <h1>Hedi <span class="grad-text">Souaied</span></h1>
-      <p class="hero-lede">
-        Full-stack developer focused on PHP and Laravel, building admin
-        dashboards with Filament and reactive interfaces with Livewire —
-        from e-commerce checkouts to internal platforms, deployed and kept
-        running in production.
-      </p>
-      <div class="hero-facts">
-        <span>Since 2020, web development</span>
-        <span>Laravel · Filament · Livewire</span>
-        <span>MySQL · PostgreSQL</span>
-      </div>
-      <div class="hero-links">
-        <a href="https://hedisouaied.com" target="_blank" rel="noopener">Website</a>
-        <a href="https://www.linkedin.com/in/hedi-souaied-1973311a4" target="_blank" rel="noopener">LinkedIn</a>
-        <a href="mailto:hedisouaied2018@gmail.com">Email</a>
-      </div>
+  <aside class="sidebar">
+    <a class="logo" href="#top">
+      <span class="logo-mark">HS</span>
+      <span class="logo-text">Hedi Souaied</span>
+    </a>
+    <nav class="side-nav">
+      <a href="#profile" class="active">Profile</a>
+      <a href="#skills">Skills</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#additional">Additional</a>
+    </nav>
+    <div class="side-footer">
+      <a href="mailto:hedisouaied2018@gmail.com">hedisouaied2018@gmail.com</a>
+      <a href="https://hedisouaied.com" target="_blank" rel="noopener">hedisouaied.com</a>
     </div>
+  </aside>
 
-    <div class="code-panel" aria-hidden="true">
-      <div class="code-tabs">
-        <span class="tab active">profile.php</span>
-        <span class="tab">stack.json</span>
-      </div>
-      <pre class="code-body"><code><span class="c-kw">$developer</span> = [
-  <span class="c-key">'name'</span> => <span class="c-str">'Hedi Souaied'</span>,
-  <span class="c-key">'role'</span> => <span class="c-str">'Full-Stack Web Developer'</span>,
-  <span class="c-key">'base'</span> => <span class="c-str">'Sousse, Tunisia'</span>,
-  <span class="c-key">'stack'</span> => [<span class="c-str">'Laravel'</span>, <span class="c-str">'Filament'</span>, <span class="c-str">'Livewire'</span>],
-  <span class="c-key">'since'</span> => <span class="c-num">2020</span>,
-  <span class="c-key">'deployed'</span> => <span class="c-bool">true</span><span class="cursor">&nbsp;</span>
-];</code></pre>
-    </div>
-  </section>
+  <main id="top">
 
-  <section id="about" class="section reveal">
-    <div class="section-label"><span class="path">profile.md</span></div>
-    <div class="section-body">
-      <p class="lede-block">
-        Full-stack web developer with production experience across PHP and
-        Laravel applications — building administrative dashboards with
-        Filament, reactive interfaces with Livewire, and REST APIs backed by
-        MySQL and PostgreSQL. Comfortable across the full software
-        development lifecycle: authentication and security, database
-        optimization, deployment on Linux servers, and integrating
-        third‑party services, including exploring Anthropic Claude in
-        development workflows.
-      </p>
-      <dl class="about-grid">
-        <div><dt>Location</dt><dd>Sousse, Tunisia</dd></div>
-        <div><dt>Languages spoken</dt><dd>Arabic, English, French, German, Spanish</dd></div>
-        <div><dt>Education</dt><dd>Computer Systems Development — ISET Sousse</dd></div>
-        <div><dt>Currently</dt><dd>Web Developer at Satoripop</dd></div>
-      </dl>
-    </div>
-  </section>
+    <section id="profile" class="panel hero-panel">
+      <div class="bar">PROFILE</div>
+      <div class="panel-body hero-grid">
+        <div class="id-rows">
+          <div class="id-row"><span class="id-k">Name</span><span class="id-v">Hedi Souaied</span></div>
+          <div class="id-row"><span class="id-k">Role</span><span class="id-v">Full-Stack Web Developer</span></div>
+          <div class="id-row"><span class="id-k">Focus</span><span class="id-v">PHP / Laravel · Filament / Livewire</span></div>
+          <div class="id-row"><span class="id-k">Location</span><span class="id-v">Sousse, Tunisia</span></div>
+          <div class="id-row"><span class="id-k">Phone</span><span class="id-v"><a href="tel:+21699264250">+216 99 264 250</a></span></div>
+          <div class="id-row"><span class="id-k">Email</span><span class="id-v"><a href="mailto:hedisouaied2018@gmail.com">hedisouaied2018@gmail.com</a></span></div>
+          <div class="id-row"><span class="id-k">Web</span><span class="id-v"><a href="https://hedisouaied.com" target="_blank" rel="noopener">hedisouaied.com</a></span></div>
+          <div class="id-row"><span class="id-k">LinkedIn</span><span class="id-v"><a href="https://www.linkedin.com/in/hedi-souaied-1973311a4" target="_blank" rel="noopener">/in/hedi-souaied</a></span></div>
+        </div>
+        <p class="summary">
+          Full-stack web developer with production experience across PHP and
+          Laravel applications — building administrative dashboards with
+          Filament, reactive interfaces with Livewire, and REST APIs backed
+          by MySQL and PostgreSQL. Comfortable across the full development
+          lifecycle: authentication and security, database optimization,
+          Linux deployment, and integrating third-party services, including
+          exploring Anthropic Claude in development workflows.
+        </p>
+      </div>
+    </section>
 
-  <section id="stack" class="section reveal">
-    <div class="section-label"><span class="path">stack/</span></div>
-    <div class="section-body stack-grid">
-      <div class="stack-group" data-hue="blue">
-        <h3>languages &amp; frameworks</h3>
-        <ul class="chips">
-          <li>PHP</li><li>JavaScript</li><li>SQL</li><li>Laravel</li><li>React.js</li><li>Vue.js</li><li>Node.js</li>
-        </ul>
+    <section id="skills" class="panel">
+      <div class="bar">TECHNICAL SKILLS</div>
+      <div class="panel-body">
+        <table class="data-table">
+          <tbody>
+            <tr><th>Programming languages</th><td>PHP, JavaScript, SQL</td></tr>
+            <tr><th>Web frameworks</th><td>Laravel, React.js, Vue.js, Node.js</td></tr>
+            <tr><th>PHP ecosystem</th><td>Composer, Laravel Artisan, Eloquent ORM</td></tr>
+            <tr><th>Admin &amp; reactive</th><td>Filament, Livewire, Alpine.js</td></tr>
+            <tr><th>Front end</th><td>HTML5, CSS3, Tailwind CSS, Bootstrap, jQuery, AJAX</td></tr>
+            <tr><th>Databases</th><td>MySQL, PostgreSQL, MariaDB, SQL</td></tr>
+            <tr><th>APIs</th><td>REST APIs, JSON, API Authentication</td></tr>
+            <tr><th>Version control</th><td>Git, GitHub, GitLab, Bitbucket</td></tr>
+            <tr><th>Servers &amp; deployment</th><td>Apache, Nginx, cPanel, SSH, .htaccess</td></tr>
+            <tr><th>Development tools</th><td>Visual Studio Code, npm, Composer</td></tr>
+            <tr><th>Hosting &amp; transfer</th><td>FileZilla, cPanel, FTP/SFTP</td></tr>
+            <tr><th>Security</th><td>Laravel Authentication, Middleware, CSRF, API Authentication</td></tr>
+            <tr><th>Email</th><td>SMTP, Mail Services</td></tr>
+            <tr><th>Performance</th><td>Database Query Optimization, Caching, Lazy Loading</td></tr>
+            <tr><th>SEO</th><td>On-Page SEO, Technical SEO, Meta Tags, Sitemap Optimization</td></tr>
+            <tr><th>AI &amp; LLM</th><td>Anthropic Claude API, AI-assisted Development</td></tr>
+            <tr><th>Other</th><td>Responsive Web Design, MVC Architecture, CRUD, OOP, AJAX</td></tr>
+            <tr><th>Integrations</th><td>PDF, QR Code, Excel, Image Processing, Shopping Cart, SMTP, REST APIs</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="stack-group" data-hue="violet">
-        <h3>PHP ecosystem &amp; admin / reactive</h3>
-        <ul class="chips">
-          <li>Composer</li><li>Laravel Artisan</li><li>Eloquent ORM</li><li>Filament</li><li>Livewire</li><li>Alpine.js</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="coral">
-        <h3>front end</h3>
-        <ul class="chips">
-          <li>HTML5</li><li>CSS3</li><li>Tailwind CSS</li><li>Bootstrap</li><li>jQuery</li><li>AJAX</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="mint">
-        <h3>databases &amp; APIs</h3>
-        <ul class="chips">
-          <li>MySQL</li><li>PostgreSQL</li><li>MariaDB</li><li>REST APIs</li><li>JSON</li><li>API Authentication</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="amber">
-        <h3>servers &amp; deployment</h3>
-        <ul class="chips">
-          <li>Apache</li><li>Nginx</li><li>cPanel</li><li>SSH</li><li>.htaccess</li><li>FileZilla</li><li>FTP/SFTP</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="blue">
-        <h3>version control &amp; tools</h3>
-        <ul class="chips">
-          <li>Git</li><li>GitHub</li><li>GitLab</li><li>Bitbucket</li><li>Visual Studio Code</li><li>npm</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="violet">
-        <h3>security &amp; performance</h3>
-        <ul class="chips">
-          <li>Laravel Authentication</li><li>Middleware</li><li>CSRF</li><li>Query Optimization</li><li>Caching</li><li>Lazy Loading</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="coral">
-        <h3>SEO &amp; AI</h3>
-        <ul class="chips">
-          <li>On-Page SEO</li><li>Technical SEO</li><li>Sitemap Optimization</li><li>Anthropic Claude API</li><li>AI-assisted Development</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="mint">
-        <h3>spoken languages</h3>
-        <ul class="chips">
-          <li>Arabic</li><li>English</li><li>French</li><li>German</li><li>Spanish</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="work" class="section reveal">
-    <div class="section-label"><span class="path">work/</span></div>
-    <div class="section-body">
-      <ol class="timeline">
-        <li class="tl-item" data-hue="blue">
-          <span class="tl-marker" aria-hidden="true"></span>
-          <div class="tl-content">
-            <h4>Satoripop <span class="tag">Web Developer</span></h4>
-            <p class="tl-meta">Sousse, Tunisia · Feb 2024 – Present</p>
-            <ul>
-              <li>Develop and maintain scalable web applications using PHP and Laravel.</li>
-              <li>Build responsive interfaces with HTML, CSS, JavaScript, Tailwind CSS, Bootstrap and Livewire; create administrative dashboards with Filament.</li>
-              <li>Design reusable components and business logic following MVC and OOP principles.</li>
-              <li>Develop and integrate RESTful APIs; design and optimize MySQL/PostgreSQL databases.</li>
-              <li>Implement authentication, authorization, validation, middleware and application security.</li>
-              <li>Integrate third-party services and APIs; troubleshoot production issues and optimize performance.</li>
-              <li>Use Git, GitHub, Bitbucket and GitLab; deploy and maintain Linux applications with Nginx/Apache, SSH and cPanel.</li>
-              <li>Participate across the SDLC, collaborate with stakeholders, conduct code reviews and maintain technical documentation.</li>
-              <li>Explore and integrate AI/LLM technologies including Anthropic Claude into development workflows and applications.</li>
-            </ul>
+    <section id="experience" class="panel">
+      <div class="bar">PROFESSIONAL EXPERIENCE</div>
+      <div class="panel-body role-list">
+
+        <article class="role-card">
+          <div class="role-row">
+            <h3>Web Developer <span class="at">— Satoripop</span></h3>
+            <span class="role-date">Feb 2024 – Present · Sousse</span>
           </div>
-        </li>
+          <ul>
+            <li>Develop and maintain scalable web applications using PHP and Laravel.</li>
+            <li>Build responsive interfaces with HTML, CSS, JavaScript, Tailwind CSS, Bootstrap and Livewire; create administrative dashboards with Filament.</li>
+            <li>Design reusable components and business logic following MVC and OOP principles.</li>
+            <li>Develop and integrate RESTful APIs; design and optimize MySQL/PostgreSQL databases.</li>
+            <li>Implement authentication, authorization, validation, middleware and application security.</li>
+            <li>Integrate third-party services and APIs; troubleshoot production issues and optimize performance.</li>
+            <li>Use Git, GitHub, Bitbucket and GitLab; deploy and maintain Linux applications with Nginx/Apache, SSH and cPanel.</li>
+            <li>Participate across the SDLC, collaborate with stakeholders, conduct code reviews and maintain technical documentation.</li>
+            <li>Explore and integrate AI/LLM technologies including Anthropic Claude into development workflows and applications.</li>
+          </ul>
+        </article>
 
-        <li class="tl-item" data-hue="coral">
-          <span class="tl-marker" aria-hidden="true"></span>
-          <div class="tl-content">
-            <h4>Tounes Connect <span class="tag">Web Developer</span></h4>
-            <p class="tl-meta">Sousse, Tunisia · Jan 2021 – Nov 2023</p>
-            <ul>
-              <li>Developed and maintained web applications using Laravel and PHP.</li>
-              <li>Worked across the software development life cycle from concept to deployment and maintenance.</li>
-              <li>Performed code reviews, debugging, production troubleshooting and security/data-protection work.</li>
-              <li>Deployed applications to production servers and managed hosting environments.</li>
-              <li>Mentored junior developers and contributed to a collaborative team environment.</li>
-            </ul>
+        <article class="role-card">
+          <div class="role-row">
+            <h3>Web Developer <span class="at">— Tounes Connect</span></h3>
+            <span class="role-date">Jan 2021 – Nov 2023 · Sousse</span>
           </div>
-        </li>
+          <ul>
+            <li>Developed and maintained web applications using Laravel and PHP.</li>
+            <li>Worked across the software development life cycle from concept to deployment and maintenance.</li>
+            <li>Performed code reviews, debugging, production troubleshooting and security/data-protection work.</li>
+            <li>Deployed applications to production servers and managed hosting environments.</li>
+            <li>Mentored junior developers and contributed to a collaborative team environment.</li>
+          </ul>
+        </article>
 
-        <li class="tl-item" data-hue="violet">
-          <span class="tl-marker" aria-hidden="true"></span>
-          <div class="tl-content">
-            <h4>Tounes Connect <span class="tag">Web Development Intern</span></h4>
-            <p class="tl-meta">Sousse, Tunisia · Nov 2020 – Dec 2020</p>
-            <ul>
-              <li>Collaborated on website UI/UX and implemented Laravel features including contact forms and catalogs.</li>
-              <li>Worked with databases and optimized performance through caching, image optimization and reduced page load times.</li>
-              <li>Tested and debugged features to ensure reliable functionality.</li>
-            </ul>
+        <article class="role-card">
+          <div class="role-row">
+            <h3>Web Development Intern <span class="at">— Tounes Connect</span></h3>
+            <span class="role-date">Nov 2020 – Dec 2020 · Sousse</span>
           </div>
-        </li>
+          <ul>
+            <li>Collaborated on website UI/UX and implemented Laravel features including contact forms and catalogs.</li>
+            <li>Worked with databases and optimized performance through caching, image optimization and reduced page load times.</li>
+            <li>Tested and debugged features to ensure reliable functionality.</li>
+          </ul>
+        </article>
 
-        <li class="tl-item" data-hue="mint">
-          <span class="tl-marker" aria-hidden="true"></span>
-          <div class="tl-content">
-            <h4>Optima Tec <span class="tag">Web Development Intern</span></h4>
-            <p class="tl-meta">Sousse, Tunisia · Oct 2020</p>
-            <ul>
-              <li>Developed an e-commerce website with PHP/Laravel, payment gateways, product catalog, shopping cart and order management.</li>
-              <li>Built responsive interfaces and optimized database queries for performance.</li>
-              <li>Tested and debugged the application to improve quality and user experience.</li>
-            </ul>
+        <article class="role-card">
+          <div class="role-row">
+            <h3>Web Development Intern <span class="at">— Optima Tec</span></h3>
+            <span class="role-date">Oct 2020 · Sousse</span>
           </div>
-        </li>
-      </ol>
-    </div>
-  </section>
+          <ul>
+            <li>Developed an e-commerce website with PHP/Laravel, payment gateways, product catalog, shopping cart and order management.</li>
+            <li>Built responsive interfaces and optimized database queries for performance.</li>
+            <li>Tested and debugged the application to improve quality and user experience.</li>
+          </ul>
+        </article>
 
-  <section id="education" class="section split reveal">
-    <div class="split-col">
-      <div class="section-label"><span class="path">education.md</span></div>
-      <div class="section-body">
-        <h3>Computer Systems Development</h3>
-        <p class="role-meta">Institut Supérieur d'Étude Technologique · Since Sept 2024 · Sousse</p>
-        <h3 style="margin-top: 22px;">Baccalaureate in Mathematics</h3>
-        <p class="role-meta">Lycée Abd Laziz El Behi · Sept 2013 – Jun 2014 · Sousse</p>
       </div>
-    </div>
-    <div class="split-col">
-      <div class="section-label"><span class="path">certifications.json</span></div>
-      <div class="section-body">
-        <h3>Anthropic Academy <span class="role-meta">· 2026</span></h3>
-        <ul class="cert-list">
-          <li>Claude Code in Action</li>
-          <li>Introduction to Model Context Protocol</li>
-          <li>Building with the Claude API</li>
-          <li>Introduction to Agent Skills</li>
-        </ul>
-        <h3 style="margin-top: 28px;">Media Formation <span class="role-meta">· 2020</span></h3>
-        <ul class="cert-list">
-          <li>Web master PHP / MySQL certificate</li>
-          <li>HTML &amp; CSS Level 2</li>
-          <li>HTML &amp; CSS Level 1</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+    </section>
 
-  <section id="more" class="section reveal">
-    <div class="section-label"><span class="path">more/</span></div>
-    <div class="section-body stack-grid">
-      <div class="stack-group" data-hue="blue">
-        <h3>strengths</h3>
-        <ul class="chips">
-          <li>Communication</li><li>Flexibility</li><li>Problem Solving</li><li>Teamwork</li><li>Quick Learning</li><li>Logical Reasoning</li>
-        </ul>
+    <section id="education" class="panel">
+      <div class="bar">EDUCATION &amp; CERTIFICATIONS</div>
+      <div class="panel-body">
+        <table class="data-table">
+          <tbody>
+            <tr><th>Computer Systems Development</th><td>Institut Supérieur d'Étude Technologique</td><td class="date-col">Since Sept 2024 · Sousse</td></tr>
+            <tr><th>Baccalaureate in Mathematics</th><td>Lycée Abd Laziz El Behi</td><td class="date-col">Sept 2013 – Jun 2014 · Sousse</td></tr>
+            <tr><th>Claude Code in Action</th><td>Anthropic Academy</td><td class="date-col">2026</td></tr>
+            <tr><th>Introduction to Model Context Protocol</th><td>Anthropic Academy</td><td class="date-col">2026</td></tr>
+            <tr><th>Building with the Claude API</th><td>Anthropic Academy</td><td class="date-col">2026</td></tr>
+            <tr><th>Introduction to Agent Skills</th><td>Anthropic Academy</td><td class="date-col">2026</td></tr>
+            <tr><th>Web master PHP / MySQL certificate</th><td>Media Formation</td><td class="date-col">2020 · Sousse</td></tr>
+            <tr><th>HTML &amp; CSS Level 2</th><td>Media Formation</td><td class="date-col">2020 · Sousse</td></tr>
+            <tr><th>HTML &amp; CSS Level 1</th><td>Media Formation</td><td class="date-col">2020 · Sousse</td></tr>
+          </tbody>
+        </table>
       </div>
-      <div class="stack-group" data-hue="violet">
-        <h3>tools &amp; platforms</h3>
-        <ul class="chips">
-          <li>Jira</li><li>GLPI</li><li>Git</li><li>GitHub</li><li>GitLab</li><li>Bitbucket</li><li>VS Code</li><li>FileZilla</li><li>cPanel</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="coral">
-        <h3>server management</h3>
-        <ul class="chips">
-          <li>OVH</li><li>GoDaddy</li><li>Mailchimp</li><li>ZenHosting</li><li>Orange</li><li>TopNet</li>
-        </ul>
-      </div>
-      <div class="stack-group" data-hue="mint">
-        <h3>interests</h3>
-        <ul class="chips">
-          <li>Football</li><li>Cinema</li>
-        </ul>
-      </div>
-    </div>
-  </section>
+    </section>
 
-</main>
+    <section id="additional" class="panel">
+      <div class="bar">ADDITIONAL INFORMATION</div>
+      <div class="panel-body">
+        <table class="data-table">
+          <tbody>
+            <tr><th>Languages</th><td>Arabic · English · French · German · Spanish</td></tr>
+            <tr><th>Strengths</th><td>Communication · Flexibility · Problem Solving · Teamwork · Quick Learning · Logical Reasoning</td></tr>
+            <tr><th>Tools &amp; platforms</th><td>Jira · GLPI · Git · GitHub · GitLab · Bitbucket · VS Code · FileZilla · cPanel</td></tr>
+            <tr><th>Server management</th><td>OVH · GoDaddy · Mailchimp · ZenHosting · Orange · TopNet — DNS management and deployment across hosting environments.</td></tr>
+            <tr><th>Interests</th><td>Football · Cinema</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </section>
 
-<footer class="site-footer reveal" id="contact">
-  <div class="footer-main">
-    <h2>Let's build something that ships.</h2>
-    <a class="footer-email" href="mailto:hedisouaied2018@gmail.com">hedisouaied2018@gmail.com</a>
-  </div>
-  <div class="footer-links">
-    <a href="tel:+21699264250">+216 99 264 250</a>
-    <a href="https://hedisouaied.com" target="_blank" rel="noopener">hedisouaied.com</a>
-    <a href="https://www.linkedin.com/in/hedi-souaied-1973311a4" target="_blank" rel="noopener">linkedin.com/in/hedi-souaied</a>
-  </div>
-  <p class="footer-note">Sousse, Tunisia</p>
-</footer>
+    <footer class="panel contact-panel" id="contact">
+      <div class="bar">CONTACT</div>
+      <div class="panel-body contact-body">
+        <a class="contact-cta" href="mailto:hedisouaied2018@gmail.com">Send an email →</a>
+        <div class="contact-links">
+          <a href="tel:+21699264250">+216 99 264 250</a>
+          <a href="https://hedisouaied.com" target="_blank" rel="noopener">hedisouaied.com</a>
+          <a href="https://www.linkedin.com/in/hedi-souaied-1973311a4" target="_blank" rel="noopener">linkedin.com/in/hedi-souaied</a>
+        </div>
+        <p class="footer-note">Sousse, Tunisia</p>
+      </div>
+    </footer>
+
+  </main>
+</div>
 
 <script src="script.js"></script>
 </body>
