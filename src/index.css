@@ -120,6 +120,11 @@ a:hover {
   overflow: hidden;
   isolation: isolate;
   background-color: var(--base);
+  --px: 0;
+  --py: 0;
+  --mx: 50%;
+  --my: 50%;
+  --glow: 0;
 }
 
 .wp-nebula {
@@ -162,9 +167,10 @@ a:hover {
 .desktop::before {
   z-index: 0;
   background-image:
-    linear-gradient(rgba(255, 255, 255, 0.035) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255, 255, 255, 0.035) 1px, transparent 1px);
+    linear-gradient(rgba(255, 255, 255, 0.045) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255, 255, 255, 0.045) 1px, transparent 1px);
   background-size: 46px 46px;
+  background-position: calc(50% + var(--px) * 34px) calc(50% + var(--py) * 34px);
   -webkit-mask-image: radial-gradient(ellipse 90% 75% at 50% 42%, #000 20%, transparent 100%);
   mask-image: radial-gradient(ellipse 90% 75% at 50% 42%, #000 20%, transparent 100%);
 }
@@ -179,7 +185,7 @@ a:hover {
   filter: blur(70px);
   pointer-events: none;
   z-index: 0;
-  will-change: transform;
+  will-change: transform, translate, scale;
 }
 .aurora-a {
   width: 44vmax;
@@ -187,6 +193,7 @@ a:hover {
   left: -12vmax;
   top: -16vmax;
   background: radial-gradient(circle, color-mix(in srgb, var(--accent) 40%, transparent), transparent 70%);
+  transform: translate3d(calc(var(--px) * -52px), calc(var(--py) * -38px), 0);
   animation: drift-a 28s var(--ease) infinite alternate;
 }
 .aurora-b {
@@ -195,17 +202,34 @@ a:hover {
   right: -10vmax;
   bottom: -14vmax;
   background: radial-gradient(circle, color-mix(in srgb, var(--accent-3) 36%, transparent), transparent 70%);
+  transform: translate3d(calc(var(--px) * 68px), calc(var(--py) * 50px), 0);
   animation: drift-b 34s var(--ease) infinite alternate;
+}
+
+/* pool of light that trails the cursor */
+.cursor-glow {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  opacity: var(--glow);
+  mix-blend-mode: screen;
+  background:
+    radial-gradient(280px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%),
+    radial-gradient(720px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent-3) 15%, transparent), transparent 68%);
+  transition: opacity 0.5s var(--ease);
 }
 
 @keyframes drift-a {
   to {
-    transform: translate3d(9vmax, 6vmax, 0) scale(1.12);
+    translate: 7vmax 4vmax;
+    scale: 1.12;
   }
 }
 @keyframes drift-b {
   to {
-    transform: translate3d(-8vmax, -5vmax, 0) scale(1.08);
+    translate: -6vmax -3vmax;
+    scale: 1.08;
   }
 }
 
@@ -219,9 +243,11 @@ a:hover {
   font-size: clamp(4rem, 18vw, 15rem);
   font-weight: 500;
   letter-spacing: 0.06em;
-  color: rgba(255, 255, 255, 0.028);
+  color: rgba(255, 255, 255, 0.045);
   user-select: none;
   pointer-events: none;
+  transform: translate3d(calc(var(--px) * -22px), calc(var(--py) * -16px), 0);
+  will-change: transform;
 }
 
 /* boot screen */
@@ -1112,6 +1138,9 @@ a:hover {
   }
   .aurora {
     animation: none;
+  }
+  .cursor-glow {
+    display: none;
   }
   * {
     transition-duration: 0.01ms !important;

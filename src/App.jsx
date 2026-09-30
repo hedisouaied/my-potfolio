@@ -4,6 +4,7 @@ import Taskbar from './components/Taskbar';
 import WindowFrame from './components/WindowFrame';
 import { APPS } from './apps/registry';
 import { useWindows } from './useWindows';
+import { usePointerParallax } from './usePointerParallax';
 
 const WALLPAPERS = [
   { id: 'nebula', name: 'Nebula' },
@@ -18,6 +19,8 @@ const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 export default function App() {
   const { windows, open, close, minimize, focus, updateRect, toggleMax } = useWindows();
   const layerRef = useRef(null);
+  const desktopRef = useRef(null);
+  usePointerParallax(desktopRef);
   const [wallpaperIndex, setWallpaperIndex] = useState(() => {
     const saved = parseInt(localStorage.getItem('hedios:wallpaper') ?? '0', 10);
     return Number.isFinite(saved) ? saved % WALLPAPERS.length : 0;
@@ -78,7 +81,7 @@ export default function App() {
   const wallpaper = WALLPAPERS[wallpaperIndex];
 
   return (
-    <div className={`desktop wp-${wallpaper.id}`}>
+    <div className={`desktop wp-${wallpaper.id}`} ref={desktopRef}>
       {booting && (
         <div className="boot-screen">
           <div className="boot-inner">
@@ -95,6 +98,7 @@ export default function App() {
 
       <div className="aurora aurora-a" aria-hidden="true" />
       <div className="aurora aurora-b" aria-hidden="true" />
+      <div className="cursor-glow" aria-hidden="true" />
       <div className="desktop-watermark" aria-hidden="true">HediOS</div>
 
       <Desktop onOpen={openApp} />
