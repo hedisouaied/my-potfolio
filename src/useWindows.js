@@ -29,8 +29,10 @@ export function useWindows() {
           appId,
           z: zRef.current,
           minimized: false,
-          x: (defaults?.x ?? 120) + offset,
-          y: (defaults?.y ?? 90) + offset,
+          maximized: false,
+          restore: null,
+          x: defaults?.x ?? 120 + offset,
+          y: defaults?.y ?? 90 + offset,
           w: defaults?.w ?? 560,
           h: defaults?.h ?? 420,
         },
@@ -50,5 +52,26 @@ export function useWindows() {
     setWindows((ws) => ws.map((w) => (w.id === id ? { ...w, ...rect } : w)));
   }, []);
 
-  return { windows, open, close, minimize, focus, updateRect };
+  const toggleMax = useCallback((id, area) => {
+    setWindows((ws) =>
+      ws.map((w) => {
+        if (w.id !== id) return w;
+        if (w.maximized && w.restore) {
+          const { x, y, w: rw, h: rh } = w.restore;
+          return { ...w, maximized: false, restore: null, x, y, w: rw, h: rh };
+        }
+        return {
+          ...w,
+          maximized: true,
+          restore: { x: w.x, y: w.y, w: w.w, h: w.h },
+          x: area.x,
+          y: area.y,
+          w: area.w,
+          h: area.h,
+        };
+      })
+    );
+  }, []);
+
+  return { windows, open, close, minimize, focus, updateRect, toggleMax };
 }

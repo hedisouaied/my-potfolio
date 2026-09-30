@@ -3,7 +3,7 @@ import { profile } from '../data/profile';
 export default function ContactApp() {
   return (
     <div className="app-pad center">
-      <h3>Let's talk</h3>
+      <h2 className="app-title">Let's talk</h2>
       <p className="muted">Open to full-stack Laravel &amp; Filament work.</p>
       <a className="btn-primary" href={`mailto:${profile.email}`}>{profile.email}</a>
       <div className="contact-links">

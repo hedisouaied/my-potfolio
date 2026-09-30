@@ -1,7 +1,14 @@
 import { useEffect, useState } from 'react';
+import AppIcon from './AppIcon';
 import { APPS } from '../apps/registry';
 
-export default function Taskbar({ windows, activeId, onToggle, onCycleWallpaper }) {
+export default function Taskbar({
+  windows,
+  activeId,
+  wallpaperName,
+  onToggle,
+  onCycleWallpaper,
+}) {
   const [now, setNow] = useState(new Date());
 
   useEffect(() => {
@@ -14,23 +21,34 @@ export default function Taskbar({ windows, activeId, onToggle, onCycleWallpaper 
 
   return (
     <div className="taskbar">
-      <div className="taskbar-brand">HediOS</div>
+      <div className="taskbar-brand">
+        HediOS <span>v1.0</span>
+      </div>
       <div className="taskbar-windows">
         {windows.map((w) => (
           <button
             key={w.id}
-            className={`taskbar-item ${w.id === activeId && !w.minimized ? 'active' : ''}`}
+            className={`taskbar-item ${
+              w.id === activeId && !w.minimized ? 'active' : w.minimized ? 'minimized' : ''
+            }`}
             onClick={() => onToggle(w.id)}
           >
-            <span aria-hidden="true">{APPS[w.appId].icon}</span>
+            <AppIcon name={APPS[w.appId].icon} size={15} />
             {APPS[w.appId].title}
           </button>
         ))}
       </div>
-      <button className="taskbar-wallpaper" onClick={onCycleWallpaper} aria-label="Change wallpaper">🎨</button>
+      <button
+        className="taskbar-wallpaper"
+        onClick={onCycleWallpaper}
+        aria-label={`Change wallpaper — current: ${wallpaperName}`}
+        title={`Wallpaper: ${wallpaperName}`}
+      >
+        <AppIcon name="paint" size={17} />
+      </button>
       <div className="taskbar-clock">
         <span>{time}</span>
-        <span className="muted small">{date}</span>
+        <span className="small">{date}</span>
       </div>
     </div>
   );

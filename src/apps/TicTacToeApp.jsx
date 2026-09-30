@@ -16,6 +16,13 @@ function winner(board) {
   return board.every(Boolean) ? 'draw' : null;
 }
 
+function winningCells(board) {
+  for (const [a, b, c] of LINES) {
+    if (board[a] && board[a] === board[b] && board[a] === board[c]) return [a, b, c];
+  }
+  return [];
+}
+
 function pickCpuMove(board) {
   const empty = board.reduce((acc, v, i) => (v ? acc : [...acc, i]), []);
 
@@ -42,6 +49,7 @@ const initialState = { board: Array(9).fill(null), turn: HUMAN };
 export default function TicTacToeApp() {
   const [state, setState] = useState(initialState);
   const result = winner(state.board);
+  const lit = winningCells(state.board);
 
   const play = (i) => {
     if (state.turn !== HUMAN || result) return;
@@ -78,13 +86,21 @@ export default function TicTacToeApp() {
 
   return (
     <div className="app-pad center">
-      <p className="muted">{status}</p>
+      <p className="ttt-status">{status}</p>
       <div className="ttt-grid">
         {state.board.map((v, i) => (
-          <button key={i} className="ttt-cell" onClick={() => play(i)}>{v}</button>
+          <button
+            key={i}
+            className={`ttt-cell ${v === CPU ? 'o' : ''} ${lit.includes(i) ? 'win' : ''}`}
+            onClick={() => play(i)}
+            disabled={!!v || !!result}
+            aria-label={v ? `Cell ${i + 1}: ${v}` : `Cell ${i + 1}: empty`}
+          >
+            {v}
+          </button>
         ))}
       </div>
-      <button className="btn-ghost" onClick={reset}>Reset</button>
+      <button className="btn-ghost" onClick={reset}>Reset board</button>
     </div>
   );
 }
