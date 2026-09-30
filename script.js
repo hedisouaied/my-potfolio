@@ -1,26 +1,79 @@
-// Highlight the nav link matching the section currently in view.
 (function () {
-  const links = document.querySelectorAll('.navlinks a');
-  const sections = Array.from(links)
-    .map((link) => document.querySelector(link.getAttribute('href')))
-    .filter(Boolean);
+  const order = ['home', 'about', 'resume', 'work', 'contact'];
+  const sections = order.map((id) => document.querySelector(`.app-section[data-id="${id}"]`));
+  const navIcons = document.querySelectorAll('.nav-icon');
+  const prefersReduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
-  if (!('IntersectionObserver' in window) || !sections.length) return;
+  let current = 0;
+  let animating = false;
 
-  const setActive = (id) => {
-    links.forEach((link) => {
-      link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
-    });
-  };
+  function goTo(index, { push = true } = {}) {
+    if (index === current || animating) return;
+    const direction = index > current ? 'next' : 'prev';
+    const outSection = sections[current];
+    const inSection = sections[index];
 
-  const observer = new IntersectionObserver(
-    (entries) => {
-      entries.forEach((entry) => {
-        if (entry.isIntersecting) setActive(entry.target.id);
+    animating = true;
+
+    outSection.classList.remove('active');
+    outSection.classList.add(direction === 'next' ? 'leaving-next' : 'leaving-prev');
+
+    inSection.classList.remove('leaving-next', 'leaving-prev');
+    inSection.style.transform = direction === 'next' ? 'translateX(40px)' : 'translateX(-40px)';
+    inSection.style.visibility = 'visible';
+
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        inSection.classList.add('active');
+        inSection.style.transform = '';
       });
-    },
-    { rootMargin: '-40% 0px -50% 0px', threshold: 0 }
-  );
+    });
 
-  sections.forEach((section) => observer.observe(section));
+    navIcons.forEach((icon) => icon.classList.toggle('active', icon.dataset.id === order[index]));
+
+    const settle = () => {
+      outSection.classList.remove('leaving-next', 'leaving-prev');
+      outSection.style.visibility = 'hidden';
+      animating = false;
+    };
+
+    if (prefersReduced) {
+      settle();
+    } else {
+      setTimeout(settle, 460);
+    }
+
+    current = index;
+    if (push) history.replaceState(null, '', `#${order[index]}`);
+  }
+
+  navIcons.forEach((icon) => {
+    icon.addEventListener('click', (e) => {
+      e.preventDefault();
+      const idx = order.indexOf(icon.dataset.id);
+      if (idx !== -1) goTo(idx);
+    });
+  });
+
+  document.querySelector('.arrow-next').addEventListener('click', () => {
+    goTo((current + 1) % order.length);
+  });
+  document.querySelector('.arrow-prev').addEventListener('click', () => {
+    goTo((current - 1 + order.length) % order.length);
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'ArrowRight') goTo((current + 1) % order.length);
+    if (e.key === 'ArrowLeft') goTo((current - 1 + order.length) % order.length);
+  });
+
+  const initialHash = location.hash.replace('#', '');
+  const initialIndex = order.indexOf(initialHash);
+  if (initialIndex > 0) {
+    sections[0].classList.remove('active');
+    sections[0].style.visibility = 'hidden';
+    sections[initialIndex].classList.add('active');
+    current = initialIndex;
+    navIcons.forEach((icon) => icon.classList.toggle('active', icon.dataset.id === initialHash));
+  }
 })();
