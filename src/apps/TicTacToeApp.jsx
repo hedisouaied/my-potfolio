@@ -81,8 +81,8 @@ export default function TicTacToeApp() {
   const status =
     result === 'draw' ? "It's a draw" :
     result === HUMAN ? 'You win!' :
-    result === CPU ? 'HediOS wins!' :
-    state.turn === HUMAN ? 'Your turn (X)' : "HediOS is thinking…";
+    result === CPU ? 'H.Souaied wins!' :
+    state.turn === HUMAN ? 'Your turn (X)' : 'H.Souaied is thinking…';
 
   return (
     <div className="app-pad center">

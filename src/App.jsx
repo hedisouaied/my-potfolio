@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import Desktop from './components/Desktop';
+import Starfield from './components/Starfield';
 import Taskbar from './components/Taskbar';
 import WindowFrame from './components/WindowFrame';
 import { APPS } from './apps/registry';
@@ -86,7 +87,7 @@ export default function App() {
         <div className="boot-screen">
           <div className="boot-inner">
             <div className="boot-logo">
-              <span className="boot-mark">▚</span> HediOS
+              <span className="boot-mark">▚</span> H.Souaied
             </div>
             <div className="boot-bar">
               <span />
@@ -96,10 +97,11 @@ export default function App() {
         </div>
       )}
 
+      <Starfield />
       <div className="aurora aurora-a" aria-hidden="true" />
       <div className="aurora aurora-b" aria-hidden="true" />
       <div className="cursor-glow" aria-hidden="true" />
-      <div className="desktop-watermark" aria-hidden="true">HediOS</div>
+      <div className="desktop-watermark" aria-hidden="true">H.Souaied</div>
 
       <Desktop onOpen={openApp} />
 

@@ -24,7 +24,7 @@ export default function Taskbar({
   return (
     <div className="taskbar">
       <div className="taskbar-brand">
-        HediOS <span>v1.0</span>
+        H.Souaied <span>v1.0</span>
       </div>
       <div className="taskbar-windows">
         {windows.map((w) => (

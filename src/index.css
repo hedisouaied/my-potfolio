@@ -240,7 +240,7 @@ a:hover {
   display: grid;
   place-items: center;
   font-family: var(--mono);
-  font-size: clamp(4rem, 18vw, 15rem);
+  font-size: clamp(2.6rem, 13vw, 11rem);
   font-weight: 500;
   letter-spacing: 0.06em;
   color: rgba(255, 255, 255, 0.045);
@@ -1136,11 +1136,22 @@ a:hover {
     opacity: 0;
     visibility: hidden;
   }
-  .aurora {
+.starfield {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+}
+
+.aurora {
+
     animation: none;
   }
   .cursor-glow {
     display: none;
+  }
+  .starfield {
+    opacity: 0.85;
   }
   * {
     transition-duration: 0.01ms !important;

@@ -35,7 +35,7 @@ function run(cmd, print) {
 
 export default function TerminalApp() {
   const [lines, setLines] = useState([
-    `HediOS terminal — type 'help' to get started`,
+    `H.Souaied terminal — type 'help' to get started`,
   ]);
   const [value, setValue] = useState('');
   const scrollRef = useRef(null);
