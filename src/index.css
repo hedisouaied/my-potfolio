@@ -448,6 +448,49 @@ a:hover {
   }
 }
 
+/* floating side terminal — reuses the preloader palette and reveal animation */
+
+/* No panel chrome — it floats directly on the wallpaper, so legibility comes
+   from text shadows (same trick as .desktop-icon-label) instead of a surface. */
+.side-term {
+  position: absolute;
+  z-index: 2;
+  left: 20px;
+  bottom: calc(var(--taskbar-h) + 22px);
+  width: min(310px, 32vw);
+  pointer-events: none;
+  opacity: 1;
+  transition: opacity 0.5s var(--ease);
+}
+.side-term.clearing {
+  opacity: 0;
+}
+
+.side-term-body {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1.8;
+  color: var(--text-2);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.92), 0 0 14px rgba(0, 0, 0, 0.65);
+}
+
+.side-term-line {
+  display: block;
+  opacity: 0;
+  transform: translateX(-9px);
+  animation: boot-line-in 0.36s var(--ease) forwards;
+}
+
+.side-term-caret {
+  margin-right: 0.5ch;
+  color: var(--warn);
+  font-weight: 700;
+  text-shadow: 0 1px 3px rgba(0, 0, 0, 0.92), 0 0 12px color-mix(in srgb, var(--warn) 45%, transparent);
+}
+
 /* desktop icons */
 
 .desktop-icons {
@@ -1709,6 +1752,18 @@ a:hover {
   }
   .app-pad {
     padding: 18px 18px 26px;
+  }
+  /* Phones have no room beside the windows, so the terminal sits above the
+     window layer — otherwise the About window covers it completely. */
+  .side-term {
+    bottom: calc(var(--taskbar-h) + 12px);
+    left: 12px;
+    z-index: 30;
+    width: min(250px, 62vw);
+  }
+  .side-term-body {
+    font-size: 10px;
+    line-height: 1.7;
   }
 }
 

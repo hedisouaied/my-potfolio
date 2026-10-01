@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import BootScreen from './components/BootScreen';
 import Desktop from './components/Desktop';
+import SideTerminal from './components/SideTerminal';
 import Starfield from './components/Starfield';
 import Taskbar from './components/Taskbar';
 import WindowFrame from './components/WindowFrame';
@@ -178,6 +179,8 @@ export default function App() {
       <div className="aurora aurora-b" aria-hidden="true" />
       <div className="cursor-glow" aria-hidden="true" />
       <div className="desktop-watermark" aria-hidden="true">H.Souaied</div>
+
+      {!booting && <SideTerminal />}
 
       <Desktop onOpen={openApp} />
 
