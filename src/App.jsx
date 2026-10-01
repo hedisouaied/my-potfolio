@@ -21,7 +21,7 @@ const WALLPAPERS = [
    last one listed ends up on top — that leaves About Me (the introduction)
    front and centre once the chaos settles, with the real content stacked under
    it and the two gimmick apps buried at the back. */
-const CASCADE_ORDER = ['tictactoe', 'terminal', 'contact', 'skills', 'resume', 'projects', 'about'];
+const CASCADE_ORDER = ['tictactoe', 'music', 'terminal', 'contact', 'skills', 'resume', 'projects', 'about'];
 
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 

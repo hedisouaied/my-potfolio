@@ -1015,6 +1015,430 @@ a:hover {
   }
 }
 
+/* music player */
+
+.mus {
+  gap: 15px;
+  container-type: inline-size;
+}
+
+/* stage: spinning record beside the now-playing text */
+
+.mus-stage {
+  display: grid;
+  grid-template-columns: clamp(84px, 33%, 132px) minmax(0, 1fr);
+  align-items: center;
+  gap: 16px;
+}
+
+.mus-disc {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  background:
+    radial-gradient(circle at 50% 50%, rgba(0, 0, 0, 0) 0 27%, var(--accent) 27.4% 28%, rgba(0, 0, 0, 0) 28.6%),
+    repeating-radial-gradient(circle at 50% 50%, rgba(255, 255, 255, 0.05) 0 1px, rgba(0, 0, 0, 0) 1px 4px),
+    radial-gradient(circle at 32% 26%, #243046, #0b1119 74%);
+  border: 1px solid var(--line-2);
+  box-shadow: 0 16px 36px -20px rgba(0, 0, 0, 0.95), inset 0 0 0 1px rgba(255, 255, 255, 0.035);
+  animation: mus-spin 7s linear infinite;
+  animation-play-state: paused;
+}
+.mus-disc.spin {
+  animation-play-state: running;
+}
+
+/* specular sweep that rides around with the record */
+.mus-disc::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: 50%;
+  background: conic-gradient(from 0deg, rgba(255, 255, 255, 0.16), rgba(255, 255, 255, 0) 20%, rgba(255, 255, 255, 0) 56%, rgba(255, 255, 255, 0.11) 80%, rgba(255, 255, 255, 0));
+  mix-blend-mode: overlay;
+  pointer-events: none;
+}
+
+.mus-label {
+  position: relative;
+  z-index: 1;
+  width: 42%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  align-content: center;
+  font-family: var(--mono);
+  font-size: clamp(11px, 3.4cqw, 15px);
+  font-weight: 700;
+  color: var(--on-accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(0, 0, 0, 0.25);
+}
+/* counter-rotate so the track number stays readable while the disc spins */
+.mus-disc.spin .mus-label {
+  animation: mus-spin 7s linear infinite reverse;
+}
+.mus-label-sub {
+  font-size: 0.62em;
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  opacity: 0.72;
+}
+
+@keyframes mus-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.mus-now {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
+.mus-eyebrow {
+  font-family: var(--mono);
+  font-size: 9.5px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-3);
+}
+.mus-title {
+  margin: 3px 0 0;
+  font-size: clamp(15px, 4.4cqw, 18px);
+  font-weight: 700;
+  line-height: 1.22;
+  letter-spacing: -0.01em;
+  color: var(--text);
+  overflow-wrap: anywhere;
+}
+.mus-artist {
+  margin: 2px 0 0;
+  font-size: 12.5px;
+  color: var(--text-2);
+}
+
+/* live spectrum — heights come from the analyser via --v, set in rAF */
+
+.mus-spectrum {
+  display: flex;
+  align-items: flex-end;
+  gap: 2.5px;
+  height: 32px;
+  margin-top: 12px;
+}
+.mus-bar {
+  flex: 1 1 0;
+  min-width: 0;
+  height: 100%;
+  border-radius: 2px;
+  background: linear-gradient(180deg, var(--accent-3), var(--accent));
+  transform-origin: bottom center;
+  transform: scaleY(var(--v, 0.05));
+  opacity: 0.9;
+  transition: transform 0.08s linear;
+}
+
+/* scrub row + sliders */
+
+.mus-scrub {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+}
+.mus-time {
+  flex: 0 0 auto;
+  min-width: 36px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+}
+.mus-time:last-child {
+  text-align: right;
+}
+
+.mus-slider {
+  position: relative;
+  flex: 1 1 auto;
+  min-width: 0;
+  height: 18px;
+  display: flex;
+  align-items: center;
+}
+.mus-slider::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.11);
+}
+.mus-slider-fill {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 5px;
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2));
+  transform-origin: left center;
+  transform: scaleX(0);
+  transition: transform 0.12s linear;
+}
+.mus-slider-fill::after {
+  content: "";
+  position: absolute;
+  right: -5px;
+  top: 50%;
+  width: 11px;
+  height: 11px;
+  margin-top: -5.5px;
+  border-radius: 50%;
+  background: var(--text);
+  box-shadow: 0 0 12px -2px var(--accent-glow);
+  transition: transform 0.15s var(--ease);
+}
+.mus-slider:hover .mus-slider-fill::after {
+  transform: scale(1.2);
+}
+.mus-slider:has(.mus-slider-input:focus-visible)::before {
+  box-shadow: 0 0 0 2px var(--accent-line);
+}
+.mus-slider-input {
+  position: relative;
+  -webkit-appearance: none;
+  appearance: none;
+  width: 100%;
+  height: 18px;
+  margin: 0;
+  background: transparent;
+  cursor: pointer;
+}
+.mus-slider-input:focus-visible {
+  outline: none;
+}
+.mus-slider-input::-webkit-slider-runnable-track {
+  height: 18px;
+  background: transparent;
+  border: 0;
+}
+.mus-slider-input::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 0;
+}
+.mus-slider-input::-moz-range-track {
+  height: 18px;
+  background: transparent;
+  border: 0;
+}
+.mus-slider-input::-moz-range-thumb {
+  width: 18px;
+  height: 18px;
+  background: transparent;
+  border: 0;
+}
+.mus-slider.off {
+  opacity: 0.42;
+}
+.mus-slider.off .mus-slider-input {
+  cursor: default;
+}
+
+/* transport */
+
+.mus-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.mus-btn {
+  flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+  width: 38px;
+  height: 38px;
+  border: 1px solid var(--line-2);
+  border-radius: 50%;
+  color: var(--text-2);
+  background: var(--surface-1);
+  transition: color 0.16s var(--ease), border-color 0.16s var(--ease), background 0.16s var(--ease), transform 0.12s var(--ease);
+}
+.mus-btn:hover {
+  color: var(--accent);
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+}
+.mus-btn:active {
+  transform: scale(0.93);
+}
+
+.mus-btn-main {
+  width: 48px;
+  height: 48px;
+  color: var(--on-accent);
+  border-color: transparent;
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  box-shadow: 0 12px 26px -12px var(--accent-glow);
+}
+.mus-btn-main:hover {
+  color: var(--on-accent);
+  background: linear-gradient(135deg, var(--accent), var(--accent-2));
+  filter: brightness(1.09);
+}
+.mus-btn-main.on {
+  animation: mus-pulse 2.6s var(--ease) infinite;
+}
+
+@keyframes mus-pulse {
+  0%,
+  100% {
+    box-shadow: 0 12px 26px -12px var(--accent-glow);
+  }
+  50% {
+    box-shadow: 0 14px 34px -8px var(--accent-glow);
+  }
+}
+
+.mus-volume {
+  flex: 1 1 auto;
+  min-width: 0;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  margin-left: 3px;
+  color: var(--text-3);
+}
+
+/* track list */
+
+.mus-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.mus-track {
+  width: 100%;
+  display: grid;
+  grid-template-columns: 24px minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 11px;
+  padding: 9px 11px;
+  border: 1px solid var(--line);
+  border-radius: var(--radius-sm);
+  text-align: left;
+  background: var(--surface-1);
+  transition: border-color 0.16s var(--ease), background 0.16s var(--ease), transform 0.12s var(--ease);
+}
+.mus-track:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-wash);
+}
+.mus-track:active {
+  transform: scale(0.992);
+}
+.mus-track.active {
+  border-color: var(--accent-line);
+  background: color-mix(in srgb, var(--accent) 11%, var(--surface-1));
+}
+.mus-track-no {
+  display: grid;
+  place-items: center;
+  height: 22px;
+  font-family: var(--mono);
+  font-size: 11px;
+  color: var(--text-3);
+}
+.mus-track.active .mus-track-no {
+  color: var(--accent);
+}
+.mus-track-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+.mus-track-title,
+.mus-track-artist {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mus-track-title {
+  font-size: 12.5px;
+  font-weight: 600;
+  color: var(--text);
+}
+.mus-track-artist {
+  font-size: 10.5px;
+  color: var(--text-3);
+}
+.mus-track-state {
+  font-family: var(--mono);
+  font-size: 9px;
+  letter-spacing: 0.11em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+/* mini equalizer on the row that is currently sounding */
+.mus-eq {
+  display: flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+.mus-eq i {
+  width: 3px;
+  border-radius: 1px;
+  background: var(--accent);
+  animation: mus-eq 0.9s ease-in-out infinite;
+}
+.mus-eq i:nth-child(1) {
+  height: 60%;
+  animation-delay: -0.2s;
+}
+.mus-eq i:nth-child(2) {
+  height: 100%;
+  animation-delay: -0.55s;
+}
+.mus-eq i:nth-child(3) {
+  height: 45%;
+  animation-delay: -0.35s;
+}
+
+@keyframes mus-eq {
+  0%,
+  100% {
+    transform: scaleY(0.32);
+  }
+  50% {
+    transform: scaleY(1);
+  }
+}
+
+/* screen-reader-only playback state */
+
+.mus-sr {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  padding: 0;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
 /* taskbar */
 
 .taskbar {
