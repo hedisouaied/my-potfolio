@@ -27,6 +27,7 @@ export default function App() {
     return Number.isFinite(saved) ? saved % WALLPAPERS.length : 0;
   });
   const [booting, setBooting] = useState(true);
+  const [layerSize, setLayerSize] = useState({ w: 0, h: 0 });
 
   useEffect(() => {
     const t = setTimeout(() => setBooting(false), 950);
@@ -58,6 +59,37 @@ export default function App() {
     openApp('about');
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
+
+  /* react-rnd's `bounds="parent"` only applies during drag/resize, so a viewport
+     change (phone rotation, browser chrome collapsing) can strand a window
+     off-screen with its controls unreachable. Re-clamp on every change. */
+  useEffect(() => {
+    const el = layerRef.current;
+    if (!el || typeof ResizeObserver === 'undefined') return undefined;
+    const observer = new ResizeObserver(([entry]) => {
+      const w = Math.round(entry.contentRect.width);
+      const h = Math.round(entry.contentRect.height);
+      setLayerSize((prev) => (prev.w === w && prev.h === h ? prev : { w, h }));
+    });
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const { w: aw, h: ah } = layerSize;
+    if (!aw || !ah) return;
+
+    for (const w of windows) {
+      if (w.minimized) continue;
+      const nw = w.maximized ? aw : Math.min(w.w, Math.max(220, aw - 8));
+      const nh = w.maximized ? ah : Math.min(w.h, Math.max(160, ah - 8));
+      const nx = w.maximized ? 0 : clamp(w.x, 0, Math.max(0, aw - nw));
+      const ny = w.maximized ? 0 : clamp(w.y, 0, Math.max(0, ah - nh));
+      if (nw !== w.w || nh !== w.h || nx !== w.x || ny !== w.y) {
+        updateRect(w.id, { x: nx, y: ny, w: nw, h: nh });
+      }
+    }
+  }, [windows, layerSize, updateRect]);
 
   const cycleWallpaper = () => setWallpaperIndex((i) => (i + 1) % WALLPAPERS.length);
 

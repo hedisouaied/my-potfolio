@@ -1,17 +1,37 @@
 import { Rnd } from 'react-rnd';
 import AppIcon from './AppIcon';
+import { useCoarsePointer } from '../useMediaQuery';
 
-/* re-resizable renders zero-size grab zones unless handle styles are supplied */
+/* re-resizable renders zero-size grab zones unless handle styles are supplied.
+   `touchAction: none` stops the browser from stealing the gesture for
+   scrolling/pinch-zoom before re-resizable sees the touchmove. */
 const HANDLE_STYLES = {
-  top: { top: 0, left: 12, right: 12, height: 5 },
-  bottom: { bottom: 0, left: 12, right: 12, height: 5 },
-  left: { top: 12, bottom: 12, left: 0, width: 5 },
-  right: { top: 12, bottom: 12, right: 0, width: 5 },
-  topLeft: { top: 0, left: 0, width: 12, height: 12 },
-  topRight: { top: 0, right: 0, width: 12, height: 12 },
-  bottomLeft: { bottom: 0, left: 0, width: 12, height: 12 },
-  bottomRight: { bottom: 0, right: 0, width: 12, height: 12 },
+  top: { top: 0, left: 12, right: 12, height: 5, touchAction: 'none' },
+  bottom: { bottom: 0, left: 12, right: 12, height: 5, touchAction: 'none' },
+  left: { top: 12, bottom: 12, left: 0, width: 5, touchAction: 'none' },
+  right: { top: 12, bottom: 12, right: 0, width: 5, touchAction: 'none' },
+  topLeft: { top: 0, left: 0, width: 12, height: 12, touchAction: 'none' },
+  topRight: { top: 0, right: 0, width: 12, height: 12, touchAction: 'none' },
+  bottomLeft: { bottom: 0, left: 0, width: 12, height: 12, touchAction: 'none' },
+  bottomRight: { bottom: 0, right: 0, width: 12, height: 12, touchAction: 'none' },
 };
+
+/* Fingers need ~24px grab zones; 5px edges are unhittable on a phone. */
+const TOUCH_HANDLE_STYLES = {
+  top: { top: 0, left: 32, right: 32, height: 16, touchAction: 'none' },
+  bottom: { bottom: 0, left: 32, right: 32, height: 16, touchAction: 'none' },
+  left: { top: 32, bottom: 32, left: 0, width: 16, touchAction: 'none' },
+  right: { top: 32, bottom: 32, right: 0, width: 16, touchAction: 'none' },
+  topLeft: { top: 0, left: 0, width: 30, height: 30, touchAction: 'none' },
+  topRight: { top: 0, right: 0, width: 30, height: 30, touchAction: 'none' },
+  bottomLeft: { bottom: 0, left: 0, width: 30, height: 30, touchAction: 'none' },
+  bottomRight: { bottom: 0, right: 0, width: 30, height: 30, touchAction: 'none' },
+};
+
+/* Without this, react-draggable calls preventDefault() on touchstart inside the
+   titlebar, which cancels the synthesized click: on touch, none of the window
+   buttons would ever receive onClick. */
+const CONTROL_CANCEL_SELECTOR = '.win-controls';
 
 function Glyph({ d }) {
   return (
@@ -37,6 +57,8 @@ export default function WindowFrame({
   onChangeRect,
   children,
 }) {
+  const coarse = useCoarsePointer();
+
   if (win.minimized) return null;
 
   return (
@@ -47,19 +69,25 @@ export default function WindowFrame({
       minHeight={200}
       bounds="parent"
       dragHandleClassName="win-titlebar"
+      cancel={CONTROL_CANCEL_SELECTOR}
       disableDragging={!!win.maximized}
       enable={!win.maximized}
-      handleStyles={HANDLE_STYLES}
+      handleStyles={coarse ? TOUCH_HANDLE_STYLES : HANDLE_STYLES}
       style={{ zIndex: win.z }}
       onDragStart={onFocus}
-      onDragStop={(e, d) => onChangeRect({ x: d.x, y: d.y })}
+      onDragStop={(e, d) => onChangeRect({ x: Math.round(d.x), y: Math.round(d.y) })}
       onResizeStart={onFocus}
       onResizeStop={(e, dir, ref, delta, pos) =>
-        onChangeRect({ w: parseInt(ref.style.width, 10), h: parseInt(ref.style.height, 10), x: pos.x, y: pos.y })
+        onChangeRect({
+          w: Math.round(ref.offsetWidth),
+          h: Math.round(ref.offsetHeight),
+          x: Math.round(pos.x),
+          y: Math.round(pos.y),
+        })
       }
       className={`window ${active ? 'active' : ''} ${win.maximized ? 'maximized' : ''}`}
     >
-      <div className="window-inner" onMouseDownCapture={() => { if (!active) onFocus(); }}>
+      <div className="window-inner" onPointerDownCapture={() => { if (!active) onFocus(); }}>
         <div className="win-titlebar">
           <span className="win-icon" aria-hidden="true">
             <AppIcon name={icon} size={15} />
@@ -67,6 +95,7 @@ export default function WindowFrame({
           <span className="win-title">{title}</span>
           <div className="win-controls">
             <button
+              type="button"
               className="win-btn win-min"
               onClick={onMinimize}
               aria-label={`Minimize ${title}`}
@@ -75,6 +104,7 @@ export default function WindowFrame({
               <Glyph d={MIN_GLYPH} />
             </button>
             <button
+              type="button"
               className="win-btn win-max"
               onClick={onMaximize}
               aria-label={`${win.maximized ? 'Restore' : 'Maximize'} ${title}`}
@@ -83,6 +113,7 @@ export default function WindowFrame({
               <Glyph d={MAX_GLYPH} />
             </button>
             <button
+              type="button"
               className="win-btn win-close"
               onClick={onClose}
               aria-label={`Close ${title}`}
