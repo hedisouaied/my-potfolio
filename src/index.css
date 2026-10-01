@@ -460,7 +460,8 @@ a:hover {
   width: min(310px, 32vw);
   pointer-events: none;
   opacity: 1;
-  transition: opacity 0.5s var(--ease);
+  visibility: visible;
+  transition: opacity 0.5s var(--ease), visibility 0.5s var(--ease);
 }
 .side-term.clearing {
   opacity: 0;
@@ -1753,17 +1754,24 @@ a:hover {
   .app-pad {
     padding: 18px 18px 26px;
   }
-  /* Phones have no room beside the windows, so the terminal sits above the
-     window layer — otherwise the About window covers it completely. */
+  /* Phones have no room beside the windows, so the terminal stays UNDER the
+     window layer here (z-index 2). Lifting it above would print the commands
+     straight over an open app's content. */
   .side-term {
     bottom: calc(var(--taskbar-h) + 12px);
     left: 12px;
-    z-index: 30;
     width: min(250px, 62vw);
   }
   .side-term-body {
     font-size: 10px;
     line-height: 1.7;
+  }
+
+  /* No bare wallpaper strip is left once an app covers the screen, so fade
+     the decoration out entirely instead of letting it bleed through. */
+  .side-term.behind {
+    opacity: 0;
+    visibility: hidden;
   }
 }
 

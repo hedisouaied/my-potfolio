@@ -21,7 +21,7 @@ const SHOWN_AT = LINES.length * STEP;
 
 /* Remounting the rows on every cycle is what replays the CSS reveal — React
    keeps the same nodes otherwise, so the animation would not restart. */
-export default function SideTerminal() {
+export default function SideTerminal({ hidden = false }) {
   const [cycle, setCycle] = useState(0);
   const [clearing, setClearing] = useState(false);
 
@@ -38,7 +38,10 @@ export default function SideTerminal() {
   }, [cycle]);
 
   return (
-    <aside className={`side-term${clearing ? ' clearing' : ''}`} aria-hidden="true">
+    <aside
+      className={`side-term${clearing ? ' clearing' : ''}${hidden ? ' behind' : ''}`}
+      aria-hidden="true"
+    >
       <pre className="side-term-body">
         {LINES.map((line, i) => (
           <span key={`${cycle}-${i}`} className="side-term-line" style={{ animationDelay: `${i * STEP}ms` }}>

@@ -170,6 +170,12 @@ export default function App() {
 
   const wallpaper = WALLPAPERS[wallpaperIndex];
 
+  /* On phones the About window covers nearly the whole screen. The terminal sits
+     below the window layer, so instead of letting half its lines peek out around
+     the frame edges, hide it outright while any app is open. Desktop keeps it
+     visible because there is always bare wallpaper beside the cascade. */
+  const anyWindowOpen = windows.some((w) => !w.minimized);
+
   return (
     <div className={`desktop wp-${wallpaper.id}`} ref={desktopRef}>
       {booting && <BootScreen onComplete={finishBoot} />}
@@ -178,9 +184,9 @@ export default function App() {
       <div className="aurora aurora-a" aria-hidden="true" />
       <div className="aurora aurora-b" aria-hidden="true" />
       <div className="cursor-glow" aria-hidden="true" />
-      <div className="desktop-watermark" aria-hidden="true">H.Souaied</div>
+      {/* <div className="desktop-watermark" aria-hidden="true">H.Souaied</div> */}
 
-      {!booting && <SideTerminal />}
+      {!booting && <SideTerminal hidden={isMobile && anyWindowOpen} />}
 
       <Desktop onOpen={openApp} />
 
