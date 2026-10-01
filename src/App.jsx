@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import BootScreen from './components/BootScreen';
 import Desktop from './components/Desktop';
 import Starfield from './components/Starfield';
 import Taskbar from './components/Taskbar';
@@ -38,9 +39,11 @@ export default function App() {
   const [layerSize, setLayerSize] = useState({ w: 0, h: 0 });
   const isMobile = useIsMobileViewport();
 
-  useEffect(() => {
-    const t = setTimeout(() => setBooting(false), 950);
-    return () => clearTimeout(t);
+  const bootedRef = useRef(false);
+  const finishBoot = useCallback(() => {
+    if (bootedRef.current) return;
+    bootedRef.current = true;
+    setBooting(false);
   }, []);
 
   useEffect(() => {
@@ -168,19 +171,7 @@ export default function App() {
 
   return (
     <div className={`desktop wp-${wallpaper.id}`} ref={desktopRef}>
-      {booting && (
-        <div className="boot-screen">
-          <div className="boot-inner">
-            <div className="boot-logo">
-              <span className="boot-mark">▚</span> H.Souaied
-            </div>
-            <div className="boot-bar">
-              <span />
-            </div>
-            <div className="boot-log">initializing desktop environment…</div>
-          </div>
-        </div>
-      )}
+      {booting && <BootScreen onComplete={finishBoot} />}
 
       <Starfield />
       <div className="aurora aurora-a" aria-hidden="true" />

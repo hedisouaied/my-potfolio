@@ -271,72 +271,173 @@ a:hover {
   z-index: 999;
   display: grid;
   place-items: center;
+  padding: 24px;
+  overflow: hidden;
   background: var(--void);
-  animation: boot-out 0.45s ease 0.55s forwards;
+}
+/* only fade at the very end, once every line has reported */
+.boot-screen.leaving {
+  animation: boot-out 0.5s ease forwards;
+}
+
+/* faint horizontal scanlines over the whole screen */
+.boot-scanlines {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: repeating-linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.035) 0 1px,
+    rgba(0, 0, 0, 0) 1px 3px
+  );
+  animation: boot-scan 7s linear infinite;
 }
 
 .boot-inner {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 18px;
+  position: relative;
+  width: min(560px, 100%);
 }
 
-.boot-logo {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.boot-term {
+  margin: 0;
   font-family: var(--mono);
-  font-size: 1.05rem;
-  font-weight: 500;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: var(--text);
-  animation: boot-pulse 1.1s ease infinite;
-}
-.boot-mark {
-  color: var(--accent);
-  text-shadow: 0 0 18px var(--accent-glow);
+  font-size: 12.5px;
+  line-height: 1.85;
+  color: var(--text-2);
+  white-space: pre-wrap;
 }
 
-.boot-bar {
-  width: 210px;
-  height: 3px;
-  border-radius: 99px;
-  background: var(--surface-2);
+/* one row: prompt glyph, message, animated dot leader, green status.
+   The reveal animation is gated on `.in` — putting it on the base class made
+   every row fade in together on mount instead of one line at a time. */
+.boot-line {
+  display: flex;
+  align-items: baseline;
+  gap: 0.55ch;
+  opacity: 0;
+  transform: translateX(-10px);
+}
+.boot-line.in {
+  animation: boot-line-in 0.34s var(--ease) forwards;
+}
+
+.boot-caret {
+  color: var(--accent);
+  font-weight: 700;
+  text-shadow: 0 0 14px var(--accent-glow);
+}
+.boot-text {
+  color: var(--text-2);
+}
+
+/* the four dots pop in one after another, then stop */
+.boot-dots {
+  display: inline-flex;
+  gap: 0.5ch;
   overflow: hidden;
 }
-.boot-bar span {
-  display: block;
-  height: 100%;
-  border-radius: 99px;
-  background: linear-gradient(90deg, var(--accent), var(--accent-3));
-  box-shadow: 0 0 12px var(--accent-glow);
-  animation: boot-load 0.75s var(--ease) forwards;
-}
-
-.boot-log {
-  font-family: var(--mono);
-  font-size: 11.5px;
-  letter-spacing: 0.04em;
+.boot-dots i {
+  font-style: normal;
   color: var(--text-3);
+  opacity: 0;
+  animation: boot-dot 0.2s steps(1, end) forwards;
+}
+.boot-dots i:nth-child(1) {
+  animation-delay: 0.06s;
+}
+.boot-dots i:nth-child(2) {
+  animation-delay: 0.14s;
+}
+.boot-dots i:nth-child(3) {
+  animation-delay: 0.22s;
+}
+.boot-dots i:nth-child(4) {
+  animation-delay: 0.3s;
 }
 
-@keyframes boot-pulse {
-  0%,
-  100% {
-    opacity: 0.55;
+.boot-ok {
+  color: var(--ok);
+  text-shadow: 0 0 12px color-mix(in srgb, var(--ok) 40%, transparent);
+  animation: boot-ok-in 0.28s var(--ease) both;
+}
+
+/* blinking terminal cursor */
+.boot-block {
+  display: inline-block;
+  width: 0.6ch;
+  height: 1.05em;
+  margin-left: 0.5ch;
+  vertical-align: text-bottom;
+  background: var(--accent);
+  animation: boot-blink 1s steps(1, end) infinite;
+}
+
+.boot-ready {
+  display: inline-block;
+  margin-top: 14px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--accent);
+  opacity: 0;
+  animation: boot-line-in 0.34s var(--ease) forwards, boot-pulse 1.4s ease-in-out infinite;
+  animation-delay: 0s, 0.4s;
+}
+
+@keyframes boot-line-in {
+  from {
+    opacity: 0;
+    transform: translateX(-10px);
   }
-  50% {
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+@keyframes boot-dot {
+  from {
+    opacity: 0;
+  }
+  to {
     opacity: 1;
   }
 }
-@keyframes boot-load {
+@keyframes boot-ok-in {
   from {
-    width: 4%;
+    opacity: 0;
+    transform: translateY(3px) scale(0.9);
   }
   to {
-    width: 100%;
+    opacity: 1;
+    transform: translateY(0) scale(1);
+  }
+}
+@keyframes boot-blink {
+  0%,
+  50% {
+    opacity: 1;
+  }
+  51%,
+  100% {
+    opacity: 0;
+  }
+}
+@keyframes boot-scan {
+  from {
+    background-position-y: 0;
+  }
+  to {
+    background-position-y: 3px;
+  }
+}
+@keyframes boot-pulse {
+  0%,
+  100% {
+    opacity: 0.6;
+  }
+  50% {
+    opacity: 1;
   }
 }
 @keyframes boot-out {
