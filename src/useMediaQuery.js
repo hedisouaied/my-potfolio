@@ -24,3 +24,8 @@ export function useMediaQuery(query) {
 export function useCoarsePointer() {
   return useMediaQuery('(hover: none) and (pointer: coarse)');
 }
+
+/** Mirrors the `max-width: 720px` breakpoint used throughout index.css. */
+export function useIsMobileViewport() {
+  return useMediaQuery('(max-width: 720px)');
+}

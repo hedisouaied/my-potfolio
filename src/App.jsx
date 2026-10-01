@@ -6,6 +6,7 @@ import WindowFrame from './components/WindowFrame';
 import { APPS } from './apps/registry';
 import { useWindows } from './useWindows';
 import { usePointerParallax } from './usePointerParallax';
+import { useIsMobileViewport } from './useMediaQuery';
 
 const WALLPAPERS = [
   { id: 'portrait', name: 'Portrait' },
@@ -15,6 +16,12 @@ const WALLPAPERS = [
   { id: 'matrix', name: 'Matrix' },
   { id: 'ember', name: 'Ember' },
 ];
+
+/* Cascade order, LEAST important first. Every `open` bumps the z-index, so the
+   last one listed ends up on top — that leaves About Me (the introduction)
+   front and centre once the chaos settles, with the real content stacked under
+   it and the two gimmick apps buried at the back. */
+const CASCADE_ORDER = ['tictactoe', 'terminal', 'contact', 'skills', 'resume', 'projects', 'about'];
 
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
@@ -29,6 +36,7 @@ export default function App() {
   });
   const [booting, setBooting] = useState(true);
   const [layerSize, setLayerSize] = useState({ w: 0, h: 0 });
+  const isMobile = useIsMobileViewport();
 
   useEffect(() => {
     const t = setTimeout(() => setBooting(false), 950);
@@ -56,10 +64,54 @@ export default function App() {
     [open, windows]
   );
 
+  const introRef = useRef({ openApp, isMobile });
   useEffect(() => {
-    openApp('about');
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+    introRef.current = { openApp, isMobile };
+  });
+
+  /* Opening cascade: on desktop every app slams open one after another with
+     jittered timing and scattered positions so the screen floods. On mobile that
+     is far too much, so it keeps the original behaviour of opening just About.
+
+     Both read the latest values through refs so this effect stays mounted-once —
+     depending on `openApp` would re-fire the cascade every time `windows` changed. */
+  useEffect(() => {
+    const timers = [];
+    let elapsed = 0;
+
+    const kickoff = setTimeout(() => {
+      if (introRef.current.isMobile) {
+        introRef.current.openApp('about');
+        return;
+      }
+
+      const area = layerRef.current?.getBoundingClientRect();
+      const aw = area?.width ?? window.innerWidth;
+      const ah = area?.height ?? window.innerHeight;
+
+      for (const id of CASCADE_ORDER) {
+        const app = APPS[id];
+        const w = Math.min(app.w, Math.max(240, aw - 24));
+        const h = Math.min(app.h, Math.max(160, ah - 24));
+        elapsed += 80 + Math.random() * 140;
+        timers.push(
+          setTimeout(() => {
+            open(id, {
+              x: Math.round(Math.random() * Math.max(0, aw - w)),
+              y: Math.round(Math.random() * Math.max(0, ah - h)),
+              w,
+              h,
+            });
+          }, elapsed)
+        );
+      }
+    }, introRef.current.isMobile ? 0 : 1000);
+
+    return () => {
+      clearTimeout(kickoff);
+      for (const t of timers) clearTimeout(t);
+    };
+  }, [open]);
 
   /* react-rnd's `bounds="parent"` only applies during drag/resize, so a viewport
      change (phone rotation, browser chrome collapsing) can strand a window
