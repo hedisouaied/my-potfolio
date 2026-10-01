@@ -8,6 +8,7 @@ import { useWindows } from './useWindows';
 import { usePointerParallax } from './usePointerParallax';
 
 const WALLPAPERS = [
+  { id: 'portrait', name: 'Portrait' },
   { id: 'nebula', name: 'Nebula' },
   { id: 'grid', name: 'Blueprint' },
   { id: 'violet', name: 'Violet Haze' },

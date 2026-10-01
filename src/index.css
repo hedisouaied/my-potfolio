@@ -155,6 +155,19 @@ a:hover {
     radial-gradient(900px 640px at 14% 90%, rgba(236, 72, 153, 0.15), transparent 62%),
     radial-gradient(640px 440px at 46% 50%, rgba(251, 191, 36, 0.07), transparent 60%);
 }
+/* Photographic cover. Sits as the bottom-most layer so the grid, starfield,
+   aurora, cursor glow and watermark all float over it. The focal point is
+   ~78%/38% because that is where the subject sits in the frame — centring the
+   crop would slice them out on narrow portrait screens. */
+.wp-portrait {
+  background-image:
+    linear-gradient(rgba(5, 7, 11, 0.28), rgba(5, 7, 11, 0.5)),
+    url("./assets/portrait.webp");
+  background-size: cover;
+  background-position: 78% 38%;
+  background-repeat: no-repeat;
+  background-color: var(--base);
+}
 
 /* faint grid + vignette shared by every wallpaper */
 .desktop::before,
