@@ -1103,20 +1103,42 @@ a:hover {
   box-shadow: 0 0 10px var(--accent-glow);
 }
 
+/* The board follows the window width but stays square, and is capped by the
+   window height so it never forces a scrollbar. container-type is scoped to this
+   app only, so it cannot affect layout containment in any other window. */
+.app-ttt {
+  height: 100%;
+  justify-content: center;
+  /* `safe` falls back to flex-start when the content is taller than the box, so a
+     very short window stays scrollable instead of clipping off the top. */
+  justify-content: safe center;
+  container-type: size;
+}
+
 .ttt-grid {
   display: grid;
-  grid-template-columns: repeat(3, 68px);
-  grid-template-rows: repeat(3, 68px);
-  gap: 8px;
+  grid-template-columns: repeat(3, 1fr);
+  grid-template-rows: repeat(3, 1fr);
+  flex: 0 0 auto;
+  /* Width is the single source of truth; aspect-ratio derives the height from it
+     so the board is always square. 1fr rows plus overflow:hidden on the cells
+     stop the glyphs from inflating it past that height. */
+  width: min(100%, 72cqh);
+  max-width: 440px;
+  aspect-ratio: 1;
+  contain: size;
+  align-self: center;
+  gap: clamp(6px, 2.5%, 14px);
   margin: 4px 0;
 }
 .ttt-cell {
   display: grid;
   place-items: center;
+  overflow: hidden;
   border: 1px solid var(--line);
   border-radius: var(--radius-sm);
   font-family: var(--mono);
-  font-size: 1.6rem;
+  font-size: clamp(1rem, 16cqmin, 3rem);
   font-weight: 700;
   color: var(--accent);
   background: var(--surface-1);

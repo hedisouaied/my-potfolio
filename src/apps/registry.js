@@ -16,7 +16,7 @@ export const APPS = {
   projects: { titleKey: 'apps.projects', icon: 'projects', component: ProjectsApp, w: 560, h: 440 },
   contact: { titleKey: 'apps.contact', icon: 'contact', component: ContactApp, w: 460, h: 340 },
   terminal: { titleKey: 'apps.terminal', icon: 'terminal', component: TerminalApp, w: 580, h: 420 },
-  tictactoe: { titleKey: 'apps.tictactoe', icon: 'tictactoe', component: TicTacToeApp, w: 380, h: 400 },
+  tictactoe: { titleKey: 'apps.tictactoe', icon: 'tictactoe', component: TicTacToeApp, w: 400, h: 520 },
   music: { titleKey: 'apps.music', icon: 'music', component: MusicApp, w: 440, h: 600 },
 };
 

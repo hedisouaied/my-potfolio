@@ -87,7 +87,7 @@ export default function TicTacToeApp() {
     state.turn === HUMAN ? t('tictactoe.yourTurn') : t('tictactoe.thinking');
 
   return (
-    <div className="app-pad center">
+    <div className="app-pad center app-ttt">
       <p className="ttt-status">{status}</p>
       <div className="ttt-grid">
         {state.board.map((v, i) => (
