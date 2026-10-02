@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
+import { useLocale } from '../i18n/useLocale';
 import jazzRestaurant from '../assets/music/alex-morgan-jazz-restaurant-music-563578.mp3';
 import sunnyCafe from '../assets/music/alex-morgan-jazz-song-sunny-cafe-nu-jazz-587413.mp3';
 import smoothJazz from '../assets/music/alex-morgan-smooth-jazz-restaurant-568175.mp3';
@@ -43,6 +44,7 @@ function Slider({ value, max, onChange, disabled, label, className = '' }) {
 }
 
 export default function MusicApp() {
+  const { t } = useLocale();
   const audioRef = useRef(null);
   const barRefs = useRef([]);
   const graphRef = useRef(null);
@@ -227,7 +229,7 @@ export default function MusicApp() {
         </div>
 
         <div className="mus-now">
-          <span className="mus-eyebrow">Now playing</span>
+          <span className="mus-eyebrow">{t('music.nowPlaying')}</span>
           <p className="mus-title">{track.title}</p>
           <p className="mus-artist">{track.artist}</p>
           <div className="mus-spectrum" aria-hidden="true">
@@ -251,13 +253,13 @@ export default function MusicApp() {
           max={duration || 1}
           onChange={seek}
           disabled={!duration}
-          label="Seek"
+          label={t('music.seek')}
         />
         <span className="mus-time">{fmt(duration)}</span>
       </div>
 
       <div className="mus-controls">
-        <button type="button" className="mus-btn" onClick={prev} aria-label="Previous track" title="Previous">
+        <button type="button" className="mus-btn" onClick={prev} aria-label={t('music.previousTrack')} title={t('music.previous')}>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
             <path d="M7 5h2.4v14H7zM19 5.4v13.2a.7.7 0 0 1-1.08.59l-8.4-5.9a1.1 1.1 0 0 1 0-1.78l8.4-5.9A.7.7 0 0 1 19 5.4Z" />
           </svg>
@@ -267,8 +269,8 @@ export default function MusicApp() {
           type="button"
           className={`mus-btn mus-btn-main ${playing ? 'on' : ''}`}
           onClick={toggle}
-          aria-label={playing ? 'Pause' : 'Play'}
-          title={playing ? 'Pause' : 'Play'}
+          aria-label={playing ? t('music.pause') : t('music.play')}
+          title={playing ? t('music.pause') : t('music.play')}
         >
           {playing ? (
             <svg viewBox="0 0 24 24" width="20" height="20" fill="currentColor" aria-hidden="true">
@@ -281,7 +283,7 @@ export default function MusicApp() {
           )}
         </button>
 
-        <button type="button" className="mus-btn" onClick={next} aria-label="Next track" title="Next">
+        <button type="button" className="mus-btn" onClick={next} aria-label={t('music.nextTrack')} title={t('music.next')}>
           <svg viewBox="0 0 24 24" width="18" height="18" fill="currentColor" aria-hidden="true">
             <path d="M14.6 5H17v14h-2.4zM5 5.4v13.2a.7.7 0 0 0 1.08.59l8.4-5.9a1.1 1.1 0 0 0 0-1.78l-8.4-5.9A.7.7 0 0 0 5 5.4Z" />
           </svg>
@@ -297,15 +299,15 @@ export default function MusicApp() {
             value={volume}
             max={1}
             onChange={(e) => setVolume(Number(e.target.value))}
-            label="Volume"
+            label={t('music.volume')}
           />
         </div>
       </div>
 
-      <h4>Tracks</h4>
+      <h4>{t('music.tracks')}</h4>
       <ol className="mus-list">
-        {TRACKS.map((t, i) => (
-          <li key={t.src}>
+        {TRACKS.map((entry, i) => (
+          <li key={entry.src}>
             <button
               type="button"
               className={`mus-track ${i === index ? 'active' : ''}`}
@@ -324,17 +326,20 @@ export default function MusicApp() {
                 )}
               </span>
               <span className="mus-track-text">
-                <span className="mus-track-title">{t.title}</span>
-                <span className="mus-track-artist">{t.artist}</span>
+                <span className="mus-track-title">{entry.title}</span>
+                <span className="mus-track-artist">{entry.artist}</span>
               </span>
-              <span className="mus-track-state">{i === index ? (playing ? 'Playing' : 'Paused') : ''}</span>
+              <span className="mus-track-state">{i === index ? (playing ? t('music.playing') : t('music.paused')) : ''}</span>
             </button>
           </li>
         ))}
       </ol>
 
       <span className="mus-sr" aria-live="polite">
-        {track.title} by {track.artist}, {playing ? 'playing' : 'paused'}
+        {t(playing ? 'music.announcePlaying' : 'music.announcePaused', {
+          title: track.title,
+          artist: track.artist,
+        })}
       </span>
     </div>
   );

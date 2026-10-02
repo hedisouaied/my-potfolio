@@ -1,6 +1,7 @@
 import { Rnd } from 'react-rnd';
 import AppIcon from './AppIcon';
 import { useCoarsePointer } from '../useMediaQuery';
+import { useLocale } from '../i18n/useLocale';
 
 /* re-resizable renders zero-size grab zones unless handle styles are supplied.
    `touchAction: none` stops the browser from stealing the gesture for
@@ -58,6 +59,7 @@ export default function WindowFrame({
   children,
 }) {
   const coarse = useCoarsePointer();
+  const { t } = useLocale();
 
   if (win.minimized) return null;
 
@@ -98,8 +100,8 @@ export default function WindowFrame({
               type="button"
               className="win-btn win-min"
               onClick={onMinimize}
-              aria-label={`Minimize ${title}`}
-              title="Minimize"
+              aria-label={`${t('window.minimize')} ${title}`}
+              title={t('window.minimize')}
             >
               <Glyph d={MIN_GLYPH} />
             </button>
@@ -107,8 +109,8 @@ export default function WindowFrame({
               type="button"
               className="win-btn win-max"
               onClick={onMaximize}
-              aria-label={`${win.maximized ? 'Restore' : 'Maximize'} ${title}`}
-              title={win.maximized ? 'Restore' : 'Maximize'}
+              aria-label={`${t(win.maximized ? 'window.restore' : 'window.maximize')} ${title}`}
+              title={t(win.maximized ? 'window.restore' : 'window.maximize')}
             >
               <Glyph d={MAX_GLYPH} />
             </button>
@@ -116,8 +118,8 @@ export default function WindowFrame({
               type="button"
               className="win-btn win-close"
               onClick={onClose}
-              aria-label={`Close ${title}`}
-              title="Close"
+              aria-label={`${t('window.close')} ${title}`}
+              title={t('window.close')}
             >
               <Glyph d={CLOSE_GLYPH} />
             </button>

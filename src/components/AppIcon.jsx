@@ -67,6 +67,13 @@ const PATHS = {
       <circle cx="15.9" cy="9.8" r="1.1" />
     </>
   ),
+  globe: (
+    <>
+      <circle cx="12" cy="12" r="8.2" />
+      <path d="M3.8 12h16.4" />
+      <path d="M12 3.8c2.3 2.3 3.5 5.2 3.5 8.2s-1.2 5.9-3.5 8.2c-2.3-2.3-3.5-5.2-3.5-8.2s1.2-5.9 3.5-8.2Z" />
+    </>
+  ),
 };
 
 export default function AppIcon({ name, size = 18, className }) {

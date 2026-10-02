@@ -1,6 +1,8 @@
-import { projects } from '../data/profile';
+import useContent from '../data/useContent';
 
 export default function ProjectsApp() {
+  const { projects } = useContent();
+
   return (
     <div className="app-pad">
       <div className="project-grid">

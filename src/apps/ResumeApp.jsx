@@ -1,9 +1,13 @@
-import { experience, education, certifications } from '../data/profile';
+import useContent from '../data/useContent';
+import { useLocale } from '../i18n/useLocale';
 
 export default function ResumeApp() {
+  const { experience, education, certifications } = useContent();
+  const { t } = useLocale();
+
   return (
     <div className="app-pad">
-      <h3>Experience</h3>
+      <h3>{t('resume.experience')}</h3>
       <ol className="timeline">
         {experience.map((role) => (
           <li key={role.company + role.period}>
@@ -17,7 +21,7 @@ export default function ResumeApp() {
         ))}
       </ol>
 
-      <h3>Education</h3>
+      <h3>{t('resume.education')}</h3>
       <ol className="timeline">
         {education.map((e) => (
           <li key={e.title}>
@@ -28,7 +32,7 @@ export default function ResumeApp() {
         ))}
       </ol>
 
-      <h3>Certifications</h3>
+      <h3>{t('resume.certifications')}</h3>
       <ul className="cert-list">
         {certifications.map((c) => (
           <li key={c.title}>

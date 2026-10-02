@@ -9,14 +9,15 @@ import { APPS } from './apps/registry';
 import { useWindows } from './useWindows';
 import { usePointerParallax } from './usePointerParallax';
 import { useIsMobileViewport } from './useMediaQuery';
+import { useLocale } from './i18n/useLocale';
 
 const WALLPAPERS = [
-  { id: 'portrait', name: 'Portrait' },
-  { id: 'nebula', name: 'Nebula' },
-  { id: 'grid', name: 'Blueprint' },
-  { id: 'violet', name: 'Violet Haze' },
-  { id: 'matrix', name: 'Matrix' },
-  { id: 'ember', name: 'Ember' },
+  { id: 'portrait', nameKey: 'wallpapers.portrait' },
+  { id: 'nebula', nameKey: 'wallpapers.nebula' },
+  { id: 'grid', nameKey: 'wallpapers.grid' },
+  { id: 'violet', nameKey: 'wallpapers.violet' },
+  { id: 'matrix', nameKey: 'wallpapers.matrix' },
+  { id: 'ember', nameKey: 'wallpapers.ember' },
 ];
 
 /* Cascade order, LEAST important first. Every `open` bumps the z-index, so the
@@ -29,6 +30,7 @@ const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
 export default function App() {
   const { windows, open, close, minimize, focus, updateRect, toggleMax } = useWindows();
+  const { t } = useLocale();
   const layerRef = useRef(null);
   const desktopRef = useRef(null);
   usePointerParallax(desktopRef);
@@ -198,7 +200,7 @@ export default function App() {
             <WindowFrame
               key={w.id}
               win={w}
-              title={app.title}
+              title={t(app.titleKey)}
               icon={app.icon}
               active={activeWindow?.id === w.id}
               onFocus={() => focus(w.id)}
@@ -216,7 +218,7 @@ export default function App() {
       <Taskbar
         windows={windows}
         activeId={activeWindow?.id}
-        wallpaperName={wallpaper.name}
+        wallpaperName={t(wallpaper.nameKey)}
         onToggle={toggleFromTaskbar}
         onCycleWallpaper={cycleWallpaper}
       />

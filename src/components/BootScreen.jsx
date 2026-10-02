@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useLocale } from '../i18n/useLocale';
 
 /* Each line: text shown first, then a dot leader fills in, then the green
    status lands. STEP is the stagger between lines, DOTS is how long the leader
@@ -6,21 +7,15 @@ import { useEffect, useRef, useState } from 'react';
 const STEP = 165;
 const DOTS = 260;
 const OK = 140;
-
-const LINES = [
-  'H.SouaiedOS bootloader v1.0',
-  'initializing kernel',
-  'mounting /home/hsouaied',
-  'loading /projects',
-  'loading /assets',
-  'starting window manager',
-  'calibrating wallpaper',
-];
-
-const LAST_AT = (LINES.length - 1) * STEP;
-export const BOOT_DURATION = LAST_AT + DOTS + OK + 620;
+const OUTRO = 620;
 
 export default function BootScreen({ onComplete }) {
+  const { t } = useLocale();
+  const LINES = t('boot.lines');
+  /* Derived from the live line count so the sequence stays in step with whatever
+     locale is active — both bundles ship the same number of lines. */
+  const duration = (LINES.length - 1) * STEP + DOTS + OK + OUTRO;
+
   const [stage, setStage] = useState(() => LINES.map(() => 0));
   const doneRef = useRef(false);
 
@@ -34,24 +29,24 @@ export default function BootScreen({ onComplete }) {
       ];
     });
     return () => timers.forEach(clearTimeout);
-  }, []);
+  }, [LINES]);
 
   const [leaving, setLeaving] = useState(false);
 
   useEffect(() => {
-    const t = setTimeout(() => {
+    const leaveTimer = setTimeout(() => {
       setLeaving(true);
-    }, BOOT_DURATION - 500);
-    const t2 = setTimeout(() => {
+    }, duration - 500);
+    const doneTimer = setTimeout(() => {
       if (doneRef.current) return;
       doneRef.current = true;
       onComplete?.();
-    }, BOOT_DURATION);
+    }, duration);
     return () => {
-      clearTimeout(t);
-      clearTimeout(t2);
+      clearTimeout(leaveTimer);
+      clearTimeout(doneTimer);
     };
-  }, [onComplete]);
+  }, [onComplete, duration]);
 
   return (
     <div className={`boot-screen${leaving ? ' leaving' : ''}`} role="status" aria-live="polite">
@@ -72,14 +67,15 @@ export default function BootScreen({ onComplete }) {
                     <i>.</i>
                   </span>
                 )}
-                {s === 3 && <span className="boot-ok">ok</span>}
+                {s === 3 && <span className="boot-ok">{t('boot.ok')}</span>}
                 {s === 2 && <span className="boot-block" aria-hidden="true" />}
               </span>
             );
           })}
         </pre>
         <span className="boot-ready" aria-hidden="true">
-          ready<span className="boot-block" />
+          {t('boot.ready')}
+          <span className="boot-block" />
         </span>
       </div>
     </div>

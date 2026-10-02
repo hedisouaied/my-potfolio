@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useLocale } from '../i18n/useLocale';
 
 const LINES = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -47,6 +48,7 @@ function pickCpuMove(board) {
 const initialState = { board: Array(9).fill(null), turn: HUMAN };
 
 export default function TicTacToeApp() {
+  const { t } = useLocale();
   const [state, setState] = useState(initialState);
   const result = winner(state.board);
   const lit = winningCells(state.board);
@@ -79,10 +81,10 @@ export default function TicTacToeApp() {
   }, [state.turn, state.board, result]);
 
   const status =
-    result === 'draw' ? "It's a draw" :
-    result === HUMAN ? 'You win!' :
-    result === CPU ? 'H.Souaied wins!' :
-    state.turn === HUMAN ? 'Your turn (X)' : 'H.Souaied is thinking…';
+    result === 'draw' ? t('tictactoe.draw') :
+    result === HUMAN ? t('tictactoe.youWin') :
+    result === CPU ? t('tictactoe.cpuWins') :
+    state.turn === HUMAN ? t('tictactoe.yourTurn') : t('tictactoe.thinking');
 
   return (
     <div className="app-pad center">
@@ -94,13 +96,15 @@ export default function TicTacToeApp() {
             className={`ttt-cell ${v === CPU ? 'o' : ''} ${lit.includes(i) ? 'win' : ''}`}
             onClick={() => play(i)}
             disabled={!!v || !!result}
-            aria-label={v ? `Cell ${i + 1}: ${v}` : `Cell ${i + 1}: empty`}
+            aria-label={
+              v ? t('tictactoe.cell', { n: i + 1, value: v }) : t('tictactoe.cellEmpty', { n: i + 1 })
+            }
           >
             {v}
           </button>
         ))}
       </div>
-      <button className="btn-ghost" onClick={reset}>Reset board</button>
+      <button className="btn-ghost" onClick={reset}>{t('tictactoe.reset')}</button>
     </div>
   );
 }

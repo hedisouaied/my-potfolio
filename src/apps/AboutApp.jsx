@@ -1,6 +1,10 @@
-import { profile, additional } from '../data/profile';
+import useContent from '../data/useContent';
+import { useLocale } from '../i18n/useLocale';
 
 export default function AboutApp() {
+  const { profile, additional } = useContent();
+  const { t } = useLocale();
+
   return (
     <div className="app-pad">
       <div className="about-head">
@@ -16,12 +20,12 @@ export default function AboutApp() {
         {additional.languages.map((l) => <span className="chip" key={l}>{l}</span>)}
       </div>
 
-      <h4>Strengths</h4>
+      <h4>{t('about.strengths')}</h4>
       <div className="chip-row">
         {additional.strengths.map((s) => <span className="chip" key={s}>{s}</span>)}
       </div>
 
-      <h4>Interests</h4>
+      <h4>{t('about.interests')}</h4>
       <div className="chip-row">
         {additional.interests.map((s) => <span className="chip" key={s}>{s}</span>)}
       </div>

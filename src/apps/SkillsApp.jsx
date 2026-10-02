@@ -1,6 +1,8 @@
-import { skills } from '../data/profile';
+import useContent from '../data/useContent';
 
 export default function SkillsApp() {
+  const { skills } = useContent();
+
   return (
     <div className="app-pad">
       {Object.entries(skills).map(([group, items]) => (

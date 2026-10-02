@@ -1,21 +1,11 @@
 import { useRef, useState } from 'react';
-import { profile, skills, experience } from '../data/profile';
+import useContent from '../data/useContent';
+import { useLocale } from '../i18n/useLocale';
 
-const HELP = [
-  'Available commands:',
-  '  help        show this list',
-  '  whoami      who am I looking at',
-  '  about       a short summary',
-  '  skills      list core skills',
-  '  experience  list work history',
-  '  contact     how to reach me',
-  '  clear       clear the screen',
-];
-
-function run(cmd, print) {
+function run(cmd, print, { t, profile, skills, experience }) {
   const c = cmd.trim().toLowerCase();
   if (c === '') return;
-  if (c === 'help') return print(HELP.join('\n'));
+  if (c === 'help') return print(t('terminal.help').join('\n'));
   if (c === 'whoami') return print(`${profile.name} — ${profile.role}`);
   if (c === 'about') return print(profile.summary);
   if (c === 'skills') return print(Object.values(skills).flat().join(', '));
@@ -28,15 +18,15 @@ function run(cmd, print) {
     return print(`${profile.email}\n${profile.phone}\n${profile.website}`);
   }
   if (c === 'sudo hire-me' || c === 'sudo hireme') {
-    return print('Permission granted. Opening the Contact app is the fastest way.');
+    return print(t('terminal.hireMe'));
   }
-  return print(`command not found: ${cmd}\ntype 'help' for a list of commands`);
+  return print(t('terminal.notFound', { cmd }));
 }
 
 export default function TerminalApp() {
-  const [lines, setLines] = useState([
-    `H.Souaied terminal — type 'help' to get started`,
-  ]);
+  const { t } = useLocale();
+  const { profile, skills, experience } = useContent();
+  const [lines, setLines] = useState(() => [t('terminal.intro')]);
   const [value, setValue] = useState('');
   const scrollRef = useRef(null);
 
@@ -50,7 +40,7 @@ export default function TerminalApp() {
   const submit = (e) => {
     e.preventDefault();
     setLines((ls) => [...ls, `$ ${value}`]);
-    run(value, print);
+    run(value, print, { t, profile, skills, experience });
     setValue('');
   };
 
@@ -66,7 +56,7 @@ export default function TerminalApp() {
           value={value}
           onChange={(e) => setValue(e.target.value)}
           spellCheck={false}
-          aria-label="Terminal command"
+          aria-label={t('terminal.commandLabel')}
         />
       </form>
     </div>
