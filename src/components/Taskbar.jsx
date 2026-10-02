@@ -3,6 +3,7 @@ import AppIcon from './AppIcon';
 import { APPS } from '../apps/registry';
 import { useLocale } from '../i18n/useLocale';
 import { LOCALES } from '../i18n/locales';
+import profilePhoto from '../assets/profile-photo.jpg';
 
 export default function Taskbar({
   windows,
@@ -50,6 +51,7 @@ export default function Taskbar({
   return (
     <div className="taskbar">
       <div className="taskbar-brand">
+        <img className="taskbar-avatar" src={profilePhoto} alt="" />
         H.Souaied <span>v1.0</span>
       </div>
       <div className="taskbar-windows">

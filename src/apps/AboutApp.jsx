@@ -1,5 +1,6 @@
 import useContent from '../data/useContent';
 import { useLocale } from '../i18n/useLocale';
+import profilePhoto from '../assets/profile-photo.jpg';
 
 export default function AboutApp() {
   const { profile, additional } = useContent();
@@ -8,7 +9,9 @@ export default function AboutApp() {
   return (
     <div className="app-pad">
       <div className="about-head">
-        <div className="about-avatar">HS</div>
+        {/* Name and role sit right beside it, so the photo adds no information
+            for a screen reader and is marked decorative. */}
+        <img className="about-avatar" src={profilePhoto} alt="" />
         <div>
           <h2>{profile.name}</h2>
           <p className="muted">{profile.role} · {profile.location}</p>

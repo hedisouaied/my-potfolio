@@ -811,15 +811,10 @@ a:hover {
 }
 .about-avatar {
   flex: 0 0 auto;
-  display: grid;
-  place-items: center;
   width: 58px;
   height: 58px;
   border-radius: 16px;
-  font-weight: 700;
-  font-size: 1.1rem;
-  letter-spacing: 0.02em;
-  color: var(--on-accent);
+  object-fit: cover;
   background: linear-gradient(135deg, var(--accent), var(--accent-3));
   box-shadow: 0 10px 30px -14px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
@@ -1614,20 +1609,21 @@ a:hover {
   letter-spacing: 0.05em;
   color: var(--text);
 }
-.taskbar-brand::before {
-  content: "";
-  width: 9px;
-  height: 9px;
-  border-radius: 3px;
-  background: linear-gradient(135deg, var(--accent), var(--accent-3));
-  box-shadow: 0 0 12px var(--accent-glow);
-}
 .taskbar-brand span {
   font-family: var(--mono);
   font-size: 10px;
   font-weight: 400;
   letter-spacing: 0.08em;
   color: var(--text-3);
+}
+.taskbar-avatar {
+  flex: 0 0 auto;
+  width: 24px;
+  height: 24px;
+  border-radius: 7px;
+  object-fit: cover;
+  border: 1px solid var(--accent-line);
+  box-shadow: 0 0 12px var(--accent-glow);
 }
 
 .taskbar-windows {
