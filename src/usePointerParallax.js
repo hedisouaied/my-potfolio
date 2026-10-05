@@ -8,12 +8,17 @@ import { useEffect } from 'react';
  * depends on requestAnimationFrame (which can be starved in background tabs), and
  * a rAF loop is used only to keep easing toward the last target once the pointer
  * settles. The loop parks itself when it arrives.
+ *
+ * Skipped entirely for reduced motion and for coarse pointers: on touch there is
+ * no hover to parallax from, and the listener would only add wakeups on a device
+ * that gains nothing from it.
  */
 export function usePointerParallax(ref) {
   useEffect(() => {
     const el = ref.current;
     if (!el) return undefined;
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return undefined;
+    if (window.matchMedia('(hover: none), (pointer: coarse)').matches) return undefined;
 
     const EASE = 0.12;
     const SETTLE = 0.0004;

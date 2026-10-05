@@ -40,6 +40,7 @@ export default function App() {
     return Number.isFinite(saved) ? saved % WALLPAPERS.length : 0;
   });
   const [booting, setBooting] = useState(true);
+  const [entered, setEntered] = useState(false);
   const [layerSize, setLayerSize] = useState({ w: 0, h: 0 });
   const isMobile = useIsMobileViewport();
 
@@ -48,6 +49,7 @@ export default function App() {
     if (bootedRef.current) return;
     bootedRef.current = true;
     setBooting(false);
+    setEntered(true);
   }, []);
 
   useEffect(() => {
@@ -112,7 +114,7 @@ export default function App() {
           }, elapsed)
         );
       }
-    }, introRef.current.isMobile ? 0 : 2000);
+    }, introRef.current.isMobile ? 0 : 2450);
 
     return () => {
       clearTimeout(kickoff);
@@ -180,13 +182,16 @@ export default function App() {
   const anyWindowOpen = windows.some((w) => !w.minimized);
 
   return (
-    <div className={`desktop wp-${wallpaper.id}`} ref={desktopRef}>
+    <div className={`desktop wp-${wallpaper.id}${entered ? ' is-ready' : ''}`} ref={desktopRef}>
       {booting && <BootScreen onComplete={finishBoot} />}
 
       <Starfield />
       <div className="aurora aurora-a" aria-hidden="true" />
       <div className="aurora aurora-b" aria-hidden="true" />
+      <div className="aurora aurora-c" aria-hidden="true" />
+      <div className="mesh-glow" aria-hidden="true" />
       <div className="cursor-glow" aria-hidden="true" />
+      <div className="vignette" aria-hidden="true" />
       {/* <div className="desktop-watermark" aria-hidden="true">H.Souaied</div> */}
 
       {!booting && <SideTerminal hidden={isMobile && anyWindowOpen} />}
@@ -220,6 +225,7 @@ export default function App() {
         windows={windows}
         activeId={activeWindow?.id}
         wallpaperName={t(wallpaper.nameKey)}
+        ready={entered}
         onOpen={openApp}
         onToggle={toggleFromTaskbar}
         onCycleWallpaper={cycleWallpaper}

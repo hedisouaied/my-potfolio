@@ -1,5 +1,6 @@
 import { useEffect, useState } from 'react';
 import { useLocale } from '../i18n/useLocale';
+import { Reveal, RevealGroup } from '../motion/Reveal';
 
 const LINES = [
   [0, 1, 2], [3, 4, 5], [6, 7, 8],
@@ -88,8 +89,10 @@ export default function TicTacToeApp() {
 
   return (
     <div className="app-pad center app-ttt">
-      <p className="ttt-status">{status}</p>
-      <div className="ttt-grid">
+      <Reveal variant="fade">
+        <p className="ttt-status">{status}</p>
+      </Reveal>
+      <RevealGroup className="ttt-grid" stagger={45}>
         {state.board.map((v, i) => (
           <button
             key={i}
@@ -103,8 +106,12 @@ export default function TicTacToeApp() {
             {v}
           </button>
         ))}
-      </div>
-      <button className="btn-ghost" onClick={reset}>{t('tictactoe.reset')}</button>
+      </RevealGroup>
+      <Reveal variant="scale" delay={260}>
+        <button className="btn-ghost" onClick={reset}>
+          {t('tictactoe.reset')}
+        </button>
+      </Reveal>
     </div>
   );
 }

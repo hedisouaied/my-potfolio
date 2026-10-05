@@ -1,5 +1,6 @@
 import useContent from '../data/useContent';
 import { useLocale } from '../i18n/useLocale';
+import { Reveal, RevealGroup } from '../motion/Reveal';
 import profilePhoto from '../assets/profile-photo.jpg';
 
 export default function AboutApp() {
@@ -8,30 +9,52 @@ export default function AboutApp() {
 
   return (
     <div className="app-pad">
-      <div className="about-head">
+      <Reveal className="about-head" variant="split">
         {/* Name and role sit right beside it, so the photo adds no information
             for a screen reader and is marked decorative. */}
-        <img className="about-avatar" src={profilePhoto} alt="" />
-        <div>
+        <span className="about-avatar-wrap">
+          <span className="about-avatar-ring" aria-hidden="true" />
+          <img className="about-avatar" src={profilePhoto} alt="" />
+        </span>
+        <div className="about-head-text">
           <h2>{profile.name}</h2>
           <p className="muted">{profile.role} · {profile.location}</p>
         </div>
-      </div>
-      <p>{profile.summary}</p>
+      </Reveal>
 
-      <div className="chip-row">
-        {additional.languages.map((l) => <span className="chip" key={l}>{l}</span>)}
-      </div>
+      <Reveal variant="up" delay={90}>
+        <p>{profile.summary}</p>
+      </Reveal>
 
-      <h4>{t('about.strengths')}</h4>
-      <div className="chip-row">
-        {additional.strengths.map((s) => <span className="chip" key={s}>{s}</span>)}
-      </div>
+      <RevealGroup className="chip-row" stagger={38} base={160}>
+        {additional.languages.map((l) => (
+          <span className="chip" key={l}>
+            {l}
+          </span>
+        ))}
+      </RevealGroup>
 
-      <h4>{t('about.interests')}</h4>
-      <div className="chip-row">
-        {additional.interests.map((s) => <span className="chip" key={s}>{s}</span>)}
-      </div>
+      <Reveal variant="fade" delay={40}>
+        <h4>{t('about.strengths')}</h4>
+      </Reveal>
+      <RevealGroup className="chip-row" stagger={38} base={90}>
+        {additional.strengths.map((s) => (
+          <span className="chip" key={s}>
+            {s}
+          </span>
+        ))}
+      </RevealGroup>
+
+      <Reveal variant="fade" delay={40}>
+        <h4>{t('about.interests')}</h4>
+      </Reveal>
+      <RevealGroup className="chip-row" stagger={38} base={90}>
+        {additional.interests.map((s) => (
+          <span className="chip" key={s}>
+            {s}
+          </span>
+        ))}
+      </RevealGroup>
     </div>
   );
 }

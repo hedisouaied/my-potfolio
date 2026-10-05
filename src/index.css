@@ -1,9 +1,15 @@
 :root {
   color-scheme: dark;
 
+  /* type */
   --font: "Poppins", system-ui, -apple-system, "Segoe UI", sans-serif;
+  /* Display face carries every heading, window title and the boot wordmark.
+     Space Grotesk reads as technical/editorial next to Poppins, which keeps the
+     UI body copy from doing double duty as a display face. */
+  --display: "Space Grotesk", var(--font);
   --mono: "IBM Plex Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
 
+  /* surfaces */
   --void: #05070b;
   --base: #090d14;
   --surface-0: #0d1117;
@@ -29,10 +35,40 @@
   --accent-wash: color-mix(in srgb, var(--accent) 12%, transparent);
   --accent-glow: color-mix(in srgb, var(--accent) 30%, transparent);
 
+  /* shared glass recipe — one definition so every floating surface matches */
+  --glass: rgba(12, 17, 25, 0.72);
+  --glass-blur: blur(26px) saturate(170%);
+
   --radius: 14px;
   --radius-sm: 9px;
   --taskbar-h: 58px;
+
+  /* elevation — layered shadows read deeper than a single blob */
+  --lift-1: 0 2px 8px -4px rgba(0, 0, 0, 0.7);
+  --lift-2: 0 18px 40px -22px rgba(0, 0, 0, 0.85);
+  --lift-3: 0 34px 80px -22px rgba(0, 0, 0, 0.92);
+  --lift-4: 0 54px 130px -40px rgba(0, 0, 0, 0.96);
+
+  /* motion scale — durations are named by distance, not by number, so a reveal
+     and the matching exit always pair up.
+
+     `--dur-fast` is load-bearing for the window exit: it must equal `EXIT_MS` in
+     components/WindowFrame.jsx. If CSS finishes first the window sits invisible
+     for the remainder of the JS timeout, and if JS fires first the exit is cut
+     off mid-animation. The two are documented on both sides. */
+  --dur-instant: 90ms;
+  --dur-fast: 240ms;
+  --dur-base: 280ms;
+  --dur-slow: 460ms;
+  --dur-cinematic: 720ms;
+  --dur-stagger: 55ms;
+
+  /* easing families */
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-out-expo: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-out-back: cubic-bezier(0.34, 1.4, 0.5, 1);
+  --ease-inout-quint: cubic-bezier(0.83, 0, 0.17, 1);
+  --ease-spring: cubic-bezier(0.34, 1.32, 0.52, 1);
 }
 
 * {
@@ -169,7 +205,8 @@ a:hover {
   background-color: var(--base);
 }
 
-/* faint grid + vignette shared by every wallpaper */
+/* faint grid shared by every wallpaper. It parallaxes off the pointer through the
+   same --px/--py custom properties as the aurora layers. */
 .desktop::before,
 .desktop::after {
   content: "";
@@ -187,9 +224,27 @@ a:hover {
   -webkit-mask-image: radial-gradient(ellipse 90% 75% at 50% 42%, #000 20%, transparent 100%);
   mask-image: radial-gradient(ellipse 90% 75% at 50% 42%, #000 20%, transparent 100%);
 }
+
+/* Film grain. `::after` is the last generated box in the stacking order, so this
+   lands on top of every z-0 layer and kills the banding that large, very dark
+   gradients otherwise show on 8-bit displays. */
 .desktop::after {
   z-index: 0;
-  background: radial-gradient(ellipse 78% 68% at 50% 44%, transparent 38%, rgba(0, 0, 0, 0.62) 100%);
+  opacity: 0.038;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E");
+  background-size: 160px 160px;
+}
+
+/* Edge darkening, drawn as a real element rather than a pseudo so it can sit
+   above the aurora and glow layers (a pseudo would be painted beneath them). */
+.vignette {
+  position: absolute;
+  z-index: 0;
+  inset: 0;
+  pointer-events: none;
+  background:
+    radial-gradient(ellipse 82% 72% at 50% 44%, transparent 34%, rgba(0, 0, 0, 0.58) 100%),
+    linear-gradient(to bottom, rgba(0, 0, 0, 0.3), transparent 22%, transparent 76%, rgba(0, 0, 0, 0.42));
 }
 
 .aurora {
@@ -218,6 +273,39 @@ a:hover {
   transform: translate3d(calc(var(--px) * 68px), calc(var(--py) * 50px), 0);
   animation: drift-b 34s var(--ease) infinite alternate;
 }
+/* Third, warmer blob near the middle of the frame. Two blobs read as a gradient;
+   three read as depth, and it is the one that carries the pointer furthest. */
+.aurora-c {
+  width: 30vmax;
+  height: 30vmax;
+  left: 34%;
+  top: 22%;
+  opacity: 0.7;
+  background: radial-gradient(circle, color-mix(in srgb, var(--accent-2) 30%, transparent), transparent 72%);
+  transform: translate3d(calc(var(--px) * -96px), calc(var(--py) * 74px), 0);
+  animation: drift-c 24s var(--ease) infinite alternate;
+}
+
+/* Slowly rotating conic wash. Cheap depth cue that keeps flat wallpapers alive
+   without touching the palette of the wallpaper itself. */
+.mesh-glow {
+  position: absolute;
+  z-index: 0;
+  inset: -25%;
+  pointer-events: none;
+  opacity: 0.4;
+  mix-blend-mode: screen;
+  background: conic-gradient(
+    from 0deg at 50% 50%,
+    transparent 0deg,
+    color-mix(in srgb, var(--accent) 9%, transparent) 70deg,
+    transparent 150deg,
+    color-mix(in srgb, var(--accent-3) 9%, transparent) 250deg,
+    transparent 340deg
+  );
+  animation: mesh-spin 62s linear infinite;
+  will-change: rotate;
+}
 
 /* pool of light that trails the cursor */
 .cursor-glow {
@@ -228,8 +316,9 @@ a:hover {
   opacity: var(--glow);
   mix-blend-mode: screen;
   background:
-    radial-gradient(280px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent) 26%, transparent), transparent 70%),
-    radial-gradient(720px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent-3) 15%, transparent), transparent 68%);
+    radial-gradient(160px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent) 30%, transparent), transparent 70%),
+    radial-gradient(360px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent) 20%, transparent), transparent 72%),
+    radial-gradient(760px circle at var(--mx) var(--my), color-mix(in srgb, var(--accent-3) 15%, transparent), transparent 68%);
   transition: opacity 0.5s var(--ease);
 }
 
@@ -243,6 +332,17 @@ a:hover {
   to {
     translate: -6vmax -3vmax;
     scale: 1.08;
+  }
+}
+@keyframes drift-c {
+  to {
+    translate: 4vmax 6vmax;
+    scale: 0.88;
+  }
+}
+@keyframes mesh-spin {
+  to {
+    rotate: 360deg;
   }
 }
 
@@ -263,7 +363,15 @@ a:hover {
   will-change: transform;
 }
 
-/* boot screen */
+/* boot screen — cinematic preloader
+
+   Composition, top to bottom: wordmark, progress rail with a live percentage,
+   then the boot log. The exit is a four-blade wipe that opens outward to reveal
+   the desktop underneath.
+
+   Two timing sources drive this. `--boot-p` (0..1) is written every frame by the
+   rAF clock in BootScreen.jsx and is the single source of truth for the rail;
+   everything else is CSS animation gated behind `.started`. */
 
 .boot-screen {
   position: fixed;
@@ -274,17 +382,67 @@ a:hover {
   padding: 24px;
   overflow: hidden;
   background: var(--void);
+  --boot-p: 0;
 }
-/* only fade at the very end, once every line has reported */
-.boot-screen.leaving {
-  animation: boot-out 0.5s ease forwards;
+
+/* ---- ambience ------------------------------------------------------------ */
+
+.boot-ambience {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+}
+
+.boot-amb-glow {
+  position: absolute;
+  inset: -30%;
+  opacity: 0.55;
+  background:
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%) 30% 40% / 60% 60%
+      no-repeat,
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent-3) 20%, transparent), transparent 70%) 70% 66% / 55% 55%
+      no-repeat;
+  filter: blur(40px);
+  animation: boot-breathe 7s var(--ease) infinite alternate;
+}
+
+/* Perspective floor grid that rushes toward the viewer — the "loading runway". */
+.boot-amb-grid {
+  position: absolute;
+  left: -50%;
+  right: -50%;
+  bottom: -30%;
+  height: 130%;
+  background-image:
+    linear-gradient(rgba(34, 211, 238, 0.16) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(34, 211, 238, 0.1) 1px, transparent 1px);
+  background-size: 56px 56px;
+  transform: perspective(340px) rotateX(66deg);
+  -webkit-mask-image: linear-gradient(to top, #000, transparent 68%);
+  mask-image: linear-gradient(to top, #000, transparent 68%);
+  animation: boot-grid-run 3.4s linear infinite;
+}
+
+/* A single light bar travelling down the screen, like a CRT refresh. */
+.boot-amb-sweep {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 34%;
+  background: linear-gradient(
+    to bottom,
+    transparent,
+    color-mix(in srgb, var(--accent) 7%, transparent),
+    transparent
+  );
+  animation: boot-sweep 3.1s linear infinite;
 }
 
 /* faint horizontal scanlines over the whole screen */
 .boot-scanlines {
   position: absolute;
   inset: 0;
-  pointer-events: none;
   background: repeating-linear-gradient(
     to bottom,
     rgba(255, 255, 255, 0.035) 0 1px,
@@ -293,16 +451,166 @@ a:hover {
   animation: boot-scan 7s linear infinite;
 }
 
+/* ---- centre column ------------------------------------------------------- */
+
 .boot-inner {
   position: relative;
-  width: min(560px, 100%);
+  z-index: 1;
+  width: min(600px, 100%);
+  display: flex;
+  flex-direction: column;
+  gap: 22px;
+}
+
+.boot-mark {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  font-family: var(--display);
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+.boot-mark-name {
+  font-size: clamp(1.5rem, 5.4vw, 2.35rem);
+  line-height: 1;
+  color: var(--text);
+  text-shadow: 0 0 34px var(--accent-glow);
+}
+
+.boot-mark-os {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  font-family: var(--mono);
+  font-size: 0.62em;
+  font-weight: 500;
+  letter-spacing: 0.34em;
+  color: var(--accent);
+  opacity: 0;
+  translate: -6px 0;
+}
+.boot-mark-os-line {
+  width: 22px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+}
+
+/* Characters/words are the animated unit; each reads its own stagger index. */
+.split {
+  display: inline-block;
+}
+.split-word {
+  display: inline-block;
+  white-space: pre;
+}
+.split-char {
+  display: inline-block;
+  opacity: 0;
+  translate: 0 0.5em;
+  filter: blur(6px);
+}
+
+.boot-screen.started .split-char {
+  animation: boot-char-in 0.62s var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--i, 0) * 34ms);
+}
+.boot-screen.started .boot-mark-os {
+  animation: boot-os-in 0.5s var(--ease-out-expo) 0.42s forwards;
+}
+.boot-screen.started .boot-mark-os-line {
+  animation: boot-line-draw 0.44s var(--ease-out-expo) 0.52s forwards;
+}
+
+/* ---- progress rail ------------------------------------------------------- */
+
+.boot-rail {
+  display: flex;
+  align-items: center;
+  gap: 14px;
+}
+
+.boot-rail-track {
+  position: relative;
+  flex: 1;
+  height: 3px;
+  border-radius: 99px;
+  background: rgba(255, 255, 255, 0.09);
+  overflow: visible;
+}
+/* Width is driven straight from --boot-p, so the fill is frame-synced with the
+   JS clock instead of a CSS animation that could drift out of step with it. */
+.boot-rail-fill {
+  position: absolute;
+  inset: 0 auto 0 0;
+  width: calc(var(--boot-p) * 100%);
+  border-radius: 99px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-2) 62%, var(--accent-3));
+  box-shadow: 0 0 14px var(--accent-glow);
+}
+
+/* Travelling highlight at the head of the fill. */
+.boot-rail-dot {
+  position: absolute;
+  top: 50%;
+  left: calc(var(--boot-p) * 100%);
+  width: 7px;
+  height: 7px;
+  translate: -50% -50%;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 14px 2px var(--accent-glow);
+  opacity: 0;
+}
+.boot-screen.started .boot-rail-dot {
+  animation: boot-dot-in 0.3s var(--ease) 0.3s forwards;
+}
+
+.boot-rail-pct {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 1px;
+  min-width: 4.2ch;
+  font-family: var(--mono);
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-2);
+}
+.boot-rail-pct b {
+  font-weight: 500;
+  color: var(--text);
+}
+.boot-rail-pct i {
+  font-style: normal;
+  font-size: 0.85em;
+  color: var(--text-3);
+}
+
+/* ---- boot log ------------------------------------------------------------ */
+
+.boot-log {
+  position: relative;
+  padding: 14px 16px;
+  border: 1px solid var(--line-2);
+  border-radius: var(--radius);
+  background: rgba(10, 14, 21, 0.62);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  box-shadow: var(--lift-2);
+  opacity: 0;
+  translate: 0 10px;
+}
+.boot-screen.started .boot-log {
+  animation: boot-log-in 0.6s var(--ease-out-expo) 0.16s forwards;
 }
 
 .boot-term {
   margin: 0;
   font-family: var(--mono);
-  font-size: 12.5px;
-  line-height: 1.85;
+  font-size: 12px;
+  line-height: 1.75;
   color: var(--text-2);
   white-space: pre-wrap;
 }
@@ -315,10 +623,10 @@ a:hover {
   align-items: baseline;
   gap: 0.55ch;
   opacity: 0;
-  transform: translateX(-10px);
+  translate: -10px 0;
 }
 .boot-line.in {
-  animation: boot-line-in 0.34s var(--ease) forwards;
+  animation: boot-line-in 0.34s var(--ease-out-expo) forwards;
 }
 
 .boot-caret {
@@ -330,7 +638,7 @@ a:hover {
   color: var(--text-2);
 }
 
-/* the four dots pop in one after another, then stop */
+/* the three dots pop in one after another, then stop */
 .boot-dots {
   display: inline-flex;
   gap: 0.5ch;
@@ -351,14 +659,11 @@ a:hover {
 .boot-dots i:nth-child(3) {
   animation-delay: 0.22s;
 }
-.boot-dots i:nth-child(4) {
-  animation-delay: 0.3s;
-}
 
 .boot-ok {
   color: var(--ok);
   text-shadow: 0 0 12px color-mix(in srgb, var(--ok) 40%, transparent);
-  animation: boot-ok-in 0.28s var(--ease) both;
+  animation: boot-ok-in 0.28s var(--ease-out-back) both;
 }
 
 /* blinking terminal cursor */
@@ -373,26 +678,128 @@ a:hover {
 }
 
 .boot-ready {
-  display: inline-block;
-  margin-top: 14px;
+  display: inline-flex;
+  align-items: center;
+  margin-top: 10px;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.16em;
   text-transform: uppercase;
   color: var(--accent);
   opacity: 0;
-  animation: boot-line-in 0.34s var(--ease) forwards, boot-pulse 1.4s ease-in-out infinite;
-  animation-delay: 0s, 0.4s;
+}
+.boot-screen.started .boot-ready {
+  animation: boot-line-in 0.34s var(--ease-out-expo) forwards, boot-pulse 1.4s ease-in-out infinite;
+  animation-delay: 0.9s, 1.3s;
 }
 
+/* ---- exit wipe ----------------------------------------------------------- */
+
+.boot-wipe {
+  position: absolute;
+  inset: 0;
+  z-index: 2;
+  pointer-events: none;
+}
+.boot-wipe-blade {
+  position: absolute;
+  background: var(--void);
+}
+.boot-wipe-t,
+.boot-wipe-b {
+  left: 0;
+  right: 0;
+  height: 50.2%;
+}
+.boot-wipe-l,
+.boot-wipe-r {
+  top: 0;
+  bottom: 0;
+  width: 50.2%;
+}
+.boot-wipe-t {
+  top: 0;
+  transform-origin: top;
+}
+.boot-wipe-b {
+  bottom: 0;
+  transform-origin: bottom;
+}
+.boot-wipe-l {
+  left: 0;
+  transform-origin: left;
+}
+.boot-wipe-r {
+  right: 0;
+  transform-origin: right;
+}
+
+/* Brief additive flash at the seam the moment the blades part. */
+.boot-wipe-flash {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 50%, var(--accent-glow), transparent 70%);
+}
+
+.boot-screen.leaving .boot-wipe-blade {
+  animation: boot-blade 0.72s var(--ease-inout-quint) forwards;
+}
+.boot-screen.leaving .boot-wipe-t,
+.boot-screen.leaving .boot-wipe-b {
+  animation-delay: 0.04s;
+}
+.boot-screen.leaving .boot-wipe-l,
+.boot-screen.leaving .boot-wipe-r {
+  animation-delay: 0.1s;
+}
+.boot-screen.leaving .boot-wipe-flash {
+  animation: boot-flash 0.6s var(--ease-out-expo) 0.05s forwards;
+}
+/* Everything behind the blades dissolves a beat before they part. */
+.boot-screen.leaving .boot-inner {
+  animation: boot-inner-out 0.36s var(--ease) forwards;
+}
+
+/* ---- keyframes ----------------------------------------------------------- */
+
+@keyframes boot-char-in {
+  to {
+    opacity: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+@keyframes boot-os-in {
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+@keyframes boot-line-draw {
+  to {
+    transform: scaleX(1);
+  }
+}
+@keyframes boot-dot-in {
+  to {
+    opacity: 1;
+  }
+}
+@keyframes boot-log-in {
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
 @keyframes boot-line-in {
   from {
     opacity: 0;
-    transform: translateX(-10px);
+    translate: -10px 0;
   }
   to {
     opacity: 1;
-    transform: translateX(0);
+    translate: 0 0;
   }
 }
 @keyframes boot-dot {
@@ -406,11 +813,13 @@ a:hover {
 @keyframes boot-ok-in {
   from {
     opacity: 0;
-    transform: translateY(3px) scale(0.9);
+    translate: 0 3px;
+    scale: 0.9;
   }
   to {
     opacity: 1;
-    transform: translateY(0) scale(1);
+    translate: 0 0;
+    scale: 1;
   }
 }
 @keyframes boot-blink {
@@ -440,14 +849,48 @@ a:hover {
     opacity: 1;
   }
 }
-@keyframes boot-out {
+@keyframes boot-breathe {
   to {
-    opacity: 0;
-    visibility: hidden;
-    pointer-events: none;
+    opacity: 0.85;
+    scale: 1.12;
   }
 }
-
+@keyframes boot-grid-run {
+  to {
+    background-position-y: 56px;
+  }
+}
+@keyframes boot-sweep {
+  from {
+    translate: 0 -40%;
+  }
+  to {
+    translate: 0 140%;
+  }
+}
+@keyframes boot-blade {
+  to {
+    scale: 0;
+  }
+}
+@keyframes boot-flash {
+  0% {
+    opacity: 0;
+  }
+  18% {
+    opacity: 0.85;
+  }
+  to {
+    opacity: 0;
+  }
+}
+@keyframes boot-inner-out {
+  to {
+    opacity: 0;
+    scale: 1.06;
+    filter: blur(8px);
+  }
+}
 /* floating side terminal — reuses the preloader palette and reveal animation */
 
 /* No panel chrome — it floats directly on the wallpaper, so legibility comes
@@ -481,8 +924,8 @@ a:hover {
 .side-term-line {
   display: block;
   opacity: 0;
-  transform: translateX(-9px);
-  animation: boot-line-in 0.36s var(--ease) forwards;
+  translate: -9px 0;
+  animation: boot-line-in 0.36s var(--ease-out-expo) forwards;
 }
 
 .side-term-caret {
@@ -506,7 +949,12 @@ a:hover {
   gap: 6px;
 }
 
+/* Staggered entrance. The delay comes from --i, set per icon in Desktop.jsx, so
+   adding an app to the registry never means editing the markup. Hidden until
+   `.is-ready` lands on the desktop, which happens the instant the boot wipe
+   reveals it. */
 .desktop-icon {
+  position: relative;
   width: 92px;
   padding: 10px 4px 8px;
   border: 1px solid transparent;
@@ -515,17 +963,36 @@ a:hover {
   flex-direction: column;
   align-items: center;
   gap: 9px;
-  transition: background 0.16s var(--ease), border-color 0.16s var(--ease), transform 0.16s var(--ease);
+  opacity: 0;
+  translate: 0 -10px;
+  scale: 0.94;
+  transition:
+    background 0.2s var(--ease),
+    border-color 0.2s var(--ease),
+    translate 0.2s var(--ease),
+    scale 0.2s var(--ease),
+    transform 0.2s var(--ease);
+}
+.desktop.is-ready .desktop-icon {
+  animation: icon-in 0.62s var(--ease-out-expo) forwards;
+  animation-delay: calc(var(--i, 0) * 42ms + 120ms);
 }
 .desktop-icon:hover {
   background: rgba(255, 255, 255, 0.055);
   border-color: var(--line-2);
+  /* `transform`, not `translate`. The arrival animation fills `translate`/`scale`
+     with `forwards`, and a filled animation outranks *every* normal declaration —
+     including a higher-specificity `:hover`. Separate properties, so the two
+     compose instead of the hover being silently ignored. */
+  transform: translateY(-3px);
 }
 .desktop-icon:active {
   transform: scale(0.97);
 }
 
 .desktop-icon-glyph {
+  position: relative;
+  overflow: hidden;
   display: grid;
   place-items: center;
   width: 46px;
@@ -536,14 +1003,36 @@ a:hover {
   border: 1px solid var(--line-2);
   backdrop-filter: blur(10px);
   box-shadow: 0 10px 22px -14px rgba(0, 0, 0, 0.9);
-  transition: color 0.16s var(--ease), background 0.16s var(--ease), border-color 0.16s var(--ease),
-    box-shadow 0.16s var(--ease);
+  transition: color 0.2s var(--ease), background 0.2s var(--ease), border-color 0.2s var(--ease),
+    box-shadow 0.2s var(--ease), translate 0.24s var(--ease-out-back);
 }
 .desktop-icon:hover .desktop-icon-glyph {
   color: var(--accent);
+  translate: 0 -2px;
   border-color: var(--accent-line);
   background: linear-gradient(160deg, var(--accent-wash), rgba(255, 255, 255, 0.03));
-  box-shadow: 0 0 0 1px var(--accent-wash), 0 12px 26px -12px var(--accent-glow);
+  box-shadow: 0 0 0 1px var(--accent-wash), 0 14px 30px -12px var(--accent-glow);
+}
+/* Icon lifts out of its tile on hover, which is what sells the depth. */
+.desktop-icon:hover .desktop-icon-glyph svg {
+  translate: 0 -1px;
+  scale: 1.08;
+}
+.desktop-icon-glyph svg {
+  transition: translate 0.3s var(--ease-out-back), scale 0.3s var(--ease-out-back);
+}
+
+/* Specular highlight that sweeps the tile on hover. */
+.desktop-icon-sheen {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  background: linear-gradient(115deg, transparent 34%, rgba(255, 255, 255, 0.22) 50%, transparent 66%);
+  transition: opacity 0.3s var(--ease);
+}
+.desktop-icon:hover .desktop-icon-sheen {
+  opacity: 1;
+  animation: sheen-sweep 0.7s var(--ease-out-expo);
 }
 
 .desktop-icon-label {
@@ -562,6 +1051,12 @@ a:hover {
   pointer-events: none;
 }
 
+/* Window lifecycle.
+
+   react-rnd writes `transform`, `width` and `height` inline, so every transform
+   here uses the independent `translate` / `scale` properties — they compose with
+   the inline transform instead of overwriting it, which would break dragging. */
+
 .window {
   display: flex;
   pointer-events: auto;
@@ -571,7 +1066,31 @@ a:hover {
   filter: saturate(0.72) brightness(0.9);
 }
 
+/* Enter: the window arrives from slightly below and behind, sharpening as it
+   lands. `both` holds the first frame so there is no flash of the final state. */
+.window:not(.phase-closing, .phase-minimizing) {
+  animation: win-in var(--dur-slow) var(--ease-out-expo) both;
+}
+.window.phase-closing {
+  pointer-events: none;
+  animation: win-out var(--dur-fast) var(--ease) forwards;
+}
+.window.phase-minimizing {
+  pointer-events: none;
+  animation: win-min var(--dur-fast) var(--ease-inout-quint) forwards;
+}
+
+/* Maximize/restore is a real morph: geometry transitions only while `.morphing`
+   is set, so a drag stays perfectly 1:1 while a maximize reads as a zoom. */
+.window.morphing {
+  transition:
+    width var(--dur-slow) var(--ease-out-expo),
+    height var(--dur-slow) var(--ease-out-expo),
+    transform var(--dur-slow) var(--ease-out-expo);
+}
+
 .window-inner {
+  position: relative;
   width: 100%;
   height: 100%;
   display: flex;
@@ -580,19 +1099,30 @@ a:hover {
   border-radius: var(--radius);
   background: var(--surface-0);
   border: 1px solid var(--line-2);
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), 0 26px 60px -24px rgba(0, 0, 0, 0.8);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), var(--lift-2);
   transition: box-shadow 0.22s var(--ease), border-color 0.22s var(--ease);
 }
 .window.active .window-inner {
   border-color: color-mix(in srgb, var(--accent) 26%, var(--line-2));
-  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), 0 34px 80px -22px rgba(0, 0, 0, 0.9),
-    0 0 70px -34px var(--accent);
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--lift-3), 0 0 70px -34px var(--accent);
 }
 .window.maximized .window-inner {
   border-radius: 10px;
 }
 
+/* Accent bloom the instant a window takes focus, then gone. */
+.window.blooming .window-inner {
+  animation: win-bloom 0.62s var(--ease-out-expo);
+}
+
+/* Content lifts in behind the frame, one beat behind the chrome. */
+.window:not(.phase-closing, .phase-minimizing) .win-body > * {
+  animation: win-content-in var(--dur-slow) var(--ease-out-expo) 0.05s both;
+}
+
 .win-titlebar {
+  position: relative;
+  overflow: hidden;
   flex: 0 0 auto;
   display: flex;
   align-items: center;
@@ -608,6 +1138,23 @@ a:hover {
   border-bottom: 1px solid var(--line);
 }
 
+/* Light bar that crosses the titlebar when the window gains focus. */
+.win-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(
+    100deg,
+    transparent 30%,
+    color-mix(in srgb, var(--accent) 22%, transparent) 48%,
+    transparent 66%
+  );
+}
+.window.blooming .win-sheen {
+  animation: win-sheen 0.62s var(--ease-out-expo);
+}
+
 .win-icon {
   display: grid;
   place-items: center;
@@ -619,9 +1166,10 @@ a:hover {
 
 .win-title {
   flex: 1;
+  font-family: var(--display);
   font-size: 12.5px;
   font-weight: 600;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
   color: var(--text-2);
   white-space: nowrap;
   overflow: hidden;
@@ -711,10 +1259,35 @@ a:hover {
 }
 
 .win-body {
+  position: relative;
   flex: 1;
   min-height: 0;
   overflow: auto;
   overscroll-behavior: contain;
+}
+
+/* Reading progress for the window body. `position: sticky` keeps it pinned to the
+   top edge of the scroller instead of scrolling away with the content. */
+.win-scroll-rail {
+  position: sticky;
+  top: 0;
+  z-index: 3;
+  display: block;
+  height: 2px;
+  margin-bottom: -2px;
+  pointer-events: none;
+  /* 0 until the container is actually scrollable, so the rail never appears as a
+     stray 2px line above short content. */
+  opacity: var(--scrollable, 0);
+  transition: opacity 0.3s var(--ease);
+}
+.win-scroll-fill {
+  display: block;
+  height: 100%;
+  width: var(--scroll-pct, 0%);
+  border-radius: 0 99px 99px 0;
+  background: linear-gradient(90deg, var(--accent), var(--accent-3));
+  box-shadow: 0 0 10px var(--accent-glow);
 }
 
 /* shared app content */
@@ -730,15 +1303,20 @@ a:hover {
   gap: 12px;
 }
 
+/* Gradient is animated by sliding the background position, so the title has a
+   slow living sheen instead of a static two-stop fill. */
 .app-title {
   margin: 0;
-  font-size: 1.5rem;
+  font-family: var(--display);
+  font-size: 1.6rem;
   font-weight: 700;
-  letter-spacing: -0.01em;
-  background: linear-gradient(120deg, #fff, var(--accent));
+  letter-spacing: -0.02em;
+  background: linear-gradient(100deg, #fff 20%, var(--accent) 46%, var(--accent-3) 62%, #fff 84%);
+  background-size: 260% 100%;
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
+  animation: title-sheen 7s var(--ease) infinite;
 }
 
 :where(.app-pad) p {
@@ -749,8 +1327,12 @@ a:hover {
   margin-bottom: 0;
 }
 
+/* Section heading: mono label, a hairline rule that draws itself out, and the
+   accent tick. The rule is what gives the section its "measured" feel. */
 .app-pad > h3,
-.app-pad > h4 {
+.app-pad > h4,
+.reveal > h3,
+.reveal > h4 {
   display: flex;
   align-items: center;
   gap: 9px;
@@ -763,13 +1345,30 @@ a:hover {
   color: var(--text-3);
 }
 .app-pad > h3::before,
-.app-pad > h4::before {
-  content: "##";
-  color: var(--accent);
-  opacity: 0.75;
+.app-pad > h4::before,
+.reveal > h3::before,
+.reveal > h4::before {
+  content: "";
+  width: 6px;
+  height: 6px;
+  flex: 0 0 auto;
+  border-radius: 2px;
+  background: var(--accent);
+  box-shadow: 0 0 10px var(--accent-glow);
+}
+.app-pad > h3::after,
+.app-pad > h4::after,
+.reveal > h3::after,
+.reveal > h4::after {
+  content: "";
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(90deg, var(--line-2), transparent);
 }
 .app-pad > h3:first-child,
-.app-pad > h4:first-child {
+.app-pad > h4:first-child,
+.reveal > h3:first-child,
+.reveal > h4:first-child {
   margin-top: 4px;
 }
 
@@ -852,6 +1451,7 @@ a:hover {
   margin: 0 0 6px;
 }
 .chip {
+  display: inline-block;
   font-family: var(--mono);
   font-size: 11.5px;
   letter-spacing: 0.01em;
@@ -860,12 +1460,15 @@ a:hover {
   border: 1px solid var(--line);
   border-radius: 999px;
   padding: 4px 11px;
-  transition: color 0.15s var(--ease), border-color 0.15s var(--ease), background 0.15s var(--ease);
+  transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease),
+    translate 0.24s var(--ease-out-back), box-shadow 0.24s var(--ease);
 }
 .chip:hover {
-  color: var(--text);
+  color: var(--accent);
+  translate: 0 -2px;
   background: var(--surface-2);
   border-color: var(--accent-line);
+  box-shadow: 0 8px 18px -12px var(--accent-glow);
 }
 
 .about-head {
@@ -874,8 +1477,36 @@ a:hover {
   gap: 16px;
   margin-bottom: 18px;
 }
-.about-avatar {
+/* Slowly counter-rotating conic ring behind the portrait. */
+.about-avatar-wrap {
+  position: relative;
   flex: 0 0 auto;
+  display: grid;
+  place-items: center;
+}
+.about-avatar-ring {
+  position: absolute;
+  inset: -7px;
+  border-radius: 22px;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--accent) 70deg,
+    var(--accent-3) 150deg,
+    transparent 240deg,
+    transparent 360deg
+  );
+  opacity: 0.65;
+  mask: radial-gradient(closest-side, transparent 76%, #000 78%);
+  -webkit-mask: radial-gradient(closest-side, transparent 76%, #000 78%);
+  animation: ring-spin 6s linear infinite;
+}
+.about-avatar {
+  position: relative;
+  /* Paints above the absolutely-positioned ring. A positioned element would
+     otherwise win the paint order over this in-flow <img> and tint the photo
+     with the conic gradient. */
+  z-index: 1;
   width: 58px;
   height: 58px;
   border-radius: 16px;
@@ -883,10 +1514,15 @@ a:hover {
   background: linear-gradient(135deg, var(--accent), var(--accent-3));
   box-shadow: 0 10px 30px -14px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
+.about-head-text {
+  min-width: 0;
+}
 .about-head h2 {
   margin: 0 0 3px;
-  font-size: 1.15rem;
+  font-family: var(--display);
+  font-size: 1.2rem;
   font-weight: 700;
+  letter-spacing: -0.01em;
 }
 .about-head p {
   margin: 0;
@@ -905,6 +1541,7 @@ a:hover {
 .timeline li:last-child {
   padding-bottom: 2px;
 }
+/* Node marker with a halo that pulses once as the entry scrolls in. */
 .timeline li::before {
   content: "";
   position: absolute;
@@ -915,6 +1552,10 @@ a:hover {
   border-radius: 50%;
   background: var(--accent);
   box-shadow: 0 0 0 4px var(--accent-wash);
+}
+.reveal-stagger.is-in .timeline li::before {
+  animation: node-pop 0.5s var(--ease-out-back) backwards;
+  animation-delay: calc(var(--i, 0) * 85ms + 120ms);
 }
 .timeline h4 {
   margin: 3px 0 2px;
@@ -998,14 +1639,26 @@ a:hover {
   display: grid;
   gap: 12px;
 }
+.tilt {
+  /* `perspective()` belongs in the transform itself, not on a `perspective`
+     property: a `perspective` property only affects an element's CHILDREN, so
+     putting it on the tilting element would render a flat rotation. */
+  transform: perspective(900px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg))
+    scale(calc(1 + var(--tilt-glow, 0) * (var(--tilt-scale, 1.014) - 1)));
+  will-change: transform;
+}
+
 .project-card {
   position: relative;
-  padding: 16px 18px;
   overflow: hidden;
+  padding: 16px 18px;
   border: 1px solid var(--line);
   border-radius: var(--radius);
   background: linear-gradient(180deg, var(--surface-1), var(--surface-0));
-  transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  /* Deliberately no `transform-style: preserve-3d` here — `overflow: hidden`
+     forces the element to flatten, so the tilt comes entirely from the
+     `perspective()` in `.tilt` on the card itself. */
+  transition: border-color 0.24s var(--ease), box-shadow 0.24s var(--ease);
 }
 .project-card::before {
   content: "";
@@ -1014,12 +1667,24 @@ a:hover {
   height: 2px;
   background: linear-gradient(90deg, var(--accent), var(--accent-3));
   opacity: 0.4;
+  transition: opacity 0.24s var(--ease);
+}
+/* Specular highlight riding the cursor. */
+.project-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: calc(var(--tilt-glow, 0) * 0.9);
+  background: radial-gradient(
+    260px circle at var(--sheen-x, 50%) var(--sheen-y, 50%),
+    rgba(255, 255, 255, 0.13),
+    transparent 62%
+  );
   transition: opacity 0.2s var(--ease);
 }
 .project-card:hover {
-  transform: translateY(-2px);
-  border-color: var(--line-2);
-  box-shadow: 0 22px 44px -28px rgba(0, 0, 0, 0.95);
+  border-color: color-mix(in srgb, var(--accent) 30%, var(--line-2));
+  box-shadow: var(--lift-3), 0 0 60px -30px var(--accent);
 }
 .project-card:hover::before {
   opacity: 1;
@@ -1048,7 +1713,10 @@ a:hover {
   margin: 0;
 }
 
+/* Sheen that wipes across a button on hover. Shared by every primary action. */
 .btn-primary {
+  position: relative;
+  overflow: hidden;
   display: inline-flex;
   align-items: center;
   gap: 8px;
@@ -1059,17 +1727,33 @@ a:hover {
   color: var(--on-accent);
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   box-shadow: 0 10px 26px -12px var(--accent-glow);
-  transition: transform 0.18s var(--ease), filter 0.18s var(--ease), box-shadow 0.18s var(--ease);
+  transition: translate 0.18s var(--ease), filter 0.18s var(--ease), box-shadow 0.18s var(--ease);
+}
+.btn-primary::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent 36%, rgba(255, 255, 255, 0.4) 50%, transparent 64%);
 }
 .btn-primary:hover {
   color: var(--on-accent);
   text-decoration: none;
   filter: brightness(1.08);
-  transform: translateY(-1px);
-  box-shadow: 0 14px 30px -12px var(--accent-glow);
+  translate: 0 -2px;
+  box-shadow: 0 16px 34px -12px var(--accent-glow);
+}
+.btn-primary:hover::after {
+  animation: sheen-sweep 0.68s var(--ease-out-expo);
 }
 
 .btn-ghost {
+  position: relative;
+  overflow: hidden;
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
   padding: 8px 18px;
   border: 1px solid var(--line-2);
   border-radius: 10px;
@@ -1077,10 +1761,12 @@ a:hover {
   font-weight: 500;
   color: var(--text-2);
   background: var(--surface-1);
-  transition: color 0.16s var(--ease), border-color 0.16s var(--ease), background 0.16s var(--ease);
+  transition: color 0.16s var(--ease), border-color 0.16s var(--ease), background 0.16s var(--ease),
+    translate 0.16s var(--ease);
 }
 .btn-ghost:hover {
   color: var(--accent);
+  translate: 0 -2px;
   border-color: var(--accent-line);
   background: var(--accent-wash);
 }
@@ -1114,10 +1800,13 @@ a:hover {
   );
   text-shadow: 0 0 14px rgba(159, 240, 208, 0.22);
 }
+/* Each line mounts fresh (key is the index), so this replays per printed line and
+   the log scrolls in as output arrives. */
 .terminal-line {
   margin: 0 0 4px;
   white-space: pre-wrap;
   word-break: break-word;
+  animation: term-line-in 0.28s var(--ease-out-expo) both;
 }
 .terminal-input-row {
   display: flex;
@@ -1173,7 +1862,6 @@ a:hover {
    app only, so it cannot affect layout containment in any other window. */
 .app-ttt {
   height: 100%;
-  justify-content: center;
   /* `safe` falls back to flex-start when the content is taller than the box, so a
      very short window stays scrollable instead of clipping off the top. */
   justify-content: safe center;
@@ -1679,11 +2367,17 @@ a:hover {
   align-items: center;
   gap: 12px;
   padding: 0 14px;
-  background: rgba(8, 11, 17, 0.72);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  background: var(--glass);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
   border-top: 1px solid rgba(255, 255, 255, 0.08);
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.04), 0 -20px 40px -30px rgba(0, 0, 0, 0.9);
+  /* Rises into place the moment the boot wipe clears. */
+  translate: 0 100%;
+  opacity: 0;
+}
+.taskbar.is-ready {
+  animation: taskbar-in 0.78s var(--ease-out-expo) 0.1s forwards;
 }
 
 .taskbar-brand {
@@ -1726,6 +2420,7 @@ a:hover {
 }
 .taskbar-item {
   position: relative;
+  overflow: hidden;
   display: flex;
   align-items: center;
   gap: 7px;
@@ -1746,8 +2441,19 @@ a:hover {
 }
 .taskbar-item:hover {
   color: var(--text);
-  background: rgba(255, 255, 255, 0.11);
-  border-color: var(--line-2);
+  background: rgba(255, 255, 255, 0.075);
+}
+
+/* Diagonal light bar crossing the button on hover. */
+.taskbar-item-sheen {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0;
+  background: linear-gradient(105deg, transparent 36%, rgba(255, 255, 255, 0.16) 50%, transparent 64%);
+}
+.taskbar-item:hover .taskbar-item-sheen {
+  animation: sheen-sweep 0.62s var(--ease-out-expo);
 }
 .taskbar-item.active {
   color: #fff;
@@ -1823,10 +2529,12 @@ a:hover {
   border: 1px solid var(--line-2);
   border-radius: 14px;
   background: rgba(10, 14, 21, 0.94);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.95);
-  animation: taskbar-menu-in 0.16s var(--ease);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--lift-3);
+  /* Unrolls downward from the button it belongs to, like a panel deploying. */
+  transform-origin: bottom right;
+  animation: taskbar-menu-in 0.26s var(--ease-out-expo);
 }
 
 .taskbar-apps-opt {
@@ -1843,6 +2551,9 @@ a:hover {
   color: var(--text-2);
   background: transparent;
   cursor: pointer;
+  /* Items cascade in on open; the delay is derived from --i. */
+  animation: menu-item-in 0.34s var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 26ms + 40ms);
   transition: color 0.15s var(--ease), background 0.15s var(--ease), border-color 0.15s var(--ease);
 }
 .taskbar-apps-opt svg {
@@ -1893,16 +2604,35 @@ a:hover {
   border: 1px solid var(--line-2);
   border-radius: 12px;
   background: rgba(10, 14, 21, 0.94);
-  backdrop-filter: blur(22px) saturate(150%);
-  -webkit-backdrop-filter: blur(22px) saturate(150%);
-  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.95);
-  animation: taskbar-menu-in 0.16s var(--ease);
+  backdrop-filter: var(--glass-blur);
+  -webkit-backdrop-filter: var(--glass-blur);
+  box-shadow: var(--lift-3);
+  transform-origin: bottom right;
+  animation: taskbar-menu-in 0.26s var(--ease-out-expo);
 }
 
 @keyframes taskbar-menu-in {
   from {
     opacity: 0;
-    transform: translateY(6px);
+    translate: 0 8px;
+    scale: 0.94;
+    clip-path: inset(0 0 100% 0 round 12px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    clip-path: inset(0 0 0 0 round 12px);
+  }
+}
+@keyframes menu-item-in {
+  from {
+    opacity: 0;
+    translate: -6px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
   }
 }
 
@@ -1920,6 +2650,8 @@ a:hover {
   color: var(--text-2);
   background: transparent;
   cursor: pointer;
+  animation: menu-item-in 0.34s var(--ease-out-expo) both;
+  animation-delay: calc(var(--i, 0) * 34ms + 30ms);
   transition: color 0.15s var(--ease), background 0.15s var(--ease);
 }
 .taskbar-lang-opt:hover {
@@ -1985,10 +2717,346 @@ a:hover {
   line-height: 1.35;
   color: var(--text);
   font-variant-numeric: tabular-nums;
+  /* Short accent flare when the minute rolls over. */
+  transition: color 0.3s var(--ease), text-shadow 0.3s var(--ease);
+}
+.taskbar-clock.tick {
+  color: #fff;
+  text-shadow: 0 0 16px var(--accent-glow);
+}
+.taskbar-clock.tick span:first-child {
+  animation: clock-pop 0.42s var(--ease-out-back);
 }
 .taskbar-clock .small {
   font-size: 10.5px;
   color: var(--text-3);
+}
+
+/* ============================================================================
+   motion system
+
+   One vocabulary for every movement in the OS. Three ideas do most of the work:
+
+   1. Reveal — content is hidden, then revealed once, when it scrolls into view.
+      Driven by a single shared IntersectionObserver (motion/revealObserver.js).
+   2. Respond — surfaces react to the cursor: magnetic pull, 3D tilt, sheen.
+      Driven by custom properties written outside React (motion/lerp.js).
+   3. Arrive — chrome (taskbar, icons, windows) enters on a choreographed delay
+      once the boot wipe clears.
+
+   Delay always comes from a custom property, never a hard-coded per-element
+   value, so the whole system retimes from :root alone.
+   ============================================================================ */
+
+/* ---- reveal -------------------------------------------------------------- */
+
+/* Every reveal rule below is wrapped in `:where()`.
+
+   That is load-bearing, not stylistic. A plain `.reveal-stagger.is-in > .chip`
+   scores three classes and would permanently outrank a component's own
+   `.chip:hover` (two), so the settled state would lock the hover transform out.
+   `:where()` contributes zero specificity, which lets the reveal act as a
+   low-priority default that any component rule can override.
+
+   Sequencing still works: the hidden rule and the settled rule both score zero,
+   so source order decides — and `is-in` is declared second. */
+
+:where(.reveal) {
+  opacity: 0;
+  translate: 0 0;
+  filter: blur(0);
+  transition:
+    opacity var(--dur-slow) var(--ease-out-expo) var(--reveal-delay, 0ms),
+    translate var(--dur-slow) var(--ease-out-expo) var(--reveal-delay, 0ms),
+    filter var(--dur-slow) var(--ease-out-expo) var(--reveal-delay, 0ms),
+    scale var(--dur-slow) var(--ease-out-back) var(--reveal-delay, 0ms);
+}
+:where(.reveal.is-in) {
+  opacity: 1;
+}
+
+:where(.reveal--up) {
+  translate: 0 18px;
+}
+:where(.reveal--up.is-in) {
+  translate: 0 0;
+}
+
+:where(.reveal--down) {
+  translate: 0 -14px;
+}
+:where(.reveal--down.is-in) {
+  translate: 0 0;
+}
+
+:where(.reveal--left) {
+  translate: -20px 0;
+}
+:where(.reveal--left.is-in) {
+  translate: 0 0;
+}
+
+:where(.reveal--scale) {
+  scale: 0.94;
+}
+:where(.reveal--scale.is-in) {
+  scale: 1;
+}
+
+:where(.reveal--blur) {
+  filter: blur(10px);
+  translate: 0 12px;
+}
+:where(.reveal--blur.is-in) {
+  filter: blur(0);
+  translate: 0 0;
+}
+
+/* Mask reveal: the element is wiped in from the bottom, like a curtain rising.
+
+   `mask`, not `clip-path`, and the difference is load-bearing rather than a
+   style preference. A collapsed `clip-path: inset(0 0 100% 0)` gives the element
+   a ZERO-AREA intersection rect, so the shared IntersectionObserver reports it
+   as never intersecting — the element hides itself before anything can observe
+   it, and it then stays hidden forever. (This is exactly what hid the profile
+   photo in About: `.about-head` sat at `isIntersecting: false` with a 0x0
+   intersection rect, so `is-in` was never applied.)
+
+   Masking only affects painting, never layout or geometry, so the element keeps
+   its real box and the observer behaves like it does for every other variant.
+
+   Corollary for future variants: never hide a reveal target with a property
+   that collapses its box (clip-path, scale: 0, height: 0). opacity, translate,
+   filter and mask are all safe. */
+:where(.reveal--split) {
+  mask-image: linear-gradient(#000, #000);
+  mask-repeat: no-repeat;
+  mask-position: left bottom;
+  mask-size: 100% 0%;
+  opacity: 1;
+  translate: 0 10px;
+  transition:
+    mask-size var(--dur-cinematic) var(--ease-inout-quint) var(--reveal-delay, 0ms),
+    translate var(--dur-slow) var(--ease-out-expo) var(--reveal-delay, 0ms);
+}
+:where(.reveal--split.is-in) {
+  mask-size: 100% 100%;
+  translate: 0 0;
+}
+
+:where(.reveal--fade) {
+  translate: 0 0;
+}
+
+/* ---- staggered group ----------------------------------------------------- */
+
+/* One observer entry reveals the whole list. Each child reads its own index from
+   --i and derives its delay, so a 40-chip group costs one observer and zero
+   extra re-renders.
+
+   No `will-change` here on purpose: a reveal element is a leaf that animates once
+   and then sits still, and hinting it would keep dozens of compositor layers
+   alive for the rest of the session. The browser promotes them for the duration
+   of the transition anyway. */
+:where(.reveal-stagger) > :where(.reveal-item) {
+  opacity: 0;
+  translate: 0 16px;
+  transition:
+    opacity var(--dur-slow) var(--ease-out-expo) calc(var(--stagger-base, 0ms) + var(--i, 0) * var(--dur-stagger)),
+    translate var(--dur-slow) var(--ease-out-expo) calc(var(--stagger-base, 0ms) + var(--i, 0) * var(--dur-stagger)),
+    scale var(--dur-slow) var(--ease-out-back) calc(var(--stagger-base, 0ms) + var(--i, 0) * var(--dur-stagger));
+}
+:where(.reveal-stagger.is-in) > :where(.reveal-item) {
+  opacity: 1;
+  translate: 0 0;
+}
+
+/* ---- magnetic ------------------------------------------------------------ */
+
+/* Uses the standalone `translate` property so a child's own hover transform
+   composes instead of being overwritten. */
+.magnetic {
+  display: inline-flex;
+  translate: var(--mag-x, 0px) var(--mag-y, 0px);
+  transition: translate 0.4s var(--ease-out-expo);
+  will-change: translate;
+}
+.magnetic:hover {
+  transition: translate 0.12s linear;
+}
+
+/* ---- shared sheen -------------------------------------------------------- */
+
+@keyframes sheen-sweep {
+  from {
+    opacity: 0;
+    translate: -120% 0;
+  }
+  30% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    translate: 120% 0;
+  }
+}
+
+/* ---- window lifecycle ---------------------------------------------------- */
+
+@keyframes win-in {
+  from {
+    opacity: 0;
+    scale: 0.95;
+    translate: 0 16px;
+    filter: blur(7px);
+  }
+  60% {
+    opacity: 1;
+  }
+  to {
+    opacity: 1;
+    scale: 1;
+    translate: 0 0;
+    filter: blur(0);
+  }
+}
+
+@keyframes win-out {
+  to {
+    opacity: 0;
+    scale: 0.965;
+    translate: 0 8px;
+    filter: blur(5px);
+  }
+}
+
+@keyframes win-min {
+  to {
+    opacity: 0;
+    scale: 0.82;
+    /* Drops toward the taskbar the window is being sent to. */
+    translate: 0 46px;
+    filter: blur(4px);
+  }
+}
+
+@keyframes win-content-in {
+  from {
+    opacity: 0;
+    translate: 0 12px;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes win-bloom {
+  0% {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--lift-3),
+      0 0 0 0 color-mix(in srgb, var(--accent) 42%, transparent);
+  }
+  45% {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--lift-4),
+      0 0 0 5px color-mix(in srgb, var(--accent) 16%, transparent),
+      0 0 90px -20px var(--accent);
+  }
+  100% {
+    box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--lift-3),
+      0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
+  }
+}
+
+@keyframes win-sheen {
+  from {
+    opacity: 0;
+    translate: -110% 0;
+  }
+  22% {
+    opacity: 1;
+  }
+  to {
+    opacity: 0;
+    translate: 110% 0;
+  }
+}
+
+/* ---- desktop / taskbar arrival ------------------------------------------ */
+
+@keyframes icon-in {
+  from {
+    opacity: 0;
+    translate: 0 -10px;
+    scale: 0.94;
+    filter: blur(5px);
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+    scale: 1;
+    filter: blur(0);
+  }
+}
+
+@keyframes taskbar-in {
+  from {
+    opacity: 0;
+    translate: 0 100%;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes clock-pop {
+  0% {
+    scale: 1;
+  }
+  40% {
+    scale: 1.14;
+  }
+  to {
+    scale: 1;
+  }
+}
+
+@keyframes node-pop {
+  from {
+    scale: 0.2;
+    opacity: 0;
+  }
+  to {
+    scale: 1;
+    opacity: 1;
+  }
+}
+
+@keyframes term-line-in {
+  from {
+    opacity: 0;
+    translate: -6px 0;
+  }
+  to {
+    opacity: 1;
+    translate: 0 0;
+  }
+}
+
+@keyframes ring-spin {
+  to {
+    rotate: 360deg;
+  }
+}
+
+@keyframes title-sheen {
+  0%,
+  100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
 }
 
 /* responsive */
@@ -2062,21 +3130,78 @@ a:hover {
   }
 }
 
-@media (prefers-reduced-motion: reduce) {
-  .boot-screen {
-    animation: none;
-    opacity: 0;
-    visibility: hidden;
-  }
+/* starfield sits under every other wallpaper layer */
+
 .starfield {
   position: absolute;
   z-index: 0;
   inset: 0;
+  width: 100%;
+  height: 100%;
   pointer-events: none;
 }
 
-.aurora {
+/* ============================================================================
+   coarse pointers
 
+   The magnetic pull and the card tilt are both driven by `pointermove`. A finger
+   dragging across the screen emits the same events, which leaves buttons and
+   cards parked at full deflection the moment the finger lifts — and on touch
+   there is no hover state to communicate why.
+
+   Rather than branch on pointer type in JS (a second code path per component),
+   the effects are simply switched off here. The reveals, the window lifecycle
+   and the preloader are all tap-independent, so they keep working.
+   ============================================================================ */
+
+@media (hover: none), (pointer: coarse) {
+  .tilt {
+    transform: none;
+    will-change: auto;
+  }
+  .magnetic {
+    translate: none;
+    transition: none;
+  }
+  .project-sheen,
+  .desktop-icon-sheen,
+  .taskbar-item-sheen {
+    display: none;
+  }
+  .cursor-glow {
+    display: none;
+  }
+}
+
+/* Reduced motion.
+
+   The goal is "same end state, no movement" — not "remove the styles". Anything
+   whose *hidden* state is `opacity: 0`, a zeroed scale or a `clip-path` wipe has
+   to be explicitly reset here, because disabling the animation that was supposed
+   to reveal it would otherwise leave the element invisible forever.
+
+   Starfield and BootScreen also branch on this query in JS (static frame, ~200ms
+   boot), so only the CSS layers need handling. */
+@media (prefers-reduced-motion: reduce) {
+  /* --- decorative loops: simply switched off --- */
+  .aurora,
+  .aurora-a,
+  .aurora-b,
+  .aurora-c,
+  .mesh-glow,
+  .about-avatar-ring,
+  .app-title,
+  .boot-amb-glow,
+  .boot-amb-grid,
+  .boot-amb-sweep,
+  .boot-scanlines,
+  .project-card,
+  .taskbar-item-sheen,
+  .desktop-icon-sheen,
+  .btn-primary::after,
+  .win-sheen,
+  .project-sheen,
+  .cursor-glow {
     animation: none;
   }
   .cursor-glow {
@@ -2085,8 +3210,90 @@ a:hover {
   .starfield {
     opacity: 0.85;
   }
-  * {
-    transition-duration: 0.01ms !important;
-    animation-duration: 0.01ms !important;
+
+  /* --- entrance state machines: pin to the settled value --- */
+
+  /* Split text would otherwise be stuck mid-blur, character by character. */
+  .split-char,
+  .split-word {
+    opacity: 1 !important;
+    translate: none !important;
+    filter: none !important;
+  }
+  .boot-mark-os,
+  .boot-rail-dot,
+  .boot-log,
+  .boot-ready {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+  .boot-mark-os-line {
+    transform: none !important;
+  }
+
+  /* The exit blades default to scale(1) and cover the screen, so with their
+     animation off they must be removed outright. */
+  .boot-wipe {
+    display: none;
+  }
+
+  .taskbar {
+    opacity: 1 !important;
+    translate: none !important;
+  }
+  .desktop-icon {
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+    transform: none !important;
+    filter: none !important;
+  }
+  /* The hover lift on the tile and its glyph are movement too. */
+  .desktop-icon:hover,
+  .desktop-icon:hover .desktop-icon-glyph {
+    translate: none !important;
+    transform: none !important;
+  }
+  .desktop.is-ready .desktop-icon {
+    animation: none !important;
+  }
+  .window {
+    opacity: 1 !important;
+    scale: none !important;
+    translate: none !important;
+    filter: none !important;
+  }
+  .window.blooming .window-inner,
+  .window.phase-closing,
+  .window.phase-minimizing {
+    animation: none !important;
+  }
+  .win-body > *,
+  .taskbar-apps-opt,
+  .taskbar-lang-opt {
+    animation: none !important;
+    opacity: 1 !important;
+    translate: none !important;
+  }
+  .taskbar-apps-menu,
+  .taskbar-lang-menu {
+    animation: none !important;
+  }
+
+  /* Reveal-on-scroll: JS fires the observer callbacks immediately, so these only
+     need to start in their settled state. `mask` is cleared alongside
+     `clip-path` — a `.reveal--split` that kept `mask-size: 100% 0%` would stay
+     fully masked even though its box is visible. */
+  .reveal,
+  .reveal-stagger > .reveal-item {
+    opacity: 1 !important;
+    translate: none !important;
+    scale: none !important;
+    filter: none !important;
+    clip-path: none !important;
+    mask: none !important;
+  }
+  .boot-screen.leaving .boot-inner {
+    animation: none !important;
   }
 }

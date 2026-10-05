@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 import { useLocale } from '../i18n/useLocale';
+import { Reveal, RevealGroup } from '../motion/Reveal';
 import jazzRestaurant from '../assets/music/alex-morgan-jazz-restaurant-music-563578.mp3';
 import sunnyCafe from '../assets/music/alex-morgan-jazz-song-sunny-cafe-nu-jazz-587413.mp3';
 import smoothJazz from '../assets/music/alex-morgan-smooth-jazz-restaurant-568175.mp3';
@@ -223,7 +224,7 @@ export default function MusicApp() {
     <div className="app-pad mus">
       <audio ref={audioRef} src={track.src} preload="metadata" />
 
-      <div className="mus-stage">
+      <Reveal className="mus-stage" variant="scale">
         <div className={`mus-disc ${playing ? 'spin' : ''}`}>
           <div className="mus-grooves" />
         </div>
@@ -244,7 +245,7 @@ export default function MusicApp() {
             ))}
           </div>
         </div>
-      </div>
+      </Reveal>
 
       <div className="mus-scrub">
         <span className="mus-time">{fmt(time)}</span>
@@ -304,8 +305,10 @@ export default function MusicApp() {
         </div>
       </div>
 
-      <h4>{t('music.tracks')}</h4>
-      <ol className="mus-list">
+      <Reveal variant="fade">
+        <h4>{t('music.tracks')}</h4>
+      </Reveal>
+      <RevealGroup as="ol" className="mus-list" stagger={60}>
         {TRACKS.map((entry, i) => (
           <li key={entry.src}>
             <button
@@ -333,7 +336,7 @@ export default function MusicApp() {
             </button>
           </li>
         ))}
-      </ol>
+      </RevealGroup>
 
       <span className="mus-sr" aria-live="polite">
         {t(playing ? 'music.announcePlaying' : 'music.announcePaused', {

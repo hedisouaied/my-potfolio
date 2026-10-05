@@ -47,7 +47,11 @@ export default function TerminalApp() {
   return (
     <div className="terminal" ref={scrollRef}>
       {lines.map((l, i) => (
-        <pre key={i} className="terminal-line">{l}</pre>
+        /* `key={i}` makes each line mount fresh, so the enter animation runs on the
+           newest output only — the log scrolls in as it is printed. */
+        <pre key={i} className="terminal-line">
+          {l}
+        </pre>
       ))}
       <form onSubmit={submit} className="terminal-input-row">
         <span>$</span>
