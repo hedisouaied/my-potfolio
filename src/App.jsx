@@ -24,7 +24,8 @@ const WALLPAPERS = [
    last one listed ends up on top — that leaves About Me (the introduction)
    front and centre once the chaos settles, with the real content stacked under
    it and the two gimmick apps buried at the back. */
-const CASCADE_ORDER = ['tictactoe', 'music', 'terminal', 'contact', 'skills', 'resume', 'projects', 'about'];
+const CASCADE_ORDER = ['music', 'contact', 'skills', 'resume', 'about'];
+//const CASCADE_ORDER = ['tictactoe', 'music', 'terminal', 'contact', 'skills', 'resume', 'projects', 'about'];
 
 const clamp = (v, min, max) => Math.min(Math.max(v, min), max);
 
@@ -111,7 +112,7 @@ export default function App() {
           }, elapsed)
         );
       }
-    }, introRef.current.isMobile ? 0 : 1000);
+    }, introRef.current.isMobile ? 0 : 2000);
 
     return () => {
       clearTimeout(kickoff);
@@ -219,6 +220,7 @@ export default function App() {
         windows={windows}
         activeId={activeWindow?.id}
         wallpaperName={t(wallpaper.nameKey)}
+        onOpen={openApp}
         onToggle={toggleFromTaskbar}
         onCycleWallpaper={cycleWallpaper}
       />

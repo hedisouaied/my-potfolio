@@ -74,6 +74,14 @@ const PATHS = {
       <path d="M12 3.8c2.3 2.3 3.5 5.2 3.5 8.2s-1.2 5.9-3.5 8.2c-2.3-2.3-3.5-5.2-3.5-8.2s1.2-5.9 3.5-8.2Z" />
     </>
   ),
+  grid: (
+    <>
+      <rect x="3.6" y="3.6" width="7" height="7" rx="1.9" />
+      <rect x="13.4" y="3.6" width="7" height="7" rx="1.9" />
+      <rect x="3.6" y="13.4" width="7" height="7" rx="1.9" />
+      <rect x="13.4" y="13.4" width="7" height="7" rx="1.9" />
+    </>
+  ),
 };
 
 export default function AppIcon({ name, size = 18, className }) {

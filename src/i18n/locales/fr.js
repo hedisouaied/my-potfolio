@@ -22,6 +22,8 @@ export default {
   taskbar: {
     changeWallpaper: "Changer le fond d'écran — actuel : {name}",
     wallpaper: "Fond d'écran : {name}",
+    apps: 'Toutes les applications',
+    openApp: 'Ouvrir {name}',
     language: 'Langue',
     changeLanguage: "Changer de langue — actuelle : {name}",
   },

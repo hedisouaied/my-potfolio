@@ -1707,11 +1707,24 @@ a:hover {
   opacity: 0.62;
 }
 
+/* apps launcher + language switcher: two independent popovers inside one
+   relative wrapper, so the outside-press check can cover both at once. */
+
+.taskbar-tools {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  flex: 0 0 auto;
+}
+
+.taskbar-apps,
 .taskbar-lang {
   position: relative;
   flex: 0 0 auto;
 }
 
+.taskbar-apps-btn,
 .taskbar-lang-btn {
   display: grid;
   place-items: center;
@@ -1722,12 +1735,85 @@ a:hover {
   color: var(--text-2);
   background: rgba(255, 255, 255, 0.05);
   transition: color 0.15s var(--ease), background 0.15s var(--ease), border-color 0.15s var(--ease);
+  cursor: pointer;
 }
+.taskbar-apps-btn:hover,
+.taskbar-apps-btn.open,
 .taskbar-lang-btn:hover,
 .taskbar-lang-btn.open {
   color: var(--accent);
   background: var(--accent-wash);
   border-color: var(--accent-line);
+}
+
+.taskbar-apps-menu {
+  position: absolute;
+  right: 0;
+  bottom: calc(100% + 10px);
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 3px;
+  width: min(300px, calc(100vw - 28px));
+  padding: 6px;
+  border: 1px solid var(--line-2);
+  border-radius: 14px;
+  background: rgba(10, 14, 21, 0.94);
+  backdrop-filter: blur(22px) saturate(150%);
+  -webkit-backdrop-filter: blur(22px) saturate(150%);
+  box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.95);
+  animation: taskbar-menu-in 0.16s var(--ease);
+}
+
+.taskbar-apps-opt {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  min-width: 0;
+  padding: 8px 9px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  font-family: inherit;
+  font-size: 12.5px;
+  text-align: left;
+  color: var(--text-2);
+  background: transparent;
+  cursor: pointer;
+  transition: color 0.15s var(--ease), background 0.15s var(--ease), border-color 0.15s var(--ease);
+}
+.taskbar-apps-opt svg {
+  flex: 0 0 auto;
+  color: var(--text-3);
+  transition: color 0.15s var(--ease);
+}
+.taskbar-apps-opt:hover {
+  color: var(--text);
+  background: rgba(255, 255, 255, 0.09);
+}
+.taskbar-apps-opt:hover svg {
+  color: var(--accent);
+}
+.taskbar-apps-opt.running {
+  color: var(--text);
+  background: var(--accent-wash);
+}
+.taskbar-apps-opt.running svg {
+  color: var(--accent);
+}
+.taskbar-apps-name {
+  flex: 1;
+  min-width: 0;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.taskbar-apps-dot {
+  flex: 0 0 auto;
+  width: 5px;
+  height: 5px;
+  border-radius: 99px;
+  background: var(--accent);
+  box-shadow: 0 0 8px var(--accent-glow);
 }
 
 .taskbar-lang-menu {
@@ -1745,10 +1831,10 @@ a:hover {
   backdrop-filter: blur(22px) saturate(150%);
   -webkit-backdrop-filter: blur(22px) saturate(150%);
   box-shadow: 0 18px 40px -22px rgba(0, 0, 0, 0.95);
-  animation: lang-menu-in 0.16s var(--ease);
+  animation: taskbar-menu-in 0.16s var(--ease);
 }
 
-@keyframes lang-menu-in {
+@keyframes taskbar-menu-in {
   from {
     opacity: 0;
     transform: translateY(6px);
@@ -1867,6 +1953,14 @@ a:hover {
   }
   .taskbar-lang-menu {
     min-width: 138px;
+  }
+  .taskbar-apps-menu {
+    width: min(268px, calc(100vw - 24px));
+  }
+  .taskbar-apps-opt {
+    gap: 7px;
+    padding: 8px 7px;
+    font-size: 12px;
   }
   .app-pad {
     padding: 18px 18px 26px;

@@ -22,6 +22,8 @@ export default {
   taskbar: {
     changeWallpaper: 'Change wallpaper — current: {name}',
     wallpaper: 'Wallpaper: {name}',
+    apps: 'All apps',
+    openApp: 'Open {name}',
     language: 'Language',
     changeLanguage: 'Change language — current: {name}',
   },
