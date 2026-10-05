@@ -8,6 +8,7 @@ export default {
     terminal: 'Terminal',
     tictactoe: 'Tic-Tac-Toe',
     music: 'Music',
+    cv: 'CV Preview',
   },
 
   wallpapers: {
@@ -90,6 +91,12 @@ export default {
     experience: 'Experience',
     education: 'Education',
     certifications: 'Certifications',
+  },
+
+  cv: {
+    download: 'Download',
+    openNewTab: 'Open in new tab',
+    fallback: 'Your browser cannot display PDF files.',
   },
 
   contact: {
