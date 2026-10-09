@@ -8,7 +8,7 @@ export default function ContactApp() {
   const { t } = useLocale();
 
   const links = [
-    { href: profile.website, label: 'hedisouaied.com', external: true },
+    { href: profile.website, label: profile.website.replace(/^https?:\/\//, ''), external: true },
     { href: profile.linkedin, label: 'LinkedIn', external: true },
   ];
 

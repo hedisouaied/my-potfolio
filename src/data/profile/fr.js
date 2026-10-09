@@ -1,14 +1,14 @@
 export const profile = {
   name: 'Hedi Souaied',
-  role: 'Développeur Web Full-Stack',
+  role: 'Développeur Full-Stack',
   focus: 'PHP / Laravel · Filament / Livewire',
   location: 'Sousse, Tunisie',
   phone: '+216 99 264 250',
   email: 'hedisouaied2018@gmail.com',
-  website: 'https://hedisouaied.com',
+  website: 'https://hedisouaied.github.io/my-potfolio',
   linkedin: 'https://www.linkedin.com/in/hedi-souaied-1973311a4',
   summary:
-    "Développeur web full-stack avec une expérience en production sur des applications PHP et Laravel — création de tableaux de bord d'administration avec Filament, d'interfaces réactives avec Livewire, et d'API REST adossées à MySQL et PostgreSQL. À l'aise sur l'ensemble du cycle de développement : authentification et sécurité, optimisation des bases de données, déploiement sous Linux, et intégration de services tiers, en explorant notamment Anthropic Claude dans les processus de développement.",
+    "Développeur Full-Stack avec une expérience en production sur des applications PHP et Laravel — développement d'applications web évolutives, de tableaux de bord d'administration avec Filament, d'interfaces réactives avec Livewire, et d'API REST adossées à MySQL et PostgreSQL. À l'aise sur l'ensemble du cycle de développement logiciel, de la conception au déploiement et à la maintenance, avec un fort accent sur la sécurité, les performances et les bonnes pratiques.",
 };
 
 export const experience = [
@@ -18,13 +18,9 @@ export const experience = [
     period: 'Févr. 2024 – Présent',
     place: 'Sousse',
     bullets: [
-      'Développement et maintenance d’applications web évolutives en PHP et Laravel.',
-      'Création d’interfaces responsives avec Tailwind CSS, Bootstrap et Livewire ; développement de tableaux de bord d’administration avec Filament.',
-      'Conception de composants réutilisables et de logique métier selon les principes MVC et POO.',
-      'Développement et intégration d’API RESTful ; conception et optimisation de bases de données MySQL/PostgreSQL.',
-      'Mise en place de l’authentification, de l’autorisation, de la validation, des middlewares et de la sécurité applicative.',
-      'Déploiement et maintenance d’applications sous Linux avec Nginx/Apache, SSH et cPanel.',
-      'Exploration et intégration de technologies IA/LLM, dont Anthropic Claude, dans les processus de développement.',
+      'Développement et maintenance d’applications web évolutives en PHP et Laravel, avec un focus sur les fonctionnalités métier, les interfaces d’administration, les intégrations d’API, la conception de bases de données et la performance applicative.',
+      'Conception de solutions maintenables avec Filament et Livewire, selon les principes MVC, POO, sécurité et bonnes pratiques de code.',
+      'Collaboration avec des équipes pluridisciplinaires sur l’ensemble du cycle de développement logiciel, de l’implémentation au déploiement et à la maintenance.',
     ],
   },
   {
@@ -33,10 +29,9 @@ export const experience = [
     period: 'Janv. 2021 – Nov. 2023',
     place: 'Sousse',
     bullets: [
-      'Développement et maintenance d’applications web en Laravel et PHP.',
-      'Intervention sur l’ensemble du cycle de vie logiciel, de la conception au déploiement et à la maintenance.',
-      'Revue de code, débogage, diagnostic d’incidents en production et travail sur la sécurité et la protection des données.',
-      'Encadrement de développeurs juniors et contribution à un environnement d’équipe collaboratif.',
+      'Développement et personnalisation de solutions digitales en e-commerce, formation en ligne et plateformes web corporate.',
+      'Mise en œuvre d’exigences fonctionnelles, développement de fonctionnalités web dynamiques, intégration de services métier et adaptation de systèmes existants aux besoins clients.',
+      'Gestion des mises à jour applicatives, corrections de bugs et déploiements en production, en garantissant fonctionnalité, ergonomie et maintenabilité.',
     ],
   },
   {
@@ -45,8 +40,9 @@ export const experience = [
     period: 'Nov. 2020 – Déc. 2020',
     place: 'Sousse',
     bullets: [
-      'Participation à l’UI/UX du site web et implémentation de fonctionnalités Laravel, dont formulaires de contact et catalogues.',
-      'Utilisation de bases de données et optimisation des performances via le cache, l’optimisation des images et la réduction des temps de chargement.',
+      'Collaboration avec l’équipe design pour l’UI/UX du site et implémentation de fonctionnalités Laravel, dont un formulaire de contact et un catalogue.',
+      'Travail sur la base de données pour garantir l’intégrité et l’efficacité des données, et optimisation des performances via le cache, la réduction des temps de chargement et l’optimisation des images.',
+      'Tests et débogage pour garantir un site fonctionnel et sans bugs.',
     ],
   },
   {
@@ -55,8 +51,9 @@ export const experience = [
     period: 'Oct. 2020',
     place: 'Sousse',
     bullets: [
-      'Développement d’un site e-commerce en PHP/Laravel avec passerelles de paiement, catalogue produits, panier et gestion des commandes.',
-      'Création d’interfaces responsives et optimisation des requêtes de base de données pour la performance.',
+      'Développement d’un site e-commerce entièrement fonctionnel en PHP et Laravel, avec passerelles de paiement, catalogue produits, panier et gestion des commandes.',
+      'Conception et implémentation d’une interface responsive en HTML, CSS et JavaScript, et création d’un schéma de base de données robuste avec requêtes optimisées.',
+      'Tests et débogage approfondis pour garantir un code de haute qualité et sans erreurs.',
     ],
   },
 ];
@@ -85,31 +82,96 @@ export const certifications = [
 ];
 
 export const skills = {
-  'Langages & Frameworks': ['PHP', 'JavaScript', 'SQL', 'Laravel', 'React.js', 'Vue.js', 'Node.js'],
-  'Admin & Réactif': ['Filament', 'Livewire', 'Alpine.js', 'Composer', 'Laravel Artisan', 'Eloquent ORM'],
-  'Front End': ['HTML5', 'CSS3', 'Tailwind CSS', 'Bootstrap', 'jQuery', 'AJAX'],
-  'Bases de données & APIs': ['MySQL', 'PostgreSQL', 'MariaDB', 'API REST', 'JSON', 'Authentification d’API'],
-  'Serveurs & Déploiement': ['Apache', 'Nginx', 'cPanel', 'SSH', '.htaccess', 'FileZilla'],
-  'Gestion de versions & Outils': ['Git', 'GitHub', 'GitLab', 'Bitbucket', 'VS Code', 'npm'],
-  'Sécurité & Performance': ['Authentification', 'Middleware', 'CSRF', 'Optimisation des requêtes', 'Cache', 'Chargement différé'],
-  'SEO & IA': ['SEO on-page', 'SEO technique', 'API Anthropic Claude', 'Développement assisté par IA'],
+  'Langages de Programmation': ['PHP', 'JavaScript', 'TypeScript', 'SQL'],
+  'Frameworks Web': ['Laravel', 'React.js', 'Vue.js', 'Node.js'],
+  'CMS & Constructeurs de Sites': ['WordPress', 'Webflow', 'Strapi', 'October CMS', 'Winter CMS'],
+  'Écosystème PHP': ['Composer', 'Laravel Artisan', 'Eloquent ORM'],
+  'Admin & Frameworks Réactifs': ['Filament', 'Livewire', 'Alpine.js'],
+  'Technologies Front-End': ['HTML5', 'CSS3', 'Tailwind CSS', 'Bootstrap', 'jQuery', 'AJAX'],
+  'Gestion de Bases de Données': ['MySQL', 'PostgreSQL', 'MariaDB', 'SQL'],
+  'Développement d’API': ['API REST', 'JSON', 'Authentification d’API'],
+  'Contrôle de Version': ['Git', 'GitHub', 'GitLab', 'Bitbucket'],
+  'Serveurs & Déploiement': ['Apache', 'Nginx', 'cPanel', 'SSH', '.htaccess'],
+  'Outils de Développement': ['Visual Studio Code', 'npm', 'Composer'],
+  'Authentification & Sécurité': ['Authentification Laravel', 'Middleware', 'CSRF', 'Authentification d’API'],
+  'Email & Communication': ['SMTP', 'Services Mail'],
+  'Performance & Optimisation': ['Optimisation des requêtes', 'Cache', 'Chargement différé'],
+  'SEO': ['SEO on-page', 'SEO technique', 'Meta Tags', 'Optimisation Sitemap'],
+  'IA & LLM': ['API Anthropic Claude', 'Développement assisté par IA'],
+  'Autres': ['Responsive Web Design', 'Architecture MVC', 'CRUD', 'POO', 'AJAX'],
+  'Outils & Plateformes': ['Jira', 'GLPI', 'Visual Studio Code', 'FileZilla', 'cPanel', 'FTP/SFTP', 'Git', 'GitHub', 'GitLab', 'Bitbucket'],
+  'Hébergement & Gestion Serveurs': ['OVH', 'GoDaddy', 'Mailchimp', 'ZenHosting', 'Orange', 'TopNet'],
 };
 
 export const projects = [
   {
-    tag: 'En cours',
-    title: 'Projets Satoripop',
-    body: 'Applications Laravel évolutives avec tableaux de bord d’administration Filament, API RESTful et MySQL/PostgreSQL — déployées et maintenues sur des serveurs Linux.',
+    tag: 'Satoripop',
+    title: 'Attunea',
+    url: 'attunea.com',
+    body: 'Plateforme de gestion de la performance d’entreprise — fonctionnalités métier pour réunions, projets, KPI et plans d’action, avec intégrations d’API externes et optimisation des performances.',
+    tech: ['Laravel', 'Filament', 'Livewire', 'MySQL', 'Redis', 'Microsoft Graph API'],
   },
   {
-    tag: '2021 – 2023',
-    title: 'Tounes Connect',
-    body: 'Applications web Laravel/PHP menées de bout en bout, de la conception à la production, en incluant la gestion de l’hébergement et l’encadrement de développeurs juniors.',
+    tag: 'Satoripop',
+    title: 'STAR Assurances',
+    url: 'star.com.tn',
+    body: 'Site d’assurance et modernisation du CMS — refonte du back-end avec un back-office Filament maintenable pour fluidifier les workflows d’administration du contenu.',
+    tech: ['Laravel', 'Filament', 'Livewire', 'MySQL', 'API REST'],
   },
   {
-    tag: '2020',
-    title: 'E-commerce Optima Tec',
-    body: 'Plateforme e-commerce en PHP/Laravel avec passerelles de paiement, catalogue produits, panier et gestion des commandes.',
+    tag: 'Satoripop',
+    title: 'Task Pulse',
+    url: 'task-pulse.com',
+    body: 'Plateforme de gestion des tâches et checklists — suivi des tâches, checklists opérationnelles, rappels, reporting et imports de données Excel.',
+    tech: ['Laravel', 'Filament', 'Livewire', 'PostgreSQL', 'Redis', 'API REST'],
+  },
+  {
+    tag: 'Satoripop',
+    title: 'Wifak Bank',
+    url: 'wifakbank.com',
+    body: 'Site bancaire et modernisation du CMS — refonte du back-end et back-office Filament pour la gestion du contenu et des workflows d’administration.',
+    tech: ['Laravel', 'Filament', 'Livewire', 'MySQL', 'API REST'],
+  },
+  {
+    tag: 'Satoripop',
+    title: 'GCER Tunisie',
+    url: 'gcertunisie.com',
+    body: 'Site corporate avec un CMS sur mesure — gestion du contenu des pages, des médias et des sections dynamiques du site.',
+    tech: ['Laravel', 'Filament', 'Livewire', 'MySQL', 'Tailwind CSS'],
+  },
+  {
+    tag: 'Tounes Connect',
+    title: 'E-SmartTec',
+    url: 'e-smarttec.com',
+    body: 'Plateforme e-learning et de formation en ligne — streaming et gestion des cours, examens, quiz, suivi de la progression des apprenants et paiements en ligne.',
+    tech: ['Laravel', 'PHP', 'MySQL', 'Paiement en ligne'],
+  },
+  {
+    tag: 'Tounes Connect',
+    title: 'MSPara',
+    url: 'mspara.com',
+    body: 'Plateforme e-commerce personnalisée sur PrestaShop — catalogue produits, gestion clients, traitement des commandes, paiements et administration.',
+    tech: ['PrestaShop', 'PHP', 'MySQL'],
+  },
+  {
+    tag: 'Tounes Connect',
+    title: 'Al Baraka CIE',
+    url: 'albaraka-cie.com',
+    body: 'Site corporate et gestion de contenu — sections dynamiques et back-office pour gérer les pages, le contenu et les médias.',
+    tech: ['Laravel', 'PHP', 'MySQL', 'JavaScript'],
+  },
+  {
+    tag: 'Tounes Connect',
+    title: 'HPC Group',
+    url: 'hpc-group.com.tn',
+    body: 'Site corporate et CMS — gestion de contenu dynamique et outils d’administration pour les pages et les médias du site.',
+    tech: ['Laravel', 'PHP', 'MySQL', 'JavaScript'],
+  },
+  {
+    tag: 'Optima Tec',
+    title: 'Plateforme e-commerce',
+    body: 'Site e-commerce entièrement fonctionnel avec passerelles de paiement, catalogue produits, panier et gestion des commandes.',
+    tech: ['PHP', 'Laravel', 'MySQL', 'JavaScript'],
   },
 ];
 

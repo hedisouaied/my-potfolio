@@ -81,15 +81,18 @@
   width: 10px;
   height: 10px;
 }
+
 ::-webkit-scrollbar-track {
   background: transparent;
 }
+
 ::-webkit-scrollbar-thumb {
   background: rgba(255, 255, 255, 0.14);
   border: 3px solid transparent;
   border-radius: 99px;
   background-clip: padding-box;
 }
+
 ::-webkit-scrollbar-thumb:hover {
   background: rgba(255, 255, 255, 0.26);
   background-clip: padding-box;
@@ -135,6 +138,7 @@ a {
   text-decoration: none;
   transition: color 0.15s var(--ease);
 }
+
 a:hover {
   color: var(--accent-2);
   text-decoration: underline;
@@ -169,28 +173,33 @@ a:hover {
     radial-gradient(920px 660px at 90% 94%, rgba(124, 140, 255, 0.2), transparent 62%),
     radial-gradient(700px 480px at 72% 16%, rgba(167, 139, 250, 0.12), transparent 60%);
 }
+
 .wp-grid {
   background-image:
     radial-gradient(900px 620px at 50% 0%, rgba(56, 189, 248, 0.16), transparent 65%),
     radial-gradient(760px 560px at 50% 100%, rgba(34, 211, 238, 0.1), transparent 62%);
 }
+
 .wp-violet {
   background-image:
     radial-gradient(1000px 640px at 84% 10%, rgba(167, 139, 250, 0.22), transparent 62%),
     radial-gradient(900px 640px at 10% 90%, rgba(99, 102, 241, 0.2), transparent 62%),
     radial-gradient(640px 460px at 30% 20%, rgba(34, 211, 238, 0.09), transparent 60%);
 }
+
 .wp-matrix {
   background-image:
     radial-gradient(900px 600px at 22% 18%, rgba(74, 222, 128, 0.14), transparent 62%),
     radial-gradient(880px 620px at 78% 86%, rgba(34, 211, 238, 0.13), transparent 62%);
 }
+
 .wp-ember {
   background-image:
     radial-gradient(980px 620px at 80% 14%, rgba(251, 146, 60, 0.17), transparent 62%),
     radial-gradient(900px 640px at 14% 90%, rgba(236, 72, 153, 0.15), transparent 62%),
     radial-gradient(640px 440px at 46% 50%, rgba(251, 191, 36, 0.07), transparent 60%);
 }
+
 /* Photographic cover. Sits as the bottom-most layer so the grid, starfield,
    aurora, cursor glow and watermark all float over it. The focal point is
    ~78%/38% because that is where the subject sits in the frame — centring the
@@ -214,6 +223,7 @@ a:hover {
   inset: 0;
   pointer-events: none;
 }
+
 .desktop::before {
   z-index: 0;
   background-image:
@@ -255,6 +265,7 @@ a:hover {
   z-index: 0;
   will-change: transform, translate, scale;
 }
+
 .aurora-a {
   width: 44vmax;
   height: 44vmax;
@@ -264,6 +275,7 @@ a:hover {
   transform: translate3d(calc(var(--px) * -52px), calc(var(--py) * -38px), 0);
   animation: drift-a 28s var(--ease) infinite alternate;
 }
+
 .aurora-b {
   width: 38vmax;
   height: 38vmax;
@@ -273,6 +285,7 @@ a:hover {
   transform: translate3d(calc(var(--px) * 68px), calc(var(--py) * 50px), 0);
   animation: drift-b 34s var(--ease) infinite alternate;
 }
+
 /* Third, warmer blob near the middle of the frame. Two blobs read as a gradient;
    three read as depth, and it is the one that carries the pointer furthest. */
 .aurora-c {
@@ -295,14 +308,12 @@ a:hover {
   pointer-events: none;
   opacity: 0.4;
   mix-blend-mode: screen;
-  background: conic-gradient(
-    from 0deg at 50% 50%,
-    transparent 0deg,
-    color-mix(in srgb, var(--accent) 9%, transparent) 70deg,
-    transparent 150deg,
-    color-mix(in srgb, var(--accent-3) 9%, transparent) 250deg,
-    transparent 340deg
-  );
+  background: conic-gradient(from 0deg at 50% 50%,
+      transparent 0deg,
+      color-mix(in srgb, var(--accent) 9%, transparent) 70deg,
+      transparent 150deg,
+      color-mix(in srgb, var(--accent-3) 9%, transparent) 250deg,
+      transparent 340deg);
   animation: mesh-spin 62s linear infinite;
   will-change: rotate;
 }
@@ -328,18 +339,21 @@ a:hover {
     scale: 1.12;
   }
 }
+
 @keyframes drift-b {
   to {
     translate: -6vmax -3vmax;
     scale: 1.08;
   }
 }
+
 @keyframes drift-c {
   to {
     translate: 4vmax 6vmax;
     scale: 0.88;
   }
 }
+
 @keyframes mesh-spin {
   to {
     rotate: 360deg;
@@ -399,10 +413,8 @@ a:hover {
   inset: -30%;
   opacity: 0.55;
   background:
-    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%) 30% 40% / 60% 60%
-      no-repeat,
-    radial-gradient(closest-side, color-mix(in srgb, var(--accent-3) 20%, transparent), transparent 70%) 70% 66% / 55% 55%
-      no-repeat;
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent) 22%, transparent), transparent 70%) 30% 40% / 60% 60% no-repeat,
+    radial-gradient(closest-side, color-mix(in srgb, var(--accent-3) 20%, transparent), transparent 70%) 70% 66% / 55% 55% no-repeat;
   filter: blur(40px);
   animation: boot-breathe 7s var(--ease) infinite alternate;
 }
@@ -430,12 +442,10 @@ a:hover {
   left: 0;
   right: 0;
   height: 34%;
-  background: linear-gradient(
-    to bottom,
-    transparent,
-    color-mix(in srgb, var(--accent) 7%, transparent),
-    transparent
-  );
+  background: linear-gradient(to bottom,
+      transparent,
+      color-mix(in srgb, var(--accent) 7%, transparent),
+      transparent);
   animation: boot-sweep 3.1s linear infinite;
 }
 
@@ -443,11 +453,9 @@ a:hover {
 .boot-scanlines {
   position: absolute;
   inset: 0;
-  background: repeating-linear-gradient(
-    to bottom,
-    rgba(255, 255, 255, 0.035) 0 1px,
-    rgba(0, 0, 0, 0) 1px 3px
-  );
+  background: repeating-linear-gradient(to bottom,
+      rgba(255, 255, 255, 0.035) 0 1px,
+      rgba(0, 0, 0, 0) 1px 3px);
   animation: boot-scan 7s linear infinite;
 }
 
@@ -490,6 +498,7 @@ a:hover {
   opacity: 0;
   translate: -6px 0;
 }
+
 .boot-mark-os-line {
   width: 22px;
   height: 1px;
@@ -502,10 +511,12 @@ a:hover {
 .split {
   display: inline-block;
 }
+
 .split-word {
   display: inline-block;
   white-space: pre;
 }
+
 .split-char {
   display: inline-block;
   opacity: 0;
@@ -517,9 +528,11 @@ a:hover {
   animation: boot-char-in 0.62s var(--ease-out-expo) forwards;
   animation-delay: calc(var(--i, 0) * 34ms);
 }
+
 .boot-screen.started .boot-mark-os {
   animation: boot-os-in 0.5s var(--ease-out-expo) 0.42s forwards;
 }
+
 .boot-screen.started .boot-mark-os-line {
   animation: boot-line-draw 0.44s var(--ease-out-expo) 0.52s forwards;
 }
@@ -540,6 +553,7 @@ a:hover {
   background: rgba(255, 255, 255, 0.09);
   overflow: visible;
 }
+
 /* Width is driven straight from --boot-p, so the fill is frame-synced with the
    JS clock instead of a CSS animation that could drift out of step with it. */
 .boot-rail-fill {
@@ -564,6 +578,7 @@ a:hover {
   box-shadow: 0 0 14px 2px var(--accent-glow);
   opacity: 0;
 }
+
 .boot-screen.started .boot-rail-dot {
   animation: boot-dot-in 0.3s var(--ease) 0.3s forwards;
 }
@@ -578,10 +593,12 @@ a:hover {
   font-variant-numeric: tabular-nums;
   color: var(--text-2);
 }
+
 .boot-rail-pct b {
   font-weight: 500;
   color: var(--text);
 }
+
 .boot-rail-pct i {
   font-style: normal;
   font-size: 0.85em;
@@ -602,6 +619,7 @@ a:hover {
   opacity: 0;
   translate: 0 10px;
 }
+
 .boot-screen.started .boot-log {
   animation: boot-log-in 0.6s var(--ease-out-expo) 0.16s forwards;
 }
@@ -625,6 +643,7 @@ a:hover {
   opacity: 0;
   translate: -10px 0;
 }
+
 .boot-line.in {
   animation: boot-line-in 0.34s var(--ease-out-expo) forwards;
 }
@@ -634,6 +653,7 @@ a:hover {
   font-weight: 700;
   text-shadow: 0 0 14px var(--accent-glow);
 }
+
 .boot-text {
   color: var(--text-2);
 }
@@ -644,18 +664,22 @@ a:hover {
   gap: 0.5ch;
   overflow: hidden;
 }
+
 .boot-dots i {
   font-style: normal;
   color: var(--text-3);
   opacity: 0;
   animation: boot-dot 0.2s steps(1, end) forwards;
 }
+
 .boot-dots i:nth-child(1) {
   animation-delay: 0.06s;
 }
+
 .boot-dots i:nth-child(2) {
   animation-delay: 0.14s;
 }
+
 .boot-dots i:nth-child(3) {
   animation-delay: 0.22s;
 }
@@ -688,6 +712,7 @@ a:hover {
   color: var(--accent);
   opacity: 0;
 }
+
 .boot-screen.started .boot-ready {
   animation: boot-line-in 0.34s var(--ease-out-expo) forwards, boot-pulse 1.4s ease-in-out infinite;
   animation-delay: 0.9s, 1.3s;
@@ -701,34 +726,41 @@ a:hover {
   z-index: 2;
   pointer-events: none;
 }
+
 .boot-wipe-blade {
   position: absolute;
   background: var(--void);
 }
+
 .boot-wipe-t,
 .boot-wipe-b {
   left: 0;
   right: 0;
   height: 50.2%;
 }
+
 .boot-wipe-l,
 .boot-wipe-r {
   top: 0;
   bottom: 0;
   width: 50.2%;
 }
+
 .boot-wipe-t {
   top: 0;
   transform-origin: top;
 }
+
 .boot-wipe-b {
   bottom: 0;
   transform-origin: bottom;
 }
+
 .boot-wipe-l {
   left: 0;
   transform-origin: left;
 }
+
 .boot-wipe-r {
   right: 0;
   transform-origin: right;
@@ -745,17 +777,21 @@ a:hover {
 .boot-screen.leaving .boot-wipe-blade {
   animation: boot-blade 0.72s var(--ease-inout-quint) forwards;
 }
+
 .boot-screen.leaving .boot-wipe-t,
 .boot-screen.leaving .boot-wipe-b {
   animation-delay: 0.04s;
 }
+
 .boot-screen.leaving .boot-wipe-l,
 .boot-screen.leaving .boot-wipe-r {
   animation-delay: 0.1s;
 }
+
 .boot-screen.leaving .boot-wipe-flash {
   animation: boot-flash 0.6s var(--ease-out-expo) 0.05s forwards;
 }
+
 /* Everything behind the blades dissolves a beat before they part. */
 .boot-screen.leaving .boot-inner {
   animation: boot-inner-out 0.36s var(--ease) forwards;
@@ -770,120 +806,147 @@ a:hover {
     filter: blur(0);
   }
 }
+
 @keyframes boot-os-in {
   to {
     opacity: 1;
     translate: 0 0;
   }
 }
+
 @keyframes boot-line-draw {
   to {
     transform: scaleX(1);
   }
 }
+
 @keyframes boot-dot-in {
   to {
     opacity: 1;
   }
 }
+
 @keyframes boot-log-in {
   to {
     opacity: 1;
     translate: 0 0;
   }
 }
+
 @keyframes boot-line-in {
   from {
     opacity: 0;
     translate: -10px 0;
   }
+
   to {
     opacity: 1;
     translate: 0 0;
   }
 }
+
 @keyframes boot-dot {
   from {
     opacity: 0;
   }
+
   to {
     opacity: 1;
   }
 }
+
 @keyframes boot-ok-in {
   from {
     opacity: 0;
     translate: 0 3px;
     scale: 0.9;
   }
+
   to {
     opacity: 1;
     translate: 0 0;
     scale: 1;
   }
 }
+
 @keyframes boot-blink {
+
   0%,
   50% {
     opacity: 1;
   }
+
   51%,
   100% {
     opacity: 0;
   }
 }
+
 @keyframes boot-scan {
   from {
     background-position-y: 0;
   }
+
   to {
     background-position-y: 3px;
   }
 }
+
 @keyframes boot-pulse {
+
   0%,
   100% {
     opacity: 0.6;
   }
+
   50% {
     opacity: 1;
   }
 }
+
 @keyframes boot-breathe {
   to {
     opacity: 0.85;
     scale: 1.12;
   }
 }
+
 @keyframes boot-grid-run {
   to {
     background-position-y: 56px;
   }
 }
+
 @keyframes boot-sweep {
   from {
     translate: 0 -40%;
   }
+
   to {
     translate: 0 140%;
   }
 }
+
 @keyframes boot-blade {
   to {
     scale: 0;
   }
 }
+
 @keyframes boot-flash {
   0% {
     opacity: 0;
   }
+
   18% {
     opacity: 0.85;
   }
+
   to {
     opacity: 0;
   }
 }
+
 @keyframes boot-inner-out {
   to {
     opacity: 0;
@@ -891,6 +954,7 @@ a:hover {
     filter: blur(8px);
   }
 }
+
 /* floating side terminal — reuses the preloader palette and reveal animation */
 
 /* No panel chrome — it floats directly on the wallpaper, so legibility comes
@@ -906,6 +970,7 @@ a:hover {
   visibility: visible;
   transition: opacity 0.5s var(--ease), visibility 0.5s var(--ease);
 }
+
 .side-term.clearing {
   opacity: 0;
 }
@@ -973,10 +1038,12 @@ a:hover {
     scale 0.2s var(--ease),
     transform 0.2s var(--ease);
 }
+
 .desktop.is-ready .desktop-icon {
   animation: icon-in 0.62s var(--ease-out-expo) forwards;
   animation-delay: calc(var(--i, 0) * 42ms + 120ms);
 }
+
 .desktop-icon:hover {
   background: rgba(255, 255, 255, 0.055);
   border-color: var(--line-2);
@@ -986,6 +1053,7 @@ a:hover {
      compose instead of the hover being silently ignored. */
   transform: translateY(-3px);
 }
+
 .desktop-icon:active {
   transform: scale(0.97);
 }
@@ -1006,6 +1074,7 @@ a:hover {
   transition: color 0.2s var(--ease), background 0.2s var(--ease), border-color 0.2s var(--ease),
     box-shadow 0.2s var(--ease), translate 0.24s var(--ease-out-back);
 }
+
 .desktop-icon:hover .desktop-icon-glyph {
   color: var(--accent);
   translate: 0 -2px;
@@ -1013,11 +1082,13 @@ a:hover {
   background: linear-gradient(160deg, var(--accent-wash), rgba(255, 255, 255, 0.03));
   box-shadow: 0 0 0 1px var(--accent-wash), 0 14px 30px -12px var(--accent-glow);
 }
+
 /* Icon lifts out of its tile on hover, which is what sells the depth. */
 .desktop-icon:hover .desktop-icon-glyph svg {
   translate: 0 -1px;
   scale: 1.08;
 }
+
 .desktop-icon-glyph svg {
   transition: translate 0.3s var(--ease-out-back), scale 0.3s var(--ease-out-back);
 }
@@ -1030,6 +1101,7 @@ a:hover {
   background: linear-gradient(115deg, transparent 34%, rgba(255, 255, 255, 0.22) 50%, transparent 66%);
   transition: opacity 0.3s var(--ease);
 }
+
 .desktop-icon:hover .desktop-icon-sheen {
   opacity: 1;
   animation: sheen-sweep 0.7s var(--ease-out-expo);
@@ -1062,6 +1134,7 @@ a:hover {
   pointer-events: auto;
   transition: filter 0.2s var(--ease);
 }
+
 .window:not(.active) {
   filter: saturate(0.72) brightness(0.9);
 }
@@ -1071,10 +1144,12 @@ a:hover {
 .window:not(.phase-closing, .phase-minimizing) {
   animation: win-in var(--dur-slow) var(--ease-out-expo) both;
 }
+
 .window.phase-closing {
   pointer-events: none;
   animation: win-out var(--dur-fast) var(--ease) forwards;
 }
+
 .window.phase-minimizing {
   pointer-events: none;
   animation: win-min var(--dur-fast) var(--ease-inout-quint) forwards;
@@ -1102,10 +1177,12 @@ a:hover {
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.05), var(--lift-2);
   transition: box-shadow 0.22s var(--ease), border-color 0.22s var(--ease);
 }
+
 .window.active .window-inner {
   border-color: color-mix(in srgb, var(--accent) 26%, var(--line-2));
   box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--lift-3), 0 0 70px -34px var(--accent);
 }
+
 .window.maximized .window-inner {
   border-radius: 10px;
 }
@@ -1116,7 +1193,7 @@ a:hover {
 }
 
 /* Content lifts in behind the frame, one beat behind the chrome. */
-.window:not(.phase-closing, .phase-minimizing) .win-body > * {
+.window:not(.phase-closing, .phase-minimizing) .win-body>* {
   animation: win-content-in var(--dur-slow) var(--ease-out-expo) 0.05s both;
 }
 
@@ -1144,13 +1221,12 @@ a:hover {
   inset: 0;
   pointer-events: none;
   opacity: 0;
-  background: linear-gradient(
-    100deg,
-    transparent 30%,
-    color-mix(in srgb, var(--accent) 22%, transparent) 48%,
-    transparent 66%
-  );
+  background: linear-gradient(100deg,
+      transparent 30%,
+      color-mix(in srgb, var(--accent) 22%, transparent) 48%,
+      transparent 66%);
 }
+
 .window.blooming .win-sheen {
   animation: win-sheen 0.62s var(--ease-out-expo);
 }
@@ -1160,6 +1236,7 @@ a:hover {
   place-items: center;
   color: var(--text-2);
 }
+
 .window.active .win-icon {
   color: var(--accent);
 }
@@ -1175,6 +1252,7 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .window.active .win-title {
   color: var(--text);
 }
@@ -1184,6 +1262,7 @@ a:hover {
   gap: 7px;
   padding: 6px 0;
 }
+
 .win-btn {
   display: grid;
   place-items: center;
@@ -1194,28 +1273,35 @@ a:hover {
   opacity: 0.5;
   transition: opacity 0.15s var(--ease), filter 0.15s var(--ease);
 }
+
 .win-titlebar:hover .win-btn {
   opacity: 1;
 }
+
 .win-btn svg {
   opacity: 0;
   transition: opacity 0.12s var(--ease);
 }
+
 .win-btn:hover svg {
   opacity: 0.85;
 }
+
 .win-close {
   --dot: var(--danger);
   background: var(--danger);
 }
+
 .win-min {
   --dot: var(--warn);
   background: var(--warn);
 }
+
 .win-max {
   --dot: var(--ok);
   background: var(--ok);
 }
+
 .win-btn:hover {
   filter: brightness(1.15);
 }
@@ -1228,6 +1314,7 @@ a:hover {
     padding: 0;
     margin-right: -6px;
   }
+
   .win-btn {
     position: relative;
     width: 34px;
@@ -1235,6 +1322,7 @@ a:hover {
     background: transparent;
     opacity: 1;
   }
+
   .win-btn::before {
     content: "";
     position: absolute;
@@ -1246,13 +1334,16 @@ a:hover {
     border-radius: 50%;
     background: var(--dot);
   }
+
   .win-btn svg {
     position: relative;
     opacity: 0.9;
   }
+
   .win-btn:active::before {
     filter: brightness(1.3);
   }
+
   .win-titlebar:hover .win-btn {
     opacity: 1;
   }
@@ -1281,6 +1372,7 @@ a:hover {
   opacity: var(--scrollable, 0);
   transition: opacity 0.3s var(--ease);
 }
+
 .win-scroll-fill {
   display: block;
   height: 100%;
@@ -1296,6 +1388,7 @@ a:hover {
   padding: 22px 26px 30px;
   max-width: 760px;
 }
+
 .app-pad.center {
   display: flex;
   flex-direction: column;
@@ -1323,16 +1416,17 @@ a:hover {
   margin: 0 0 10px;
   color: var(--text-2);
 }
+
 :where(.app-pad) p:last-child {
   margin-bottom: 0;
 }
 
 /* Section heading: mono label, a hairline rule that draws itself out, and the
    accent tick. The rule is what gives the section its "measured" feel. */
-.app-pad > h3,
-.app-pad > h4,
-.reveal > h3,
-.reveal > h4 {
+.app-pad>h3,
+.app-pad>h4,
+.reveal>h3,
+.reveal>h4 {
   display: flex;
   align-items: center;
   gap: 9px;
@@ -1344,10 +1438,11 @@ a:hover {
   text-transform: uppercase;
   color: var(--text-3);
 }
-.app-pad > h3::before,
-.app-pad > h4::before,
-.reveal > h3::before,
-.reveal > h4::before {
+
+.app-pad>h3::before,
+.app-pad>h4::before,
+.reveal>h3::before,
+.reveal>h4::before {
   content: "";
   width: 6px;
   height: 6px;
@@ -1356,25 +1451,28 @@ a:hover {
   background: var(--accent);
   box-shadow: 0 0 10px var(--accent-glow);
 }
-.app-pad > h3::after,
-.app-pad > h4::after,
-.reveal > h3::after,
-.reveal > h4::after {
+
+.app-pad>h3::after,
+.app-pad>h4::after,
+.reveal>h3::after,
+.reveal>h4::after {
   content: "";
   flex: 1;
   height: 1px;
   background: linear-gradient(90deg, var(--line-2), transparent);
 }
-.app-pad > h3:first-child,
-.app-pad > h4:first-child,
-.reveal > h3:first-child,
-.reveal > h4:first-child {
+
+.app-pad>h3:first-child,
+.app-pad>h4:first-child,
+.reveal>h3:first-child,
+.reveal>h4:first-child {
   margin-top: 4px;
 }
 
 .muted {
   color: var(--text-2);
 }
+
 .small {
   font-size: 12.5px;
 }
@@ -1450,6 +1548,7 @@ a:hover {
   gap: 7px;
   margin: 0 0 6px;
 }
+
 .chip {
   display: inline-block;
   font-family: var(--mono);
@@ -1463,6 +1562,7 @@ a:hover {
   transition: color 0.2s var(--ease), border-color 0.2s var(--ease), background 0.2s var(--ease),
     translate 0.24s var(--ease-out-back), box-shadow 0.24s var(--ease);
 }
+
 .chip:hover {
   color: var(--accent);
   translate: 0 -2px;
@@ -1477,30 +1577,32 @@ a:hover {
   gap: 16px;
   margin-bottom: 18px;
 }
+
 /* Slowly counter-rotating conic ring behind the portrait. */
 .about-avatar-wrap {
   position: relative;
   flex: 0 0 auto;
   display: grid;
   place-items: center;
+  margin-left: 16px;
 }
+
 .about-avatar-ring {
   position: absolute;
   inset: -7px;
   border-radius: 22px;
-  background: conic-gradient(
-    from 0deg,
-    transparent 0deg,
-    var(--accent) 70deg,
-    var(--accent-3) 150deg,
-    transparent 240deg,
-    transparent 360deg
-  );
+  background: conic-gradient(from 0deg,
+      transparent 0deg,
+      var(--accent) 70deg,
+      var(--accent-3) 150deg,
+      transparent 240deg,
+      transparent 360deg);
   opacity: 0.65;
   mask: radial-gradient(closest-side, transparent 76%, #000 78%);
   -webkit-mask: radial-gradient(closest-side, transparent 76%, #000 78%);
   animation: ring-spin 6s linear infinite;
 }
+
 .about-avatar {
   position: relative;
   /* Paints above the absolutely-positioned ring. A positioned element would
@@ -1514,9 +1616,11 @@ a:hover {
   background: linear-gradient(135deg, var(--accent), var(--accent-3));
   box-shadow: 0 10px 30px -14px var(--accent-glow), inset 0 1px 0 rgba(255, 255, 255, 0.4);
 }
+
 .about-head-text {
   min-width: 0;
 }
+
 .about-head h2 {
   margin: 0 0 3px;
   font-family: var(--display);
@@ -1524,6 +1628,7 @@ a:hover {
   font-weight: 700;
   letter-spacing: -0.01em;
 }
+
 .about-head p {
   margin: 0;
 }
@@ -1534,13 +1639,16 @@ a:hover {
   padding: 0 0 0 20px;
   border-left: 1px solid var(--line-2);
 }
+
 .timeline li {
   position: relative;
   padding: 0 0 22px;
 }
+
 .timeline li:last-child {
   padding-bottom: 2px;
 }
+
 /* Node marker with a halo that pulses once as the entry scrolls in. */
 .timeline li::before {
   content: "";
@@ -1553,15 +1661,18 @@ a:hover {
   background: var(--accent);
   box-shadow: 0 0 0 4px var(--accent-wash);
 }
+
 .reveal-stagger.is-in .timeline li::before {
   animation: node-pop 0.5s var(--ease-out-back) backwards;
   animation-delay: calc(var(--i, 0) * 85ms + 120ms);
 }
+
 .timeline h4 {
   margin: 3px 0 2px;
   font-size: 0.95rem;
   font-weight: 600;
 }
+
 .tl-period {
   margin: 0;
   font-family: var(--mono);
@@ -1571,19 +1682,23 @@ a:hover {
   text-transform: uppercase;
   color: var(--accent);
 }
+
 .timeline ul {
   margin: 7px 0 0;
   padding-left: 18px;
 }
+
 .timeline ul li {
   padding: 0;
   margin-bottom: 5px;
   font-size: 13px;
   color: var(--text-2);
 }
+
 .timeline ul li::before {
   display: none;
 }
+
 .timeline ul li::marker {
   color: var(--accent);
 }
@@ -1596,6 +1711,7 @@ a:hover {
   border-radius: var(--radius-sm);
   overflow: hidden;
 }
+
 .cert-list li {
   display: flex;
   justify-content: space-between;
@@ -1607,9 +1723,11 @@ a:hover {
   border-bottom: 1px solid var(--line);
   transition: background 0.15s var(--ease);
 }
+
 .cert-list li:last-child {
   border-bottom: none;
 }
+
 .cert-list li:hover {
   background: var(--surface-2);
 }
@@ -1617,6 +1735,7 @@ a:hover {
 .skill-group {
   margin-bottom: 18px;
 }
+
 .skill-group h4 {
   display: flex;
   align-items: center;
@@ -1626,6 +1745,7 @@ a:hover {
   font-weight: 600;
   color: var(--text);
 }
+
 .skill-group h4::before {
   content: "";
   width: 5px;
@@ -1639,12 +1759,12 @@ a:hover {
   display: grid;
   gap: 12px;
 }
+
 .tilt {
   /* `perspective()` belongs in the transform itself, not on a `perspective`
      property: a `perspective` property only affects an element's CHILDREN, so
      putting it on the tilting element would render a flat rotation. */
-  transform: perspective(900px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg))
-    scale(calc(1 + var(--tilt-glow, 0) * (var(--tilt-scale, 1.014) - 1)));
+  transform: perspective(900px) rotateX(var(--tilt-y, 0deg)) rotateY(var(--tilt-x, 0deg)) scale(calc(1 + var(--tilt-glow, 0) * (var(--tilt-scale, 1.014) - 1)));
   will-change: transform;
 }
 
@@ -1660,6 +1780,7 @@ a:hover {
      `perspective()` in `.tilt` on the card itself. */
   transition: border-color 0.24s var(--ease), box-shadow 0.24s var(--ease);
 }
+
 .project-card::before {
   content: "";
   position: absolute;
@@ -1669,26 +1790,28 @@ a:hover {
   opacity: 0.4;
   transition: opacity 0.24s var(--ease);
 }
+
 /* Specular highlight riding the cursor. */
 .project-sheen {
   position: absolute;
   inset: 0;
   pointer-events: none;
   opacity: calc(var(--tilt-glow, 0) * 0.9);
-  background: radial-gradient(
-    260px circle at var(--sheen-x, 50%) var(--sheen-y, 50%),
-    rgba(255, 255, 255, 0.13),
-    transparent 62%
-  );
+  background: radial-gradient(260px circle at var(--sheen-x, 50%) var(--sheen-y, 50%),
+      rgba(255, 255, 255, 0.13),
+      transparent 62%);
   transition: opacity 0.2s var(--ease);
 }
+
 .project-card:hover {
   border-color: color-mix(in srgb, var(--accent) 30%, var(--line-2));
   box-shadow: var(--lift-3), 0 0 60px -30px var(--accent);
 }
+
 .project-card:hover::before {
   opacity: 1;
 }
+
 .project-card .tag {
   display: inline-block;
   margin-bottom: 9px;
@@ -1703,14 +1826,53 @@ a:hover {
   border: 1px solid var(--accent-line);
   border-radius: 999px;
 }
+
 .project-card h4 {
   margin: 0 0 6px;
   font-size: 1rem;
   font-weight: 600;
   color: var(--text);
 }
+
+.project-link {
+  color: var(--text);
+  text-decoration: none;
+  position: relative;
+}
+
+.project-link:hover {
+  color: var(--accent);
+}
+
+.project-link::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  bottom: -2px;
+  width: 100%;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), var(--accent-3));
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.24s var(--ease);
+}
+
+.project-link:hover::after {
+  transform: scaleX(1);
+}
+
 .project-card p {
   margin: 0;
+}
+
+.project-tech {
+  margin-top: 10px;
+  gap: 6px;
+}
+
+.project-tech .chip {
+  padding: 2px 7px;
+  font-size: 10px;
 }
 
 /* Sheen that wipes across a button on hover. Shared by every primary action. */
@@ -1729,6 +1891,7 @@ a:hover {
   box-shadow: 0 10px 26px -12px var(--accent-glow);
   transition: translate 0.18s var(--ease), filter 0.18s var(--ease), box-shadow 0.18s var(--ease);
 }
+
 .btn-primary::after {
   content: "";
   position: absolute;
@@ -1737,6 +1900,7 @@ a:hover {
   opacity: 0;
   background: linear-gradient(105deg, transparent 36%, rgba(255, 255, 255, 0.4) 50%, transparent 64%);
 }
+
 .btn-primary:hover {
   color: var(--on-accent);
   text-decoration: none;
@@ -1744,6 +1908,7 @@ a:hover {
   translate: 0 -2px;
   box-shadow: 0 16px 34px -12px var(--accent-glow);
 }
+
 .btn-primary:hover::after {
   animation: sheen-sweep 0.68s var(--ease-out-expo);
 }
@@ -1764,6 +1929,7 @@ a:hover {
   transition: color 0.16s var(--ease), border-color 0.16s var(--ease), background 0.16s var(--ease),
     translate 0.16s var(--ease);
 }
+
 .btn-ghost:hover {
   color: var(--accent);
   translate: 0 -2px;
@@ -1793,13 +1959,12 @@ a:hover {
   line-height: 1.6;
   color: #9ff0d0;
   background-color: #05080d;
-  background-image: repeating-linear-gradient(
-    180deg,
-    rgba(255, 255, 255, 0.022) 0 1px,
-    transparent 1px 3px
-  );
+  background-image: repeating-linear-gradient(180deg,
+      rgba(255, 255, 255, 0.022) 0 1px,
+      transparent 1px 3px);
   text-shadow: 0 0 14px rgba(159, 240, 208, 0.22);
 }
+
 /* Each line mounts fresh (key is the index), so this replays per printed line and
    the log scrolls in as output arrives. */
 .terminal-line {
@@ -1808,6 +1973,7 @@ a:hover {
   word-break: break-word;
   animation: term-line-in 0.28s var(--ease-out-expo) both;
 }
+
 .terminal-input-row {
   display: flex;
   align-items: center;
@@ -1818,14 +1984,17 @@ a:hover {
   border-radius: 7px;
   transition: border-color 0.15s var(--ease), background 0.15s var(--ease);
 }
+
 .terminal-input-row:focus-within {
   border-color: var(--accent-line);
   background: var(--accent-wash);
 }
+
 .terminal-input-row span {
   font-weight: 700;
   color: var(--accent);
 }
+
 .terminal-input-row input {
   flex: 1;
   min-width: 0;
@@ -1848,6 +2017,7 @@ a:hover {
   font-size: 12.5px;
   color: var(--text-2);
 }
+
 .ttt-status::before {
   content: "";
   width: 7px;
@@ -1884,6 +2054,7 @@ a:hover {
   gap: clamp(6px, 2.5%, 14px);
   margin: 4px 0;
 }
+
 .ttt-cell {
   display: grid;
   place-items: center;
@@ -1897,19 +2068,24 @@ a:hover {
   background: var(--surface-1);
   transition: background 0.15s var(--ease), border-color 0.15s var(--ease), transform 0.15s var(--ease);
 }
+
 .ttt-cell:hover:not(:disabled) {
   background: var(--accent-wash);
   border-color: var(--accent-line);
 }
+
 .ttt-cell:active:not(:disabled) {
   transform: scale(0.96);
 }
+
 .ttt-cell:disabled {
   cursor: default;
 }
+
 .ttt-cell.o {
   color: var(--accent-3);
 }
+
 .ttt-cell.win {
   color: var(--on-accent);
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
@@ -1922,9 +2098,11 @@ a:hover {
   0% {
     transform: scale(0.86);
   }
+
   60% {
     transform: scale(1.06);
   }
+
   100% {
     transform: scale(1);
   }
@@ -1962,6 +2140,7 @@ a:hover {
   animation: mus-spin 7s linear infinite;
   animation-play-state: paused;
 }
+
 .mus-disc.spin {
   animation-play-state: running;
 }
@@ -1993,10 +2172,12 @@ a:hover {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.4), inset 0 0 12px rgba(0, 0, 0, 0.25);
 }
+
 /* counter-rotate so the track number stays readable while the disc spins */
 .mus-disc.spin .mus-label {
   animation: mus-spin 7s linear infinite reverse;
 }
+
 .mus-label-sub {
   font-size: 0.62em;
   font-weight: 500;
@@ -2015,6 +2196,7 @@ a:hover {
   display: flex;
   flex-direction: column;
 }
+
 .mus-eyebrow {
   font-family: var(--mono);
   font-size: 9.5px;
@@ -2022,6 +2204,7 @@ a:hover {
   text-transform: uppercase;
   color: var(--text-3);
 }
+
 .mus-title {
   margin: 3px 0 0;
   font-size: clamp(15px, 4.4cqw, 18px);
@@ -2031,6 +2214,7 @@ a:hover {
   color: var(--text);
   overflow-wrap: anywhere;
 }
+
 .mus-artist {
   margin: 2px 0 0;
   font-size: 12.5px;
@@ -2046,6 +2230,7 @@ a:hover {
   height: 32px;
   margin-top: 12px;
 }
+
 .mus-bar {
   flex: 1 1 0;
   min-width: 0;
@@ -2065,6 +2250,7 @@ a:hover {
   align-items: center;
   gap: 11px;
 }
+
 .mus-time {
   flex: 0 0 auto;
   min-width: 36px;
@@ -2072,6 +2258,7 @@ a:hover {
   font-size: 11px;
   color: var(--text-3);
 }
+
 .mus-time:last-child {
   text-align: right;
 }
@@ -2084,6 +2271,7 @@ a:hover {
   display: flex;
   align-items: center;
 }
+
 .mus-slider::before {
   content: "";
   position: absolute;
@@ -2093,6 +2281,7 @@ a:hover {
   border-radius: 99px;
   background: rgba(255, 255, 255, 0.11);
 }
+
 .mus-slider-fill {
   position: absolute;
   left: 0;
@@ -2104,6 +2293,7 @@ a:hover {
   transform: scaleX(0);
   transition: transform 0.12s linear;
 }
+
 .mus-slider-fill::after {
   content: "";
   position: absolute;
@@ -2117,12 +2307,15 @@ a:hover {
   box-shadow: 0 0 12px -2px var(--accent-glow);
   transition: transform 0.15s var(--ease);
 }
+
 .mus-slider:hover .mus-slider-fill::after {
   transform: scale(1.2);
 }
+
 .mus-slider:has(.mus-slider-input:focus-visible)::before {
   box-shadow: 0 0 0 2px var(--accent-line);
 }
+
 .mus-slider-input {
   position: relative;
   -webkit-appearance: none;
@@ -2133,14 +2326,17 @@ a:hover {
   background: transparent;
   cursor: pointer;
 }
+
 .mus-slider-input:focus-visible {
   outline: none;
 }
+
 .mus-slider-input::-webkit-slider-runnable-track {
   height: 18px;
   background: transparent;
   border: 0;
 }
+
 .mus-slider-input::-webkit-slider-thumb {
   -webkit-appearance: none;
   width: 18px;
@@ -2148,20 +2344,24 @@ a:hover {
   background: transparent;
   border: 0;
 }
+
 .mus-slider-input::-moz-range-track {
   height: 18px;
   background: transparent;
   border: 0;
 }
+
 .mus-slider-input::-moz-range-thumb {
   width: 18px;
   height: 18px;
   background: transparent;
   border: 0;
 }
+
 .mus-slider.off {
   opacity: 0.42;
 }
+
 .mus-slider.off .mus-slider-input {
   cursor: default;
 }
@@ -2173,6 +2373,7 @@ a:hover {
   align-items: center;
   gap: 10px;
 }
+
 .mus-btn {
   flex: 0 0 auto;
   display: grid;
@@ -2185,11 +2386,13 @@ a:hover {
   background: var(--surface-1);
   transition: color 0.16s var(--ease), border-color 0.16s var(--ease), background 0.16s var(--ease), transform 0.12s var(--ease);
 }
+
 .mus-btn:hover {
   color: var(--accent);
   border-color: var(--accent-line);
   background: var(--accent-wash);
 }
+
 .mus-btn:active {
   transform: scale(0.93);
 }
@@ -2202,20 +2405,24 @@ a:hover {
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   box-shadow: 0 12px 26px -12px var(--accent-glow);
 }
+
 .mus-btn-main:hover {
   color: var(--on-accent);
   background: linear-gradient(135deg, var(--accent), var(--accent-2));
   filter: brightness(1.09);
 }
+
 .mus-btn-main.on {
   animation: mus-pulse 2.6s var(--ease) infinite;
 }
 
 @keyframes mus-pulse {
+
   0%,
   100% {
     box-shadow: 0 12px 26px -12px var(--accent-glow);
   }
+
   50% {
     box-shadow: 0 14px 34px -8px var(--accent-glow);
   }
@@ -2241,6 +2448,7 @@ a:hover {
   flex-direction: column;
   gap: 5px;
 }
+
 .mus-track {
   width: 100%;
   display: grid;
@@ -2254,17 +2462,21 @@ a:hover {
   background: var(--surface-1);
   transition: border-color 0.16s var(--ease), background 0.16s var(--ease), transform 0.12s var(--ease);
 }
+
 .mus-track:hover {
   border-color: var(--accent-line);
   background: var(--accent-wash);
 }
+
 .mus-track:active {
   transform: scale(0.992);
 }
+
 .mus-track.active {
   border-color: var(--accent-line);
   background: color-mix(in srgb, var(--accent) 11%, var(--surface-1));
 }
+
 .mus-track-no {
   display: grid;
   place-items: center;
@@ -2273,30 +2485,36 @@ a:hover {
   font-size: 11px;
   color: var(--text-3);
 }
+
 .mus-track.active .mus-track-no {
   color: var(--accent);
 }
+
 .mus-track-text {
   min-width: 0;
   display: flex;
   flex-direction: column;
   gap: 1px;
 }
+
 .mus-track-title,
 .mus-track-artist {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .mus-track-title {
   font-size: 12.5px;
   font-weight: 600;
   color: var(--text);
 }
+
 .mus-track-artist {
   font-size: 10.5px;
   color: var(--text-3);
 }
+
 .mus-track-state {
   font-family: var(--mono);
   font-size: 9px;
@@ -2312,30 +2530,36 @@ a:hover {
   gap: 2px;
   height: 14px;
 }
+
 .mus-eq i {
   width: 3px;
   border-radius: 1px;
   background: var(--accent);
   animation: mus-eq 0.9s ease-in-out infinite;
 }
+
 .mus-eq i:nth-child(1) {
   height: 60%;
   animation-delay: -0.2s;
 }
+
 .mus-eq i:nth-child(2) {
   height: 100%;
   animation-delay: -0.55s;
 }
+
 .mus-eq i:nth-child(3) {
   height: 45%;
   animation-delay: -0.35s;
 }
 
 @keyframes mus-eq {
+
   0%,
   100% {
     transform: scaleY(0.32);
   }
+
   50% {
     transform: scaleY(1);
   }
@@ -2376,6 +2600,7 @@ a:hover {
   translate: 0 100%;
   opacity: 0;
 }
+
 .taskbar.is-ready {
   animation: taskbar-in 0.78s var(--ease-out-expo) 0.1s forwards;
 }
@@ -2390,6 +2615,7 @@ a:hover {
   letter-spacing: 0.05em;
   color: var(--text);
 }
+
 .taskbar-brand span {
   font-family: var(--mono);
   font-size: 10px;
@@ -2397,6 +2623,7 @@ a:hover {
   letter-spacing: 0.08em;
   color: var(--text-3);
 }
+
 .taskbar-avatar {
   flex: 0 0 auto;
   width: 24px;
@@ -2415,9 +2642,11 @@ a:hover {
   overflow-x: auto;
   scrollbar-width: none;
 }
+
 .taskbar-windows::-webkit-scrollbar {
   display: none;
 }
+
 .taskbar-item {
   position: relative;
   overflow: hidden;
@@ -2435,10 +2664,12 @@ a:hover {
   background: rgba(255, 255, 255, 0.05);
   transition: color 0.15s var(--ease), background 0.15s var(--ease), border-color 0.15s var(--ease);
 }
+
 .taskbar-item svg {
   color: var(--text-3);
   transition: color 0.15s var(--ease);
 }
+
 .taskbar-item:hover {
   color: var(--text);
   background: rgba(255, 255, 255, 0.075);
@@ -2452,17 +2683,21 @@ a:hover {
   opacity: 0;
   background: linear-gradient(105deg, transparent 36%, rgba(255, 255, 255, 0.16) 50%, transparent 64%);
 }
+
 .taskbar-item:hover .taskbar-item-sheen {
   animation: sheen-sweep 0.62s var(--ease-out-expo);
 }
+
 .taskbar-item.active {
   color: #fff;
   background: var(--accent-wash);
   border-color: var(--accent-line);
 }
+
 .taskbar-item.active svg {
   color: var(--accent);
 }
+
 .taskbar-item.active::after {
   content: "";
   position: absolute;
@@ -2474,6 +2709,7 @@ a:hover {
   background: var(--accent);
   box-shadow: 0 0 8px var(--accent-glow);
 }
+
 .taskbar-item.minimized {
   opacity: 0.62;
 }
@@ -2508,6 +2744,7 @@ a:hover {
   transition: color 0.15s var(--ease), background 0.15s var(--ease), border-color 0.15s var(--ease);
   cursor: pointer;
 }
+
 .taskbar-apps-btn:hover,
 .taskbar-apps-btn.open,
 .taskbar-lang-btn:hover,
@@ -2556,25 +2793,31 @@ a:hover {
   animation-delay: calc(var(--i, 0) * 26ms + 40ms);
   transition: color 0.15s var(--ease), background 0.15s var(--ease), border-color 0.15s var(--ease);
 }
+
 .taskbar-apps-opt svg {
   flex: 0 0 auto;
   color: var(--text-3);
   transition: color 0.15s var(--ease);
 }
+
 .taskbar-apps-opt:hover {
   color: var(--text);
   background: rgba(255, 255, 255, 0.09);
 }
+
 .taskbar-apps-opt:hover svg {
   color: var(--accent);
 }
+
 .taskbar-apps-opt.running {
   color: var(--text);
   background: var(--accent-wash);
 }
+
 .taskbar-apps-opt.running svg {
   color: var(--accent);
 }
+
 .taskbar-apps-name {
   flex: 1;
   min-width: 0;
@@ -2583,6 +2826,7 @@ a:hover {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
 .taskbar-apps-dot {
   flex: 0 0 auto;
   width: 5px;
@@ -2618,6 +2862,7 @@ a:hover {
     scale: 0.94;
     clip-path: inset(0 0 100% 0 round 12px);
   }
+
   to {
     opacity: 1;
     translate: 0 0;
@@ -2625,11 +2870,13 @@ a:hover {
     clip-path: inset(0 0 0 0 round 12px);
   }
 }
+
 @keyframes menu-item-in {
   from {
     opacity: 0;
     translate: -6px 0;
   }
+
   to {
     opacity: 1;
     translate: 0 0;
@@ -2654,14 +2901,17 @@ a:hover {
   animation-delay: calc(var(--i, 0) * 34ms + 30ms);
   transition: color 0.15s var(--ease), background 0.15s var(--ease);
 }
+
 .taskbar-lang-opt:hover {
   color: var(--text);
   background: rgba(255, 255, 255, 0.09);
 }
+
 .taskbar-lang-opt.active {
   color: #fff;
   background: var(--accent-wash);
 }
+
 .taskbar-lang-short {
   flex: 0 0 auto;
   min-width: 24px;
@@ -2674,13 +2924,16 @@ a:hover {
   color: var(--text-3);
   background: rgba(255, 255, 255, 0.07);
 }
+
 .taskbar-lang-opt.active .taskbar-lang-short {
   color: var(--accent);
 }
+
 .taskbar-lang-name {
   flex: 1;
   font-weight: 500;
 }
+
 .taskbar-lang-tick {
   color: var(--accent);
   font-size: 11px;
@@ -2699,6 +2952,7 @@ a:hover {
   transition: color 0.15s var(--ease), background 0.15s var(--ease), border-color 0.15s var(--ease),
     transform 0.2s var(--ease);
 }
+
 .taskbar-wallpaper:hover {
   color: var(--accent);
   background: var(--accent-wash);
@@ -2720,13 +2974,16 @@ a:hover {
   /* Short accent flare when the minute rolls over. */
   transition: color 0.3s var(--ease), text-shadow 0.3s var(--ease);
 }
+
 .taskbar-clock.tick {
   color: #fff;
   text-shadow: 0 0 16px var(--accent-glow);
 }
+
 .taskbar-clock.tick span:first-child {
   animation: clock-pop 0.42s var(--ease-out-back);
 }
+
 .taskbar-clock .small {
   font-size: 10.5px;
   color: var(--text-3);
@@ -2771,6 +3028,7 @@ a:hover {
     filter var(--dur-slow) var(--ease-out-expo) var(--reveal-delay, 0ms),
     scale var(--dur-slow) var(--ease-out-back) var(--reveal-delay, 0ms);
 }
+
 :where(.reveal.is-in) {
   opacity: 1;
 }
@@ -2778,6 +3036,7 @@ a:hover {
 :where(.reveal--up) {
   translate: 0 18px;
 }
+
 :where(.reveal--up.is-in) {
   translate: 0 0;
 }
@@ -2785,6 +3044,7 @@ a:hover {
 :where(.reveal--down) {
   translate: 0 -14px;
 }
+
 :where(.reveal--down.is-in) {
   translate: 0 0;
 }
@@ -2792,6 +3052,7 @@ a:hover {
 :where(.reveal--left) {
   translate: -20px 0;
 }
+
 :where(.reveal--left.is-in) {
   translate: 0 0;
 }
@@ -2799,6 +3060,7 @@ a:hover {
 :where(.reveal--scale) {
   scale: 0.94;
 }
+
 :where(.reveal--scale.is-in) {
   scale: 1;
 }
@@ -2807,6 +3069,7 @@ a:hover {
   filter: blur(10px);
   translate: 0 12px;
 }
+
 :where(.reveal--blur.is-in) {
   filter: blur(0);
   translate: 0 0;
@@ -2839,6 +3102,7 @@ a:hover {
     mask-size var(--dur-cinematic) var(--ease-inout-quint) var(--reveal-delay, 0ms),
     translate var(--dur-slow) var(--ease-out-expo) var(--reveal-delay, 0ms);
 }
+
 :where(.reveal--split.is-in) {
   mask-size: 100% 100%;
   translate: 0 0;
@@ -2858,7 +3122,7 @@ a:hover {
    and then sits still, and hinting it would keep dozens of compositor layers
    alive for the rest of the session. The browser promotes them for the duration
    of the transition anyway. */
-:where(.reveal-stagger) > :where(.reveal-item) {
+:where(.reveal-stagger)> :where(.reveal-item) {
   opacity: 0;
   translate: 0 16px;
   transition:
@@ -2866,7 +3130,8 @@ a:hover {
     translate var(--dur-slow) var(--ease-out-expo) calc(var(--stagger-base, 0ms) + var(--i, 0) * var(--dur-stagger)),
     scale var(--dur-slow) var(--ease-out-back) calc(var(--stagger-base, 0ms) + var(--i, 0) * var(--dur-stagger));
 }
-:where(.reveal-stagger.is-in) > :where(.reveal-item) {
+
+:where(.reveal-stagger.is-in)> :where(.reveal-item) {
   opacity: 1;
   translate: 0 0;
 }
@@ -2881,6 +3146,7 @@ a:hover {
   transition: translate 0.4s var(--ease-out-expo);
   will-change: translate;
 }
+
 .magnetic:hover {
   transition: translate 0.12s linear;
 }
@@ -2892,9 +3158,11 @@ a:hover {
     opacity: 0;
     translate: -120% 0;
   }
+
   30% {
     opacity: 1;
   }
+
   to {
     opacity: 0;
     translate: 120% 0;
@@ -2910,9 +3178,11 @@ a:hover {
     translate: 0 16px;
     filter: blur(7px);
   }
+
   60% {
     opacity: 1;
   }
+
   to {
     opacity: 1;
     scale: 1;
@@ -2945,6 +3215,7 @@ a:hover {
     opacity: 0;
     translate: 0 12px;
   }
+
   to {
     opacity: 1;
     translate: 0 0;
@@ -2956,11 +3227,13 @@ a:hover {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--lift-3),
       0 0 0 0 color-mix(in srgb, var(--accent) 42%, transparent);
   }
+
   45% {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.1), var(--lift-4),
       0 0 0 5px color-mix(in srgb, var(--accent) 16%, transparent),
       0 0 90px -20px var(--accent);
   }
+
   100% {
     box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.08), var(--lift-3),
       0 0 0 0 color-mix(in srgb, var(--accent) 0%, transparent);
@@ -2972,9 +3245,11 @@ a:hover {
     opacity: 0;
     translate: -110% 0;
   }
+
   22% {
     opacity: 1;
   }
+
   to {
     opacity: 0;
     translate: 110% 0;
@@ -2990,6 +3265,7 @@ a:hover {
     scale: 0.94;
     filter: blur(5px);
   }
+
   to {
     opacity: 1;
     translate: 0 0;
@@ -3003,6 +3279,7 @@ a:hover {
     opacity: 0;
     translate: 0 100%;
   }
+
   to {
     opacity: 1;
     translate: 0 0;
@@ -3013,9 +3290,11 @@ a:hover {
   0% {
     scale: 1;
   }
+
   40% {
     scale: 1.14;
   }
+
   to {
     scale: 1;
   }
@@ -3026,6 +3305,7 @@ a:hover {
     scale: 0.2;
     opacity: 0;
   }
+
   to {
     scale: 1;
     opacity: 1;
@@ -3037,6 +3317,7 @@ a:hover {
     opacity: 0;
     translate: -6px 0;
   }
+
   to {
     opacity: 1;
     translate: 0 0;
@@ -3050,10 +3331,12 @@ a:hover {
 }
 
 @keyframes title-sheen {
+
   0%,
   100% {
     background-position: 0% 50%;
   }
+
   50% {
     background-position: 100% 50%;
   }
@@ -3065,6 +3348,7 @@ a:hover {
   :root {
     --taskbar-h: 54px;
   }
+
   .desktop-icons {
     top: 12px;
     left: 12px;
@@ -3075,40 +3359,51 @@ a:hover {
     overflow-x: auto;
     scrollbar-width: none;
   }
+
   .desktop-icons::-webkit-scrollbar {
     display: none;
   }
+
   .desktop-icon {
     width: 84px;
   }
+
   .taskbar-brand {
     display: none;
   }
+
   .taskbar-lang-menu {
     min-width: 138px;
   }
+
   .taskbar-apps-menu {
     width: min(268px, calc(100vw - 24px));
   }
+
   .taskbar-apps-opt {
     gap: 7px;
     padding: 8px 7px;
     font-size: 12px;
   }
+
   .cv-bar {
     flex-wrap: wrap;
     padding: 10px 12px;
   }
+
   .cv-btn {
     padding: 7px 11px;
     font-size: 12px;
   }
+
   .cv-frame {
     padding: 7px;
   }
+
   .app-pad {
     padding: 18px 18px 26px;
   }
+
   /* Phones have no room beside the windows, so the terminal stays UNDER the
      window layer here (z-index 2). Lifting it above would print the commands
      straight over an open app's content. */
@@ -3117,6 +3412,7 @@ a:hover {
     left: 12px;
     width: min(250px, 62vw);
   }
+
   .side-term-body {
     font-size: 10px;
     line-height: 1.7;
@@ -3154,20 +3450,24 @@ a:hover {
    and the preloader are all tap-independent, so they keep working.
    ============================================================================ */
 
-@media (hover: none), (pointer: coarse) {
+@media (hover: none),
+(pointer: coarse) {
   .tilt {
     transform: none;
     will-change: auto;
   }
+
   .magnetic {
     translate: none;
     transition: none;
   }
+
   .project-sheen,
   .desktop-icon-sheen,
   .taskbar-item-sheen {
     display: none;
   }
+
   .cursor-glow {
     display: none;
   }
@@ -3183,6 +3483,7 @@ a:hover {
    Starfield and BootScreen also branch on this query in JS (static frame, ~200ms
    boot), so only the CSS layers need handling. */
 @media (prefers-reduced-motion: reduce) {
+
   /* --- decorative loops: simply switched off --- */
   .aurora,
   .aurora-a,
@@ -3204,9 +3505,11 @@ a:hover {
   .cursor-glow {
     animation: none;
   }
+
   .cursor-glow {
     display: none;
   }
+
   .starfield {
     opacity: 0.85;
   }
@@ -3220,6 +3523,7 @@ a:hover {
     translate: none !important;
     filter: none !important;
   }
+
   .boot-mark-os,
   .boot-rail-dot,
   .boot-log,
@@ -3227,6 +3531,7 @@ a:hover {
     opacity: 1 !important;
     translate: none !important;
   }
+
   .boot-mark-os-line {
     transform: none !important;
   }
@@ -3241,6 +3546,7 @@ a:hover {
     opacity: 1 !important;
     translate: none !important;
   }
+
   .desktop-icon {
     opacity: 1 !important;
     translate: none !important;
@@ -3248,33 +3554,39 @@ a:hover {
     transform: none !important;
     filter: none !important;
   }
+
   /* The hover lift on the tile and its glyph are movement too. */
   .desktop-icon:hover,
   .desktop-icon:hover .desktop-icon-glyph {
     translate: none !important;
     transform: none !important;
   }
+
   .desktop.is-ready .desktop-icon {
     animation: none !important;
   }
+
   .window {
     opacity: 1 !important;
     scale: none !important;
     translate: none !important;
     filter: none !important;
   }
+
   .window.blooming .window-inner,
   .window.phase-closing,
   .window.phase-minimizing {
     animation: none !important;
   }
-  .win-body > *,
+
+  .win-body>*,
   .taskbar-apps-opt,
   .taskbar-lang-opt {
     animation: none !important;
     opacity: 1 !important;
     translate: none !important;
   }
+
   .taskbar-apps-menu,
   .taskbar-lang-menu {
     animation: none !important;
@@ -3285,7 +3597,7 @@ a:hover {
      `clip-path` — a `.reveal--split` that kept `mask-size: 100% 0%` would stay
      fully masked even though its box is visible. */
   .reveal,
-  .reveal-stagger > .reveal-item {
+  .reveal-stagger>.reveal-item {
     opacity: 1 !important;
     translate: none !important;
     scale: none !important;
@@ -3293,6 +3605,7 @@ a:hover {
     clip-path: none !important;
     mask: none !important;
   }
+
   .boot-screen.leaving .boot-inner {
     animation: none !important;
   }
